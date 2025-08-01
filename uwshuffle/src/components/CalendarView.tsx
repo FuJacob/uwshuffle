@@ -4,7 +4,6 @@ import type { View } from "react-big-calendar";
 import moment from "moment";
 import { FiCalendar } from "react-icons/fi";
 import type { Course, ParsedScheduleEvent } from "../types";
-import "./CalendarView.css";
 
 const localizer = momentLocalizer(moment);
 

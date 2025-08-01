@@ -1,11 +1,5 @@
-import React, { useState } from "react";
-import {
-  FiClipboard,
-  FiZap,
-  FiTrash2,
-  FiChevronUp,
-  FiUpload,
-} from "react-icons/fi";
+import React, { useState, useEffect } from "react";
+import { FiClipboard, FiZap, FiTrash2, FiRefreshCcw } from "react-icons/fi";
 import type { Course } from "../types";
 import "./ScheduleUpload.css";
 
@@ -19,7 +13,18 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   onClearSchedule,
 }) => {
   const [scheduleText, setScheduleText] = useState("");
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isPasted, setIsPasted] = useState(false);
+
+  useEffect(() => {
+    if (window.chrome && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.get(["uwshuffle_courses"], (result) => {
+        if (result.uwshuffle_courses) {
+          onCoursesUploaded(result.uwshuffle_courses);
+        }
+      });
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const parseScheduleText = (text: string): Course[] => {
     const lines = text
@@ -32,10 +37,51 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 
     for (const line of lines) {
       const trimmedLine = line.trim();
-
+      const COURSE_CODES = [
+        "ACTSC",
+        "AE",
+        "AFM",
+        "AMATH",
+        "ANTH",
+        "APPLS",
+        "ARABIC",
+        "ARBUS",
+        "ARCH",
+        "ARTS",
+        "ASL",
+        "AVIA",
+        "BET",
+        "BIOL",
+        "BLKST",
+        "BME",
+        "BUS",
+        "CC",
+        "CDNST",
+        "CFM",
+        "CHE",
+        "CHEM",
+        "CHINA",
+        "CI",
+        "CIVE",
+        "CLAS",
+        "CMW",
+        "CO",
+        "COGSCI",
+        "COMM",
+        "COMMST",
+        "CROAT",
+        "CS",
+        "DAC",
+        "DUTCH",
+        "EARTH",
+        "EASIA",
+      ];
+      const COURSE_REGEX = new RegExp(
+        `^(${COURSE_CODES.join("|")})\\s*\\d{3}[A-Z]?`,
+        "i"
+      );
       // Check if this line starts a new course (course code pattern)
-      const courseMatch = trimmedLine.match(/^([A-Z]{2,4}\s*\d{3}[A-Z]?)/);
-
+      const courseMatch = trimmedLine.match(COURSE_REGEX);
       if (courseMatch) {
         // Save previous course if exists
         if (
@@ -50,7 +96,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 
         // Start new course
         currentCourse = {
-          course: courseMatch[1].replace(/\s+/g, " ").trim(),
+          course: courseMatch[0].replace(/\s+/g, " ").trim(),
         };
 
         // Parse the rest of the line for time and location info
@@ -141,67 +187,65 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     if (scheduleText.trim()) {
       const parsedCourses = parseScheduleText(scheduleText);
       onCoursesUploaded(parsedCourses);
-      setScheduleText("");
-      setIsExpanded(false);
-
-      // Start Quest scraper after schedule upload via postMessage to parent window
-      try {
-        console.log(
-          "UWShuffle: Sending message to start Quest scraper after schedule upload"
-        );
-        window.parent.postMessage(
-          {
-            type: "uwshuffle_start_scraper",
-            payload: { trigger: "schedule_upload" },
-          },
-          "*"
-        );
-      } catch (error) {
-        console.error("UWShuffle: Error sending scraper start message:", error);
+      if (window.chrome && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.set({ uwshuffle_courses: parsedCourses });
       }
+      setScheduleText("");
+      setIsPasted(true);
     }
+  };
+
+  const handleRefresh = () => {
+    // Start Quest scraper after schedule upload via postMessage to parent window
+    try {
+      console.log(
+        "UWShuffle: Sending message to start Quest scraper after schedule upload"
+      );
+      window.parent.postMessage(
+        {
+          type: "uwshuffle_start_scraper",
+          payload: { trigger: "schedule_upload" },
+        },
+        "*"
+      );
+    } catch (error) {
+      console.error("UWShuffle: Error sending scraper start message:", error);
+    }
+  };
+
+  const handleReset = () => {
+    setIsPasted(false);
+    onClearSchedule();
   };
 
   return (
     <div>
-      <div
-        className={`schedule-upload-buttons ${isExpanded ? "expanded" : ""}`}
-      >
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="schedule-upload-toggle"
-        >
-          {isExpanded ? (
-            <>
-              <FiChevronUp className="schedule-upload-icon-button" />
-              Hide Upload
-            </>
-          ) : (
-            <>
-              <FiUpload className="schedule-upload-icon-button" />
-              Upload Schedule
-            </>
-          )}
+      <div className="schedule-upload-buttons">
+        <button onClick={handleRefresh} className="schedule-upload-clear">
+          <FiRefreshCcw className="schedule-upload-icon-button" />
+          Refresh
         </button>
-        <button onClick={onClearSchedule} className="schedule-upload-clear">
+        <button onClick={handleReset} className="schedule-upload-clear">
           <FiTrash2 className="schedule-upload-icon-button" />
-          Clear
+          Reset
         </button>
       </div>
 
-      {isExpanded && (
-        <div className="schedule-upload-form">
-          <div className="schedule-upload-form-group">
-            <label className="schedule-upload-label">
-              <FiClipboard className="schedule-upload-icon" />
-              Paste Your Schedule
-            </label>
-            <p className="schedule-upload-description">
-              Copy your schedule from Quest and paste it below. We'll
-              automatically parse course times and locations.
-            </p>
-          </div>
+      <div className="schedule-upload-form">
+        <div className="schedule-upload-form-group">
+          <label className="schedule-upload-label">
+            <FiClipboard className="schedule-upload-icon" />
+            Paste Your Schedule
+          </label>
+          <p className="schedule-upload-description">
+            Copy your schedule from Quest and paste it below. We'll
+            automatically parse course times and locations.
+          </p>
+        </div>
 
+        {isPasted ? (
+          <div className="schedule-upload-pasted">Pasted!</div>
+        ) : (
           <textarea
             value={scheduleText}
             onChange={(e) => setScheduleText(e.target.value)}
@@ -211,17 +255,17 @@ F 10:30AM - 11:20AM HH 1101
 CS 136 TR 2:30PM - 3:50PM MC 4020"
             className="schedule-upload-textarea"
           />
+        )}
 
-          <button
-            onClick={handleUpload}
-            disabled={!scheduleText.trim()}
-            className="schedule-upload-submit"
-          >
-            <FiZap className="schedule-upload-icon-button" />
-            Parse Schedule
-          </button>
-        </div>
-      )}
+        <button
+          onClick={handleUpload}
+          disabled={!scheduleText.trim()}
+          className="schedule-upload-submit"
+        >
+          <FiZap className="schedule-upload-icon-button" />
+          Parse Schedule
+        </button>
+      </div>
     </div>
   );
 };

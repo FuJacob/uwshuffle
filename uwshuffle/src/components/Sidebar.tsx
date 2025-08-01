@@ -11,7 +11,6 @@ import {
 import CalendarView from "./CalendarView";
 import ScheduleUpload from "./ScheduleUpload";
 import type { Course } from "../types";
-import "./Sidebar.css";
 
 const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -57,34 +56,35 @@ const Sidebar: React.FC = () => {
   return (
     <div className="uwshuffle-sidebar">
       {/* Header with elevation */}
-      <div className="uwshuffle-header">
-        <div className="uwshuffle-header-content">
-          <h1 className="uwshuffle-title">UWShuffle</h1>
-          <p className="uwshuffle-subtitle">Quest Class Schedule Helper</p>
+     <div className="uwshuffle-header-container">
+        <div className="uwshuffle-header">
+          <div className="uwshuffle-header-content">
+            <h1 className="uwshuffle-title">UWShuffle</h1>
+            <p className="uwshuffle-subtitle">Quest Class Schedule Helper</p>
+          </div>
+  
+          {/* Coffee Button */}
+          <a
+            href="https://buymeacoffee.com/uwshuffle"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="uwshuffle-coffee-button"
+          >
+            <FiCoffee className="uwshuffle-icon-button" />
+            Buy me coffee $1
+          </a>
+  
+          {/* Upload Section with card styling */}
         </div>
-
-        {/* Coffee Button */}
-        <a
-          href="https://buymeacoffee.com/uwshuffle"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="uwshuffle-coffee-button"
-        >
-          <FiCoffee className="uwshuffle-icon-button" />
-          Buy me coffee $1
-        </a>
-      </div>
-
-      {/* Upload Section with card styling */}
-      <div className="uwshuffle-upload-section">
-        <div className="uwshuffle-upload-card">
-          <ScheduleUpload
-            onCoursesUploaded={handleCoursesUploaded}
-            onClearSchedule={handleClearSchedule}
-          />
+        <div className="uwshuffle-upload-section">
+          <div className="uwshuffle-upload-card">
+            <ScheduleUpload
+              onCoursesUploaded={handleCoursesUploaded}
+              onClearSchedule={handleClearSchedule}
+            />
+          </div>
         </div>
-      </div>
-
+     </div>
       {/* Preview Controls with modern card styling */}
       {previewCourse && (
         <div className="uwshuffle-preview-section">
