@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   FiClipboard,
-  FiCheck,
-  FiX,
   FiCalendar,
   FiBook,
   FiBarChart2,
@@ -42,27 +40,16 @@ const Sidebar: React.FC = () => {
 
   // addPreviewCourse is handled via message listener
 
-  const confirmPreviewCourse = () => {
-    if (previewCourse) {
-      setCourses([...courses, previewCourse]);
-      setPreviewCourse(null);
-    }
-  };
-
-  const cancelPreviewCourse = () => {
-    setPreviewCourse(null);
-  };
-
   return (
     <div className="uwshuffle-sidebar">
       {/* Header with elevation */}
-     <div className="uwshuffle-header-container">
+      <div className="uwshuffle-header-container">
         <div className="uwshuffle-header">
           <div className="uwshuffle-header-content">
             <h1 className="uwshuffle-title">UWShuffle</h1>
             <p className="uwshuffle-subtitle">Quest Class Schedule Helper</p>
           </div>
-  
+
           {/* Coffee Button */}
           <a
             href="https://buymeacoffee.com/uwshuffle"
@@ -73,7 +60,7 @@ const Sidebar: React.FC = () => {
             <FiCoffee className="uwshuffle-icon-button" />
             Buy me coffee $1
           </a>
-  
+
           {/* Upload Section with card styling */}
         </div>
         <div className="uwshuffle-upload-section">
@@ -84,7 +71,7 @@ const Sidebar: React.FC = () => {
             />
           </div>
         </div>
-     </div>
+      </div>
       {/* Preview Controls with modern card styling */}
       {previewCourse && (
         <div className="uwshuffle-preview-section">
@@ -97,22 +84,6 @@ const Sidebar: React.FC = () => {
               {previewCourse.days?.join(", ")} • {previewCourse.start} -{" "}
               {previewCourse.end}
               {previewCourse.location && ` • ${previewCourse.location}`}
-            </div>
-            <div className="uwshuffle-preview-buttons">
-              <button
-                onClick={confirmPreviewCourse}
-                className="uwshuffle-button-primary"
-              >
-                <FiCheck className="uwshuffle-icon-button" />
-                Add to Schedule
-              </button>
-              <button
-                onClick={cancelPreviewCourse}
-                className="uwshuffle-button-secondary"
-              >
-                <FiX className="uwshuffle-icon-button" />
-                Cancel
-              </button>
             </div>
           </div>
         </div>
