@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "UWShuffle",
+  "version": "1.0",
+  "description": "Chrome extension that improves class swapping on Quest by providing a sidebar with calendar view and conflict detection",
+  "permissions": ["scripting", "activeTab", "storage"],
+  "host_permissions": ["https://quest.pecs.uwaterloo.ca/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://quest.pecs.uwaterloo.ca/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["sidebar.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
