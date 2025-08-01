@@ -7,11 +7,12 @@ import {
   FiUpload,
 } from "react-icons/fi";
 import type { Course } from "../types";
+import "./ScheduleUpload.css";
 
 interface ScheduleUploadProps {
   onCoursesUploaded: (courses: Course[]) => void;
   onClearSchedule: () => void;
-}
+} 
 
 const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   onCoursesUploaded,
@@ -163,84 +164,28 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          gap: "12px",
-          marginBottom: isExpanded ? "20px" : "0",
-        }}
-      >
+      <div className={`schedule-upload-buttons ${isExpanded ? 'expanded' : ''}`}>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          style={{
-            flex: 1,
-            padding: "12px 16px",
-            backgroundColor: "#0052CC",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            fontSize: "14px",
-            fontWeight: "600",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px",
-            transition: "all 0.2s ease",
-            boxShadow: "0 1px 2px rgba(0, 82, 204, 0.2)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#0066FF";
-            e.currentTarget.style.transform = "translateY(-1px)";
-            e.currentTarget.style.boxShadow = "0 2px 8px rgba(0, 82, 204, 0.3)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#0052CC";
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 1px 2px rgba(0, 82, 204, 0.2)";
-          }}
+          className="schedule-upload-toggle"
         >
           {isExpanded ? (
             <>
-              <FiChevronUp style={{ fontSize: "14px" }} />
+              <FiChevronUp className="schedule-upload-icon-button" />
               Hide Upload
             </>
           ) : (
             <>
-              <FiUpload style={{ fontSize: "14px" }} />
+              <FiUpload className="schedule-upload-icon-button" />
               Upload Schedule
             </>
           )}
         </button>
         <button
           onClick={onClearSchedule}
-          style={{
-            padding: "12px 16px",
-            backgroundColor: "white",
-            color: "#6B778C",
-            border: "1px solid #EBECF0",
-            borderRadius: "8px",
-            fontSize: "14px",
-            fontWeight: "600",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            transition: "all 0.2s ease",
-            whiteSpace: "nowrap",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#F4F5F7";
-            e.currentTarget.style.borderColor = "#C1C7D0";
-            e.currentTarget.style.color = "#052049";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "white";
-            e.currentTarget.style.borderColor = "#EBECF0";
-            e.currentTarget.style.color = "#6B778C";
-          }}
+          className="schedule-upload-clear"
         >
-          <FiTrash2 style={{ fontSize: "14px" }} />
+          <FiTrash2 className="schedule-upload-icon-button" />
           Clear
         </button>
       </div>

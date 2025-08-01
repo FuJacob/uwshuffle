@@ -1,0 +1,299 @@
+/* Custom styles for react-big-calendar to match UWShuffle design */
+
+/* Calendar container styling */
+.rbc-calendar {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif !important;
+  font-size: 13px !important;
+  background: transparent !important;
+  border: none !important;
+  width: 100% !important;
+}
+
+/* Fix the calendar width to use full container */
+.rbc-time-view {
+  width: 100% !important;
+}
+
+.rbc-time-header {
+  width: 100% !important;
+}
+
+.rbc-time-content {
+  width: 100% !important;
+}
+
+/* Header styling */
+.rbc-header {
+  background: #fafbfc !important;
+  border: none !important;
+  border-bottom: 1px solid #ebecf0 !important;
+  padding: 8px 4px !important;
+  font-weight: 600 !important;
+  color: #052049 !important;
+  font-size: 12px !important;
+  text-align: center !important;
+  flex: 1 !important;
+  width: auto !important;
+  height: 32px !important;
+  line-height: 1.2 !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Make sure day columns distribute evenly */
+.rbc-time-header-content {
+  display: flex !important;
+  width: 100% !important;
+}
+
+.rbc-row {
+  display: flex !important;
+  width: 100% !important;
+}
+
+.rbc-row-segment {
+  flex: 1 !important;
+}
+
+/* Time gutter (left side time labels) */
+.rbc-time-gutter {
+  background: #fafbfc !important;
+  border-right: 1px solid #ebecf0 !important;
+  width: 60px !important;
+}
+
+.rbc-time-slot {
+  border-top: 1px solid #f4f5f7 !important;
+  border-bottom: none !important;
+}
+
+.rbc-timeslot-group {
+  border-bottom: 1px solid #ebecf0 !important;
+}
+
+.rbc-time-gutter .rbc-time-slot {
+  color: #6b778c !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-align: right !important;
+  padding-right: 8px !important;
+}
+
+/* Day columns */
+.rbc-day-slot {
+  background: white !important;
+  border-left: 1px solid #f4f5f7 !important;
+  flex: 1 !important;
+  width: auto !important;
+}
+
+.rbc-day-slot:first-child {
+  border-left: none !important;
+}
+
+/* Ensure columns take equal width */
+.rbc-time-header-cell {
+  flex: 1 !important;
+  width: auto !important;
+}
+
+/* Time slots within day columns */
+.rbc-day-slot .rbc-time-slot {
+  border-top: 1px solid #f4f5f7 !important;
+}
+
+.rbc-timeslot-group {
+  border-bottom: 1px solid #ebecf0 !important;
+}
+
+/* Events styling */
+.rbc-event {
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  margin: 1px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.2s ease !important;
+}
+
+.rbc-event:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.rbc-event-content {
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+/* Hide current time indicator */
+.rbc-current-time-indicator {
+  display: none !important;
+}
+
+/* Remove today highlighting */
+.rbc-today {
+  background-color: white !important;
+}
+
+.rbc-header.rbc-today {
+  background-color: #fafbfc !important;
+  color: #052049 !important;
+  font-weight: 600 !important;
+}
+
+/* Remove default borders and add subtle ones */
+.rbc-time-view {
+  border: none !important;
+}
+
+.rbc-time-header {
+  border-bottom: 2px solid #ebecf0 !important;
+}
+
+.rbc-time-content {
+  border: none !important;
+}
+
+/* Improve all-day section if visible */
+.rbc-allday-cell {
+  background: #fafbfc !important;
+  border-bottom: 1px solid #ebecf0 !important;
+}
+
+/* Scrollbar styling for calendar */
+.rbc-time-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.rbc-time-content::-webkit-scrollbar-track {
+  background: #f4f5f7;
+  border-radius: 4px;
+}
+
+.rbc-time-content::-webkit-scrollbar-thumb {
+  background: #c1c7d0;
+  border-radius: 4px;
+}
+
+.rbc-time-content::-webkit-scrollbar-thumb:hover {
+  background: #97a0af;
+}
+
+/* Event label improvements */
+.rbc-event-label {
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  opacity: 0.9 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .rbc-time-gutter {
+    width: 50px !important;
+  }
+
+  .rbc-time-gutter .rbc-time-slot {
+    font-size: 10px !important;
+    padding-right: 4px !important;
+  }
+
+  .rbc-event {
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+  }
+
+  .rbc-header {
+    font-size: 12px !important;
+    padding: 8px 4px !important;
+  }
+}
+
+/* Legend styling */
+.uwshuffle-calendar-legend {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #fafbfc;
+  border: 1px solid #ebecf0;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.uwshuffle-legend-items {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.uwshuffle-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #052049;
+}
+
+.uwshuffle-legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading state */
+.uwshuffle-calendar-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  color: #6b778c;
+  font-size: 14px;
+}
+
+/* Empty state */
+.uwshuffle-calendar-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  color: #6b778c;
+  font-size: 14px;
+  text-align: center;
+}
+
+.uwshuffle-calendar-empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.uwshuffle-calendar-empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #052049;
+}
+
+.uwshuffle-calendar-empty-subtitle {
+  font-size: 14px;
+  color: #6b778c;
+}
+
+/* Calendar container */
+.uwshuffle-calendar-container {
+  height: 100%;
+  min-height: 400px;
+}
+
+.uwshuffle-calendar-wrapper {
+  height: 100%;
+  font-size: 13px;
+}

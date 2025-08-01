@@ -2,7 +2,9 @@ import React, { useMemo } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import type { View } from "react-big-calendar";
 import moment from "moment";
+import { FiCalendar } from "react-icons/fi";
 import type { Course, ParsedScheduleEvent } from "../types";
+import "./CalendarView.css";
 
 const localizer = momentLocalizer(moment);
 
@@ -106,16 +108,16 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
   // Custom event style getter
   const eventStyleGetter = (event: ParsedScheduleEvent) => {
-    let backgroundColor = "#3174ad";
-    let borderColor = "#3174ad";
+    let backgroundColor = "#0052CC";
+    let borderColor = "#0052CC";
 
     if (event.isPreview) {
       if (event.resource?.hasConflict) {
-        backgroundColor = "#dc3545";
-        borderColor = "#dc3545";
+        backgroundColor = "#DC3545";
+        borderColor = "#DC3545";
       } else {
-        backgroundColor = "#28a745";
-        borderColor = "#28a745";
+        backgroundColor = "#28A745";
+        borderColor = "#28A745";
       }
     }
 
@@ -124,33 +126,41 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         backgroundColor,
         borderColor,
         color: "white",
-        fontSize: "10px",
+        fontSize: "11px",
+        fontWeight: "600",
         border: "none",
-        borderRadius: "2px",
+        borderRadius: "6px",
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
       },
     };
   };
 
-  // Custom toolbar to show only week view
-  const CustomToolbar = ({ label }: { label: string }) => {
+  // Custom toolbar - hide it completely since we don't need the date range
+  const CustomToolbar = () => {
+    return null;
+  };
+
+  // Show empty state if no courses
+  if (courses.length === 0 && !previewCourse) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: "16px",
-          padding: "8px",
-          backgroundColor: "white",
-          borderRadius: "4px",
-          fontSize: "14px",
-          fontWeight: "500",
-        }}
-      >
-        {label}
+      <div className="uwshuffle-calendar-empty">
+        <FiCalendar className="uwshuffle-calendar-empty-icon" />
+        <div
+          style={{
+            fontSize: "16px",
+            fontWeight: "600",
+            marginBottom: "8px",
+            color: "#052049",
+          }}
+        >
+          No Schedule Loaded
+        </div>
+        <div style={{ fontSize: "14px", color: "#6B778C" }}>
+          Upload your schedule to see your weekly calendar
+        </div>
       </div>
     );
-  };
+  }
 
   return (
     <div style={{ height: "100%", minHeight: "400px" }}>
@@ -159,7 +169,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: "100%", fontSize: "11px" }}
+        style={{ height: "100%", fontSize: "13px" }}
         view={"work_week" as View}
         views={["work_week"]}
         defaultView={"work_week" as View}
@@ -167,70 +177,25 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         components={{
           toolbar: CustomToolbar,
         }}
-        min={moment().hour(8).minute(0).toDate()}
-        max={moment().hour(22).minute(0).toDate()}
+        min={moment().hour(7).minute(0).toDate()}
+        max={moment().hour(23).minute(0).toDate()}
         step={30}
         timeslots={2}
         eventPropGetter={eventStyleGetter}
         dayPropGetter={() => ({
           style: {
-            backgroundColor: "#f8f9fa",
+            backgroundColor: "white",
           },
         })}
         formats={{
           timeGutterFormat: "h:mm A",
+          dayFormat: "dddd",
           eventTimeRangeFormat: ({ start, end }: { start: Date; end: Date }) =>
             `${moment(start).format("h:mm")} – ${moment(end).format("h:mm A")}`,
         }}
+        showMultiDayTimes={false}
+        scrollToTime={moment().hour(8).minute(0).toDate()}
       />
-
-      {/* Legend */}
-      <div
-        style={{
-          marginTop: "12px",
-          padding: "8px",
-          backgroundColor: "white",
-          color: "#052049",
-          borderRadius: "4px",
-          fontSize: "10px",
-        }}
-      >
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-            <div
-              style={{
-                width: "12px",
-                height: "12px",
-                backgroundColor: "#3174ad",
-                borderRadius: "2px",
-              }}
-            ></div>
-            <span>Current</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-            <div
-              style={{
-                width: "12px",
-                height: "12px",
-                backgroundColor: "#28a745",
-                borderRadius: "2px",
-              }}
-            ></div>
-            <span>No Conflict</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-            <div
-              style={{
-                width: "12px",
-                height: "12px",
-                backgroundColor: "#dc3545",
-                borderRadius: "2px",
-              }}
-            ></div>
-            <span>Conflict</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
