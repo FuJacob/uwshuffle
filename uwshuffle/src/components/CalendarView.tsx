@@ -145,17 +145,8 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     return (
       <div className="uwshuffle-calendar-empty">
         <FiCalendar className="uwshuffle-calendar-empty-icon" />
-        <div
-          style={{
-            fontSize: "16px",
-            fontWeight: "600",
-            marginBottom: "8px",
-            color: "#052049",
-          }}
-        >
-          No Schedule Loaded
-        </div>
-        <div style={{ fontSize: "14px", color: "#6B778C" }}>
+        <div className="uwshuffle-calendar-empty-title">No Schedule Loaded</div>
+        <div className="uwshuffle-calendar-empty-subtitle">
           Upload your schedule to see your weekly calendar
         </div>
       </div>
@@ -163,13 +154,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   }
 
   return (
-    <div style={{ height: "100%", minHeight: "400px" }}>
+    <div className="uwshuffle-calendar-container">
       <Calendar
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: "100%", fontSize: "13px" }}
+        className="uwshuffle-calendar-wrapper"
         view={"work_week" as View}
         views={["work_week"]}
         defaultView={"work_week" as View}

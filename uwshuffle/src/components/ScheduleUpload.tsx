@@ -12,7 +12,7 @@ import "./ScheduleUpload.css";
 interface ScheduleUploadProps {
   onCoursesUploaded: (courses: Course[]) => void;
   onClearSchedule: () => void;
-} 
+}
 
 const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   onCoursesUploaded,
@@ -164,7 +164,9 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 
   return (
     <div>
-      <div className={`schedule-upload-buttons ${isExpanded ? 'expanded' : ''}`}>
+      <div
+        className={`schedule-upload-buttons ${isExpanded ? "expanded" : ""}`}
+      >
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="schedule-upload-toggle"
@@ -181,47 +183,20 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
             </>
           )}
         </button>
-        <button
-          onClick={onClearSchedule}
-          className="schedule-upload-clear"
-        >
+        <button onClick={onClearSchedule} className="schedule-upload-clear">
           <FiTrash2 className="schedule-upload-icon-button" />
           Clear
         </button>
       </div>
 
       {isExpanded && (
-        <div
-          style={{
-            borderTop: "1px solid #EBECF0",
-            paddingTop: "20px",
-          }}
-        >
-          <div
-            style={{
-              marginBottom: "16px",
-            }}
-          >
-            <label
-              style={{
-                display: "block",
-                fontSize: "14px",
-                fontWeight: "600",
-                color: "#052049",
-                marginBottom: "8px",
-              }}
-            >
-              <FiClipboard style={{ marginRight: "6px", display: "inline" }} />
+        <div className="schedule-upload-form">
+          <div className="schedule-upload-form-group">
+            <label className="schedule-upload-label">
+              <FiClipboard className="schedule-upload-icon" />
               Paste Your Schedule
             </label>
-            <p
-              style={{
-                fontSize: "12px",
-                color: "#6B778C",
-                margin: "0 0 12px 0",
-                lineHeight: "1.4",
-              }}
-            >
+            <p className="schedule-upload-description">
               Copy your schedule from Quest and paste it below. We'll
               automatically parse course times and locations.
             </p>
@@ -234,76 +209,15 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 AFM 272 MW 10:00AM - 11:20AM HH 2107
 F 10:30AM - 11:20AM HH 1101
 CS 136 TR 2:30PM - 3:50PM MC 4020"
-            style={{
-              width: "100%",
-              height: "140px",
-              padding: "12px",
-              border: "1px solid #EBECF0",
-              borderRadius: "8px",
-              fontSize: "12px",
-              fontFamily:
-                '"SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace',
-              resize: "vertical",
-              marginBottom: "16px",
-              backgroundColor: "#FAFBFC",
-              color: "#052049",
-              lineHeight: "1.5",
-              transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-              outline: "none",
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.borderColor = "#0052CC";
-              e.currentTarget.style.boxShadow =
-                "0 0 0 3px rgba(0, 82, 204, 0.1)";
-              e.currentTarget.style.backgroundColor = "white";
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.borderColor = "#EBECF0";
-              e.currentTarget.style.boxShadow = "none";
-              e.currentTarget.style.backgroundColor = "#FAFBFC";
-            }}
+            className="schedule-upload-textarea"
           />
 
           <button
             onClick={handleUpload}
             disabled={!scheduleText.trim()}
-            style={{
-              width: "100%",
-              padding: "12px 16px",
-              backgroundColor: scheduleText.trim() ? "#0052CC" : "#C1C7D0",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "14px",
-              fontWeight: "600",
-              cursor: scheduleText.trim() ? "pointer" : "not-allowed",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-              transition: "all 0.2s ease",
-              boxShadow: scheduleText.trim()
-                ? "0 1px 2px rgba(0, 82, 204, 0.2)"
-                : "none",
-            }}
-            onMouseEnter={(e) => {
-              if (scheduleText.trim()) {
-                e.currentTarget.style.backgroundColor = "#0066FF";
-                e.currentTarget.style.transform = "translateY(-1px)";
-                e.currentTarget.style.boxShadow =
-                  "0 2px 8px rgba(0, 82, 204, 0.3)";
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (scheduleText.trim()) {
-                e.currentTarget.style.backgroundColor = "#0052CC";
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow =
-                  "0 1px 2px rgba(0, 82, 204, 0.2)";
-              }
-            }}
+            className="schedule-upload-submit"
           >
-            <FiZap style={{ fontSize: "14px" }} />
+            <FiZap className="schedule-upload-icon-button" />
             Parse Schedule
           </button>
         </div>

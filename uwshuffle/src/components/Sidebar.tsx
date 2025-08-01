@@ -54,7 +54,7 @@ const Sidebar: React.FC = () => {
     setPreviewCourse(null);
   };
 
-    return (
+  return (
     <div className="uwshuffle-sidebar">
       {/* Header with elevation */}
       <div className="uwshuffle-header">
@@ -62,7 +62,7 @@ const Sidebar: React.FC = () => {
           <h1 className="uwshuffle-title">UWShuffle</h1>
           <p className="uwshuffle-subtitle">Quest Class Schedule Helper</p>
         </div>
-        
+
         {/* Coffee Button */}
         <a
           href="https://buymeacoffee.com/uwshuffle"
