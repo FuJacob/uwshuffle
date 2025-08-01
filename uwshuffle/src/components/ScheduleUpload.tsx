@@ -14,6 +14,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 }) => {
   const [scheduleText, setScheduleText] = useState("");
   const [isPasted, setIsPasted] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     if (window.chrome && chrome.storage && chrome.storage.local) {
@@ -183,15 +184,32 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     return `${hours.padStart(2, "0")}:${minutes}`;
   };
 
-  const handleUpload = () => {
-    if (scheduleText.trim()) {
-      const parsedCourses = parseScheduleText(scheduleText);
-      onCoursesUploaded(parsedCourses);
-      if (window.chrome && chrome.storage && chrome.storage.local) {
-        chrome.storage.local.set({ uwshuffle_courses: parsedCourses });
+  const handleUpload = (text?: string) => {
+    const textToProcess = text || scheduleText;
+    if (textToProcess.trim()) {
+      setIsProcessing(true);
+      try {
+        const parsedCourses = parseScheduleText(textToProcess);
+        onCoursesUploaded(parsedCourses);
+        if (window.chrome && chrome.storage && chrome.storage.local) {
+          chrome.storage.local.set({ uwshuffle_courses: parsedCourses });
+        }
+        setScheduleText("");
+        setIsPasted(true);
+      } catch (error) {
+        console.error("Error parsing schedule:", error);
+      } finally {
+        setIsProcessing(false);
       }
-      setScheduleText("");
-      setIsPasted(true);
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pastedText = e.clipboardData.getData("text");
+    if (pastedText.trim()) {
+      setScheduleText(pastedText);
+      handleUpload(pastedText);
     }
   };
 
@@ -215,6 +233,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 
   const handleReset = () => {
     setIsPasted(false);
+    setScheduleText("");
+    setIsProcessing(false);
     onClearSchedule();
   };
 
@@ -237,34 +257,34 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
             <FiClipboard className="schedule-upload-icon" />
             Paste Your Schedule
           </label>
-          <p className="schedule-upload-description">
-            Copy your schedule from Quest and paste it below. We'll
-            automatically parse course times and locations.
-          </p>
+          <ol className="uwshuffle-instructions">
+            <li>Click <strong>"Swap"</strong> and enter the course you want to swap into.</li>
+            <li>On your Quest class schedule, click <strong>"Show All"</strong> and copy the entire schedule text.</li>
+            <li>Paste your copied schedule into <strong>UWShuffle</strong> to visualize your week and check for conflicts.</li>
+          </ol>
         </div>
 
         {isPasted ? (
-          <div className="schedule-upload-pasted">Pasted!</div>
+          <div className="schedule-upload-success">
+            <FiZap className="schedule-upload-success-icon" />
+            <div className="schedule-upload-success-text">failed</div>
+          </div>
+        ) : isProcessing ? (
+          <div className="schedule-upload-processing">
+            <FiZap className="schedule-upload-processing-icon" />
+            <div className="schedule-upload-processing-text">Processing schedule...</div>
+          </div>
         ) : (
-          <textarea
-            value={scheduleText}
-            onChange={(e) => setScheduleText(e.target.value)}
-            placeholder="Example format:
-AFM 272 MW 10:00AM - 11:20AM HH 2107
-F 10:30AM - 11:20AM HH 1101
-CS 136 TR 2:30PM - 3:50PM MC 4020"
-            className="schedule-upload-textarea"
-          />
+          <div 
+            className="schedule-upload-paste-zone"
+            onPaste={handlePaste}
+            tabIndex={0}
+          >
+            <FiClipboard className="schedule-upload-paste-icon" />
+            <div className="schedule-upload-paste-text">Click here and paste your schedule</div>
+            <div className="schedule-upload-paste-hint">Ctrl+V or Cmd+V</div>
+          </div>
         )}
-
-        <button
-          onClick={handleUpload}
-          disabled={!scheduleText.trim()}
-          className="schedule-upload-submit"
-        >
-          <FiZap className="schedule-upload-icon-button" />
-          Parse Schedule
-        </button>
       </div>
     </div>
   );

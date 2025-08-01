@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import type { View } from "react-big-calendar";
 import moment from "moment";
-import { FiCalendar } from "react-icons/fi";
 import type { Course, ParsedScheduleEvent } from "../types";
 
 const localizer = momentLocalizer(moment);
@@ -134,23 +133,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     };
   };
 
-  // Custom toolbar - hide it completely since we don't need the date range
-  const CustomToolbar = () => {
-    return null;
-  };
-
-  // Show empty state if no courses
-  if (courses.length === 0 && !previewCourse) {
-    return (
-      <div className="uwshuffle-calendar-empty">
-        <FiCalendar className="uwshuffle-calendar-empty-icon" />
-        <div className="uwshuffle-calendar-empty-title">No Schedule Loaded</div>
-        <div className="uwshuffle-calendar-empty-subtitle">
-          Upload your schedule to see your weekly calendar
-        </div>
-      </div>
-    );
-  }
+  // Always show calendar, even when empty
 
   return (
     <div className="uwshuffle-calendar-container">
@@ -163,14 +146,9 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         view={"work_week" as View}
         views={["work_week"]}
         defaultView={"work_week" as View}
-        toolbar={true}
-        components={{
-          toolbar: CustomToolbar,
-        }}
-        min={moment().hour(7).minute(0).toDate()}
-        max={moment().hour(23).minute(0).toDate()}
+        min={moment().hour(8).minute(0).toDate()}
+        max={moment().hour(20).minute(0).toDate()}
         step={30}
-        timeslots={2}
         eventPropGetter={eventStyleGetter}
         dayPropGetter={() => ({
           style: {
@@ -178,8 +156,8 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           },
         })}
         formats={{
-          timeGutterFormat: "h:mm A",
-          dayFormat: "dddd",
+          timeGutterFormat: "h A",
+          dayFormat: "ddd",
           eventTimeRangeFormat: ({ start, end }: { start: Date; end: Date }) =>
             `${moment(start).format("h:mm")} – ${moment(end).format("h:mm A")}`,
         }}

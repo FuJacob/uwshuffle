@@ -20,3 +20,12 @@ export interface ParsedScheduleEvent {
   };
   isPreview?: boolean;
 }
+
+// Ko-fi widget types
+declare global {
+  interface Window {
+    kofiWidgetOverlay?: {
+      draw: (username: string, config: Record<string, string>) => void;
+    };
+  }
+}

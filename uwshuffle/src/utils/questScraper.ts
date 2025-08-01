@@ -341,17 +341,23 @@ export class QuestScraper {
       addButton.className = "uwshuffle-add-btn";
       addButton.textContent = "Preview";
       addButton.style.cssText = `
-        margin-left: 4px;
-        padding: 4px 8px;
+        width: 100%;
+        margin-top: 8px;
+        margin-left: 0;
+        padding: 8px 12px;
         background-color: #007bff;
         color: white;
         border: none;
-        border-radius: 3px;
-        font-size: 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
         cursor: pointer;
         z-index: 1000;
         position: relative;
         white-space: nowrap;
+        display: block;
+        font-family: inherit;
+        transition: background-color 0.15s ease;
       `;
 
       addButton.addEventListener("click", (e) => {
@@ -359,6 +365,15 @@ export class QuestScraper {
         e.stopPropagation();
         console.log("UWShuffle: Preview button clicked for course:", course);
         this.notifySidebar("add_preview_course", course);
+      });
+
+      // Add hover effects
+      addButton.addEventListener("mouseenter", () => {
+        addButton.style.backgroundColor = "#0056b3";
+      });
+
+      addButton.addEventListener("mouseleave", () => {
+        addButton.style.backgroundColor = "#007bff";
       });
 
       // Add button after the Select button
