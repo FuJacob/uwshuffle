@@ -7,7 +7,10 @@ interface CurrentStepProps {
   previewCourse: Course | null;
 }
 
-const CurrentStep: React.FC<CurrentStepProps> = ({ courses, previewCourse }) => {
+const CurrentStep: React.FC<CurrentStepProps> = ({
+  courses,
+  previewCourse,
+}) => {
   // Determine current step based on state
   const getCurrentStep = () => {
     if (courses.length === 0) {
@@ -31,22 +34,22 @@ const CurrentStep: React.FC<CurrentStepProps> = ({ courses, previewCourse }) => 
   return (
     <div className="uwshuffle-current-step-section">
       <div className="uwshuffle-current-step-title">Current Step:</div>
-      
+
       {/* Progress Bar with embedded labels */}
       <div className="uwshuffle-progress-bar">
         {/* Background progress fill */}
-        <div 
-          className="uwshuffle-progress-fill" 
+        <div
+          className="uwshuffle-progress-fill"
           style={{ width: `${progressPercentage}%` }}
         />
-        
+
         {/* Step labels overlaid on the bar - All steps on wider screens */}
         <div className="uwshuffle-step-labels uwshuffle-step-labels-full">
           {steps.map((step, index) => {
             const IconComponent = step.icon;
             return (
               <React.Fragment key={index}>
-                <div 
+                <div
                   className={`uwshuffle-step-label ${
                     index <= currentStep ? "uwshuffle-step-label-active" : ""
                   }`}
@@ -55,7 +58,13 @@ const CurrentStep: React.FC<CurrentStepProps> = ({ courses, previewCourse }) => 
                   <span className="uwshuffle-step-text">{step.text}</span>
                 </div>
                 {index < steps.length - 1 && (
-                  <div className="uwshuffle-step-arrow">→</div>
+                  <div
+                    className={`uwshuffle-step-arrow ${
+                      index <= currentStep ? "uwshuffle-step-arrow-active" : ""
+                    }`}
+                  >
+                    →
+                  </div>
                 )}
               </React.Fragment>
             );
@@ -65,8 +74,12 @@ const CurrentStep: React.FC<CurrentStepProps> = ({ courses, previewCourse }) => 
         {/* Current Step Only - Narrow screens */}
         <div className="uwshuffle-step-labels uwshuffle-step-labels-current">
           <div className="uwshuffle-step-label uwshuffle-step-label-active">
-            {React.createElement(steps[currentStep].icon, { className: "uwshuffle-step-icon" })}
-            <span className="uwshuffle-step-text">{steps[currentStep].text}</span>
+            {React.createElement(steps[currentStep].icon, {
+              className: "uwshuffle-step-icon",
+            })}
+            <span className="uwshuffle-step-text">
+              {steps[currentStep].text}
+            </span>
           </div>
         </div>
       </div>

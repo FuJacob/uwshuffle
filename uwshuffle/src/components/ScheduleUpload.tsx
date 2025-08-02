@@ -11,12 +11,14 @@ import type { Course } from "../types";
 import "./ScheduleUpload.css";
 
 interface ScheduleUploadProps {
+  setScheduleUploadError: (error: string | null) => void;
   onCoursesUploaded: (courses: Course[]) => void;
   onClearSchedule: () => void;
   courses: Course[];
 }
 
 const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
+  setScheduleUploadError,
   onCoursesUploaded,
   onClearSchedule,
   courses,
@@ -201,6 +203,10 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
       setIsProcessing(true);
       try {
         const parsedCourses = parseScheduleText(textToProcess);
+        if (parsedCourses.length === 0) {
+          setScheduleUploadError("Invalid schedule format");
+          return;
+        }
         onCoursesUploaded(parsedCourses);
         if (window.chrome && chrome.storage && chrome.storage.local) {
           chrome.storage.local.set({ uwshuffle_courses: parsedCourses });

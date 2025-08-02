@@ -31,6 +31,9 @@ const Sidebar: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [termDatesAvailable, setTermDatesAvailable] = useState<boolean>(false);
+  const [scheduleUploadError, setScheduleUploadError] = useState<string | null>(
+    null
+  );
   const profInfo = useGetProfInfoFromUwFlow(previewCourse);
 
   // Check Chrome storage for minimized state on component mount
@@ -59,6 +62,15 @@ const Sidebar: React.FC = () => {
         }
       });
   }, []);
+
+  useEffect(() => {
+    if (scheduleUploadError) {
+      // Show error notification
+      alert(`Error uploading schedule: ${scheduleUploadError}`);
+      // Reset error after showing
+      setScheduleUploadError(null);
+    }
+  }, [scheduleUploadError]);
 
   // Monitor term dates availability
   useEffect(() => {
@@ -213,6 +225,7 @@ const Sidebar: React.FC = () => {
               {/* Upload Section */}
               <div className="uwshuffle-upload-section">
                 <ScheduleUpload
+                  setScheduleUploadError={setScheduleUploadError}
                   onCoursesUploaded={handleCoursesUploaded}
                   onClearSchedule={handleClearSchedule}
                   courses={courses}

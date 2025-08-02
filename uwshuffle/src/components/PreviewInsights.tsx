@@ -86,7 +86,20 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                     </span>
                     <div className="uwshuffle-course-time-info">
                       <div className="uwshuffle-course-days">
-                        {previewCourse.days?.join(", ")}
+                        {previewCourse.days
+                          ?.map((day) => {
+                            const dayMap: { [key: string]: string } = {
+                              Monday: "Mo",
+                              Tuesday: "Tu",
+                              Wednesday: "We",
+                              Thursday: "Th",
+                              Friday: "Fr",
+                              Saturday: "Sa",
+                              Sunday: "Su",
+                            };
+                            return dayMap[day] || day;
+                          })
+                          .join(", ")}
                       </div>
                       <div className="uwshuffle-course-time">
                         {previewCourse.start} - {previewCourse.end}
