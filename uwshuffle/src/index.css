@@ -679,6 +679,15 @@ body {
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.uwshuffle-stats-container {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  justify-content: space-between;
   margin-bottom: var(--space-3);
   padding-bottom: var(--space-2);
   border-bottom: 1px solid var(--color-border);
@@ -1847,6 +1856,13 @@ body {
   color: var(--color-text-secondary);
 }
 
+.uwshuffle-calendar-title-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex: 1;
+}
+
 /* Tag button styles - matching action button style */
 .uwshuffle-tag-button {
   display: inline-flex;
@@ -1925,12 +1941,8 @@ body {
   gap: var(--space-2);
   font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
-  margin-top: var(--space-2);
-}
-
-.uwshuffle-legend-label {
-  font-weight: 600;
-  color: var(--color-text-primary);
+  margin-right: var(--space-4);
+  flex-shrink: 0;
 }
 
 .uwshuffle-legend-item {
@@ -1963,7 +1975,6 @@ body {
   padding: var(--space-2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  margin-left: var(--space-4);
   flex: 1;
 }
 
@@ -2198,7 +2209,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-1) var(--space-2);
   background-color: var(--color-surface);
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
@@ -2222,7 +2233,7 @@ body {
   flex: 1;
   overflow: visible;
   padding: 0;
-  min-height: 40vh;
+  min-height: 30vh;
 }
 
 /* Calendar empty state */
@@ -2297,7 +2308,7 @@ body {
   background-color: var(--color-surface) !important;
   border-radius: var(--radius-md) !important;
   width: 100% !important;
-  height: 100% !important;
+  max-height: 40vh !important;
   border: none !important;
   overflow: hidden !important;
   max-width: 100% !important;

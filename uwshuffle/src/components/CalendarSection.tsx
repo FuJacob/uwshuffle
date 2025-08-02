@@ -266,39 +266,52 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
         <div className="uwshuffle-calendar-header">
           <div className="uwshuffle-calendar-header-top">
             <div className="uwshuffle-calendar-title">
-              Schedule
-              <FiHelpCircle
-                className="uwshuffle-help-icon"
-                data-tooltip-id="schedule-tooltip"
-                data-tooltip-content="View your weekly schedule with all courses. Preview courses appear with a different color to show potential conflicts."
-              />
-              {/* Friend Schedule Tags */}
-              <div className="uwshuffle-friends-container">
-                <FiUsers className="uwshuffle-friends-icon" />
-                <span className="uwshuffle-friends-label">Friends</span>
-                {friendSchedules.map((friendSchedule) => (
-                  <button
-                    className={`uwshuffle-tag-button ${
-                      !friendSchedule.visible
-                        ? "uwshuffle-tag-button-hidden"
-                        : ""
-                    }`}
-                    style={{
-                      backgroundColor: friendSchedule.color,
-                    }}
-                    key={friendSchedule.name}
-                    onClick={() =>
-                      handleToggleFriendSchedule(friendSchedule.name)
-                    }
-                  >
-                    {friendSchedule.visible ? (
-                      <FiEye className="uwshuffle-tag-icon" />
-                    ) : (
-                      <FiEyeOff className="uwshuffle-tag-icon" />
-                    )}
-                    {friendSchedule.name}
-                  </button>
-                ))}
+              <div className="uwshuffle-calendar-title-content">
+                <span>Schedule</span>
+                <FiHelpCircle
+                  className="uwshuffle-help-icon"
+                  data-tooltip-id="schedule-tooltip"
+                  data-tooltip-content="View your weekly schedule with all courses. Preview courses appear with a different color to show potential conflicts."
+                />
+                {/* Legend container - moved to left of friends */}
+                <div className="uwshuffle-legend-container">
+                  <span className="uwshuffle-legend-item uwshuffle-legend-conflict">
+                    <FiAlertTriangle className="uwshuffle-legend-icon" />
+                    Conflict
+                  </span>
+                  <span className="uwshuffle-legend-item uwshuffle-legend-no-conflict">
+                    <FiCheckCircle className="uwshuffle-legend-icon" />
+                    No Conflict
+                  </span>
+                </div>
+                {/* Friend Schedule Tags */}
+                <div className="uwshuffle-friends-container">
+                  <FiUsers className="uwshuffle-friends-icon" />
+                  <span className="uwshuffle-friends-label">Friends</span>
+                  {friendSchedules.map((friendSchedule) => (
+                    <button
+                      className={`uwshuffle-tag-button ${
+                        !friendSchedule.visible
+                          ? "uwshuffle-tag-button-hidden"
+                          : ""
+                      }`}
+                      style={{
+                        backgroundColor: friendSchedule.color,
+                      }}
+                      key={friendSchedule.name}
+                      onClick={() =>
+                        handleToggleFriendSchedule(friendSchedule.name)
+                      }
+                    >
+                      {friendSchedule.visible ? (
+                        <FiEye className="uwshuffle-tag-icon" />
+                      ) : (
+                        <FiEyeOff className="uwshuffle-tag-icon" />
+                      )}
+                      {friendSchedule.name}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -308,17 +321,6 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
             >
               {isCalendarCollapsed ? <FiPlus /> : <FiMinus />}
             </button>
-          </div>
-          <div className="uwshuffle-legend-container">
-            <span className="uwshuffle-legend-label">Legend:</span>
-            <span className="uwshuffle-legend-item uwshuffle-legend-conflict">
-              <FiAlertTriangle className="uwshuffle-legend-icon" />
-              Conflict
-            </span>
-            <span className="uwshuffle-legend-item uwshuffle-legend-no-conflict">
-              <FiCheckCircle className="uwshuffle-legend-icon" />
-              No Conflict
-            </span>
           </div>
         </div>
         {!isCalendarCollapsed && (
