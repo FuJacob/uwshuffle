@@ -1,10 +1,11 @@
 import type { Course } from "../types";
 import moment from "moment";
 
-// University of Waterloo academic calendar dates for Fall 2024 term
-// You can update these dates for different terms
-const TERM_START_DATE = moment("2024-09-09"); // Fall 2024 term start
-const TERM_END_DATE = moment("2024-12-09"); // Fall 2024 term end (last day of classes)
+// University of Waterloo academic calendar dates - dynamically extracted from Quest
+// No default dates - must be extracted from Quest before export is enabled
+let TERM_START_DATE: moment.Moment | null = null;
+let TERM_END_DATE: moment.Moment | null = null;
+let TERM_DATES_VALID = false;
 
 interface ICSEvent {
   summary: string;
@@ -39,6 +40,9 @@ function coursesToICSEvents(courses: Course[]): ICSEvent[] {
       if (dayNumber === undefined) return;
 
       // Find the first occurrence of this day on or after term start
+      if (!TERM_START_DATE) {
+        throw new Error("Term start date not available");
+      }
       const firstOccurrence = TERM_START_DATE.clone();
       const daysToAdd = (dayNumber - firstOccurrence.day() + 7) % 7;
       firstOccurrence.add(daysToAdd, "days");
@@ -64,6 +68,9 @@ function coursesToICSEvents(courses: Course[]): ICSEvent[] {
       const dtend = eventEnd.utc().format("YYYYMMDD[T]HHmmss[Z]");
 
       // Create recurrence rule (weekly until term end)
+      if (!TERM_END_DATE) {
+        throw new Error("Term end date not available");
+      }
       const until = TERM_END_DATE.clone().utc().format("YYYYMMDD[T]HHmmss[Z]");
       const rrule = `FREQ=WEEKLY;UNTIL=${until}`;
 
@@ -161,6 +168,11 @@ export function exportCurrentSchedule(courses: Course[]): void {
     return;
   }
 
+  if (!areTermDatesValid()) {
+    alert("Term dates not available. Please browse Quest course search results first to enable calendar export.");
+    return;
+  }
+
   const events = coursesToICSEvents(courses);
   const content = generateICSContent(events, "UW Current Schedule");
   const filename = `uw-schedule-current-${moment().format("YYYY-MM-DD")}.ics`;
@@ -185,6 +197,11 @@ export function exportScheduleWithSwap(
     return;
   }
 
+  if (!areTermDatesValid()) {
+    alert("Term dates not available. Please browse Quest course search results first to enable calendar export.");
+    return;
+  }
+
   // Create a new schedule with the preview course added
   const swappedSchedule = [...courses, previewCourse];
   
@@ -199,21 +216,18 @@ export function exportScheduleWithSwap(
 }
 
 /**
- * Update term dates for different academic terms
+ * Update term dates extracted from Quest Meeting Dates
  */
 export function updateTermDates(startDate: string, endDate: string): void {
-  const newStartDate = moment(startDate);
-  const newEndDate = moment(endDate);
-  
-  TERM_START_DATE.set({
-    year: newStartDate.year(),
-    month: newStartDate.month(),
-    date: newStartDate.date()
-  });
-  
-  TERM_END_DATE.set({
-    year: newEndDate.year(),
-    month: newEndDate.month(),
-    date: newEndDate.date()
-  });
+  console.log(`uwshuffle: Updating term dates - Start: ${startDate}, End: ${endDate}`);
+  TERM_START_DATE = moment(startDate);
+  TERM_END_DATE = moment(endDate);
+  TERM_DATES_VALID = true;
+}
+
+/**
+ * Check if valid term dates have been extracted from Quest
+ */
+export function areTermDatesValid(): boolean {
+  return TERM_DATES_VALID && TERM_START_DATE !== null && TERM_END_DATE !== null;
 }

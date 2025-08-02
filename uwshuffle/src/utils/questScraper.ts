@@ -1,4 +1,5 @@
 import type { Course } from "../types";
+import { updateTermDates } from "./icsExport";
 
 export class QuestScraper {
   private static instance: QuestScraper;
@@ -247,6 +248,60 @@ export class QuestScraper {
     return instrText.trim() || null;
   }
 
+  // Extract term dates from Quest Meeting Dates field
+  private extractTermDatesFromElement(
+    element: Element
+  ): { startDate: string; endDate: string } | null {
+    try {
+      // Look for Meeting Dates span in the Quest table row
+      const meetingDatesSpan = element.querySelector('span[id*="MTG_TOPIC$0"]');
+      if (!meetingDatesSpan) {
+        return null;
+      }
+
+      const datesText = meetingDatesSpan.textContent || "";
+      console.log("uwshuffle: Found Meeting Dates text:", datesText);
+
+      // Quest meeting dates format is typically "MM/DD/YYYY - MM/DD/YYYY"
+      // Examples: "09/09/2024 - 12/09/2024" or "01/08/2025 - 04/09/2025"
+      const dateRangeMatch = datesText.match(
+        /(\d{2}\/\d{2}\/\d{4})\s*-\s*(\d{2}\/\d{2}\/\d{4})/
+      );
+
+      if (!dateRangeMatch) {
+        console.log(
+          "uwshuffle: Could not parse meeting dates format:",
+          datesText
+        );
+        return null;
+      }
+
+      const [, startDateStr, endDateStr] = dateRangeMatch;
+
+      // Convert MM/DD/YYYY to YYYY-MM-DD format for moment.js
+      const startParts = startDateStr.split("/");
+      const endParts = endDateStr.split("/");
+
+      const startDate = `${startParts[2]}-${startParts[0].padStart(
+        2,
+        "0"
+      )}-${startParts[1].padStart(2, "0")}`;
+      const endDate = `${endParts[2]}-${endParts[0].padStart(
+        2,
+        "0"
+      )}-${endParts[1].padStart(2, "0")}`;
+
+      console.log(
+        `uwshuffle: Extracted term dates - Start: ${startDate}, End: ${endDate}`
+      );
+
+      return { startDate, endDate };
+    } catch (error) {
+      console.error("uwshuffle: Error extracting term dates:", error);
+      return null;
+    }
+  }
+
   private parseQuestDayString(dayString: string): string[] {
     // Quest uses full day names like "MoWeFr", "Tu", "Th", etc.
     const dayMap: { [key: string]: string } = {
@@ -311,6 +366,21 @@ export class QuestScraper {
     // Find Quest course table rows
     const courseElements = this.findCourseElements();
     console.log("uwshuffle: Found", courseElements.length, "course elements");
+
+    // Extract term dates from the first course element (all courses in the same term will have the same dates)
+    if (courseElements.length > 0) {
+      const termDates = this.extractTermDatesFromElement(courseElements[0]);
+      if (termDates) {
+        console.log(
+          "uwshuffle: Updating ICS export term dates based on Quest data"
+        );
+        updateTermDates(termDates.startDate, termDates.endDate);
+      } else {
+        console.log(
+          "uwshuffle: Could not extract term dates from Quest - export buttons will remain disabled"
+        );
+      }
+    }
 
     courseElements.forEach((element, index) => {
       const course = this.scrapeCourseFromElement(element);

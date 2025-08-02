@@ -276,9 +276,29 @@ body {
 }
 
 .uwshuffle-logo {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
+}
+
+.uwshuffle-logo-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.uwshuffle-logo-content > div:first-child {
+  font-weight: 600;
+  line-height: 1;
+}
+
+.uwshuffle-logo-content .uwshuffle-action-bar-author-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  font-weight: 400;
+  line-height: 1;
+  margin: 0;
 }
 
 .uwshuffle-title-text {
@@ -711,6 +731,24 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-1);
+}
+
+.uwshuffle-course-time-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.uwshuffle-course-days {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.uwshuffle-course-time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.2;
 }
 
 .uwshuffle-professor-info {
@@ -1718,8 +1756,6 @@ body {
 }
 
 /* Time slots */
-.rbc-time-slot {
-}
 
 /* Events */
 .rbc-event {

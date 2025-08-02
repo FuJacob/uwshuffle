@@ -1,33 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {
-  FiBook,
-  FiBarChart2,
-  FiHeart,
-  FiX,
-  FiArrowRight,
-  FiStar,
-  FiCalendar,
-  FiMapPin,
-  FiUser,
-  FiCheckCircle,
-  FiMessageSquare,
-  FiHelpCircle,
-  FiFileText,
-  FiRefreshCcw,
-  FiMoon,
-  FiSun,
-  FiUsers,
-  FiDownload,
-} from "react-icons/fi";
-import CalendarView from "./CalendarView";
 import ScheduleUpload from "./ScheduleUpload";
+import ActionBar from "./ActionBar";
+import PreviewInsights from "./PreviewInsights";
+import CurrentStep from "./CurrentStep";
+import CalendarSection from "./CalendarSection";
+import InstructionsModal from "./InstructionsModal";
 import type { Course } from "../types";
 import logo from "../assets/logo.svg";
-import uwflowIcon from "../assets/uwflow.png";
 import {
   exportCurrentSchedule,
   exportScheduleWithSwap,
+  areTermDatesValid,
 } from "../utils/icsExport";
+import { useGetProfInfoFromUwFlow } from "../hooks/useGetProfInfoFromUwFlow";
 
 const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -38,12 +23,27 @@ const Sidebar: React.FC = () => {
     end: "12:20",
     location: "UTD 105",
     section: "001",
+    instructor: "Dr. John Smith",
   });
   const [isMinimized, setIsMinimized] = useState<boolean>(true);
   const [currentInstructionStep, setCurrentInstructionStep] =
     useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [termDatesAvailable, setTermDatesAvailable] = useState<boolean>(false);
+  const profInfo = useGetProfInfoFromUwFlow(previewCourse);
+
+  // Check Chrome storage for minimized state on component mount
+  useEffect(() => {
+    if (!window.chrome || !chrome.storage || !chrome.storage.local) {
+      return;
+    }
+    chrome.storage.local.get(["uw_shuffle_minimized"], (result) => {
+      if (result.uw_shuffle_minimized !== undefined) {
+        setIsMinimized(result.uw_shuffle_minimized);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (!window.chrome || !chrome.storage || !chrome.storage.local) {
@@ -60,14 +60,21 @@ const Sidebar: React.FC = () => {
       });
   }, []);
 
-  const instructions = [
-    'Click "Swap" and enter your target course',
-    'Click "Show All" and copy schedule',
-    "Paste text into UWShuffle",
-  ];
+  // Monitor term dates availability
+  useEffect(() => {
+    const checkTermDates = () => {
+      setTermDatesAvailable(areTermDatesValid());
+    };
+
+    // Check immediately and then every 2 seconds
+    checkTermDates();
+    const interval = setInterval(checkTermDates, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleNextInstruction = () => {
-    setCurrentInstructionStep((prev) => (prev + 1) % instructions.length);
+    setCurrentInstructionStep((prev) => (prev + 1) % 3);
   };
 
   // Listen for messages from content script
@@ -110,6 +117,10 @@ const Sidebar: React.FC = () => {
 
   const handleCloseSidebar = () => {
     setIsMinimized(true);
+    // Save to Chrome storage
+    if (window.chrome && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.set({ uw_shuffle_minimized: true });
+    }
     // Notify parent window about sidebar state change
     window.parent.postMessage(
       {
@@ -122,6 +133,10 @@ const Sidebar: React.FC = () => {
 
   const handleExpandSidebar = () => {
     setIsMinimized(false);
+    // Save to Chrome storage
+    if (window.chrome && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.set({ uw_shuffle_minimized: false });
+    }
     // Notify parent window about sidebar state change
     window.parent.postMessage(
       {
@@ -155,22 +170,15 @@ const Sidebar: React.FC = () => {
     }
   };
 
-  // Determine current step based on state
-  const getCurrentStep = () => {
-    if (courses.length === 0) {
-      return 0; // Upload step
-    } else if (!previewCourse) {
-      return 1; // Find swap step
-    } else {
-      return 2; // All set step
-    }
+  const handleExportCurrentSchedule = () => {
+    exportCurrentSchedule(courses);
   };
 
-  const steps = [
-    { text: "Upload schedule", icon: FiBook },
-    { text: "Find swap options", icon: FiRefreshCcw },
-    { text: "Ready to swap", icon: FiCheckCircle },
-  ];
+  const handleExportWithSwap = () => {
+    if (previewCourse) {
+      exportScheduleWithSwap(courses, previewCourse);
+    }
+  };
 
   // addPreviewCourse is handled via message listener
 
@@ -185,69 +193,14 @@ const Sidebar: React.FC = () => {
           <>
             {/* Main Content Area */}
             <div className="uwshuffle-main-content">
-              {/* Top Action Bar */}
-              <div className="uwshuffle-action-bar">
-                <div className="uwshuffle-action-bar-logo-container">
-                  <div className="uwshuffle-logo-section">
-                    <a
-                      href="https://uwshuffle.ca"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="uwshuffle-action-bar-logo"
-                    >
-                      <img src={logo} alt="UWShuffle" />
-                      <span className="uwshuffle-action-bar-title">
-                        UWShuffle
-                      </span>
-                    </a>
-                    <div className="uwshuffle-action-bar-author-text">
-                      Created by a UW student
-                    </div>
-                  </div>
-                </div>
-                <div className="uwshuffle-action-bar-buttons">
-                  <button
-                    onClick={handleRateClick}
-                    className="uwshuffle-coffee-button"
-                  >
-                    <FiStar className="uwshuffle-icon-button" />
-                    Rate us
-                  </button>
-                  <button
-                    onClick={handleKofiClick}
-                    className="uwshuffle-coffee-button"
-                  >
-                    <FiHeart className="uwshuffle-icon-button" />
-                    Support us
-                  </button>
-                  <button
-                    onClick={handleOpenModal}
-                    className="uwshuffle-help-button"
-                  >
-                    <FiHelpCircle className="uwshuffle-icon-button" />
-                    Help
-                  </button>
-                  <button
-                    onClick={handleToggleDarkMode}
-                    className="uwshuffle-dark-mode-button"
-                  >
-                    {isDarkMode ? (
-                      <FiSun className="uwshuffle-icon-button" />
-                    ) : (
-                      <FiMoon className="uwshuffle-icon-button" />
-                    )}
-                    <span className="uwshuffle-dark-mode-label">
-                      {isDarkMode ? "Light" : "Dark"}
-                    </span>
-                  </button>
-                  <button
-                    onClick={handleCloseSidebar}
-                    className="uwshuffle-close-button"
-                  >
-                    <FiX className="uwshuffle-icon-button" />
-                  </button>
-                </div>
-              </div>
+              <ActionBar
+                isDarkMode={isDarkMode}
+                onToggleDarkMode={handleToggleDarkMode}
+                onRateClick={handleRateClick}
+                onKofiClick={handleKofiClick}
+                onHelpClick={handleOpenModal}
+                onCloseSidebar={handleCloseSidebar}
+              />
 
               {/* Stats Section */}
               <div className="uwshuffle-stats-section">
@@ -288,10 +241,15 @@ const Sidebar: React.FC = () => {
                                   <span className="uwshuffle-icon">
                                     <FiCalendar />
                                   </span>
-                                  <span className="uwshuffle-value">
-                                    {previewCourse.days?.join(", ")} •{" "}
-                                    {previewCourse.start} - {previewCourse.end}
-                                  </span>
+                                  <div className="uwshuffle-course-time-info">
+                                    <div className="uwshuffle-course-days">
+                                      {previewCourse.days?.join(", ")}
+                                    </div>
+                                    <div className="uwshuffle-course-time">
+                                      {previewCourse.start} -{" "}
+                                      {previewCourse.end}
+                                    </div>
+                                  </div>
                                 </div>
                                 <div className="uwshuffle-course-item">
                                   <span className="uwshuffle-icon">
@@ -314,13 +272,21 @@ const Sidebar: React.FC = () => {
                                     <FiUser />
                                   </span>
                                   <span className="uwshuffle-value">
-                                    Dr. Smith
+                                    {profInfo?.name || "Unknown Instructor"}
                                   </span>
                                 </div>
                               </div>
                               <div className="uwshuffle-uwflow-right">
                                 <a
-                                  href="https://uwflow.com/professor/dr-smith"
+                                  href={
+                                    profInfo?.name
+                                      ? `https://uwflow.com/professor/${profInfo.name
+                                          .toLowerCase()
+                                          .replace(/\s+/g, "-")
+                                          .replace(/[^a-z0-9-]/g, "")
+                                          .replace(/ /g, "-")}`
+                                      : "https://uwflow.com"
+                                  }
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="uwshuffle-professor-link uwshuffle-uwflow-link"
@@ -340,22 +306,26 @@ const Sidebar: React.FC = () => {
                             <div className="uwshuffle-professor-content">
                               <div className="uwshuffle-professor-circle">
                                 <div className="uwshuffle-professor-score">
-                                  95%
+                                  {profInfo?.rating.liked}%
                                 </div>
                               </div>
                               <div className="uwshuffle-professor-info">
                                 <div className="uwshuffle-professor-ratings">
-                                  <span>Engaging: 84%</span>
+                                  <span>
+                                    Engaging: {profInfo?.rating.engaging}%
+                                  </span>
                                   <span>
                                     <FiMessageSquare className="uwshuffle-icon" />
-                                    4
+                                    {profInfo?.rating.comment_count}
                                   </span>
                                 </div>
                                 <div className="uwshuffle-professor-reviews">
-                                  <span>Clarity: 90%</span>
+                                  <span>
+                                    Clarity: {profInfo?.rating.clear}%
+                                  </span>
                                   <span>
                                     <FiBarChart2 className="uwshuffle-icon" />
-                                    127
+                                    {profInfo?.rating.filled_count}
                                   </span>
                                 </div>
                               </div>
@@ -420,34 +390,65 @@ const Sidebar: React.FC = () => {
                     <div className="uwshuffle-calendar-actions">
                       <button
                         className="uwshuffle-export-button"
-                        disabled={courses.length === 0}
-                        aria-disabled={courses.length === 0}
+                        disabled={courses.length === 0 || !termDatesAvailable}
+                        aria-disabled={
+                          courses.length === 0 || !termDatesAvailable
+                        }
                         onClick={() => exportCurrentSchedule(courses)}
                         style={{
-                          opacity: courses.length === 0 ? 0.5 : 1,
+                          opacity:
+                            courses.length === 0 || !termDatesAvailable
+                              ? 0.5
+                              : 1,
                           cursor:
-                            courses.length === 0 ? "not-allowed" : "pointer",
+                            courses.length === 0 || !termDatesAvailable
+                              ? "not-allowed"
+                              : "pointer",
                         }}
+                        title={
+                          !termDatesAvailable
+                            ? "Browse Quest course search results first to enable export"
+                            : ""
+                        }
                       >
                         <FiDownload className="uwshuffle-icon-button" />
                         Export Current Schedule
                       </button>
                       <button
                         className="uwshuffle-export-button"
-                        disabled={courses.length === 0 || !previewCourse}
-                        aria-disabled={courses.length === 0 || !previewCourse}
+                        disabled={
+                          courses.length === 0 ||
+                          !previewCourse ||
+                          !termDatesAvailable
+                        }
+                        aria-disabled={
+                          courses.length === 0 ||
+                          !previewCourse ||
+                          !termDatesAvailable
+                        }
                         onClick={() =>
                           previewCourse &&
                           exportScheduleWithSwap(courses, previewCourse)
                         }
                         style={{
                           opacity:
-                            courses.length === 0 || !previewCourse ? 0.5 : 1,
+                            courses.length === 0 ||
+                            !previewCourse ||
+                            !termDatesAvailable
+                              ? 0.5
+                              : 1,
                           cursor:
-                            courses.length === 0 || !previewCourse
+                            courses.length === 0 ||
+                            !previewCourse ||
+                            !termDatesAvailable
                               ? "not-allowed"
                               : "pointer",
                         }}
+                        title={
+                          !termDatesAvailable
+                            ? "Browse Quest course search results first to enable export"
+                            : ""
+                        }
                       >
                         <FiRefreshCcw className="uwshuffle-icon-button" />
                         Export With Swapped Class

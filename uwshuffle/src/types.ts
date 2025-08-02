@@ -29,3 +29,19 @@ declare global {
     };
   }
 }
+export interface ProfInfo {
+  name: string;
+  rating: {
+    clear: number;
+    comment_count: number;
+    engaging: number;
+    filled_count: number;
+    liked: number;
+  };
+}
+
+export interface ProfQueryResponse {
+  data: {
+    prof: Array<ProfInfo>;
+  };
+}
