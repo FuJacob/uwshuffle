@@ -134,6 +134,29 @@ body {
   gap: var(--space-2);
 }
 
+.uwshuffle-action-bar-logo {
+  background-color: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  color: #000000;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.uwshuffle-action-bar-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .uwshuffle-action-bar-author {
   background-color: white;
   border-radius: var(--radius-md);
@@ -168,8 +191,8 @@ body {
 }
 
 .uwshuffle-logo {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   flex-shrink: 0;
 }
 
@@ -179,17 +202,19 @@ body {
 
 .uwshuffle-title {
   margin: 0;
-  font-size: 2rem;
+  font-size: var(--font-size-lg);
   font-weight: 800;
   letter-spacing: -0.025em;
   color: var(--color-text-primary);
+  display: inline;
 }
 
 .uwshuffle-subtitle {
-  margin: var(--space-1) 0 0 0;
-  font-size: var(--font-size-lg);
+  margin: 0 0 0 var(--space-2);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-secondary);
+  display: inline;
 }
 
 /* Action bar buttons - each as separate white containers */
@@ -498,17 +523,18 @@ body {
 /* Paste zone styles - large card */
 .schedule-upload-paste-zone {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6) var(--space-4);
+  padding: var(--space-3) var(--space-4);
   border: 2px dashed var(--color-border);
   border-radius: var(--radius-md);
   background-color: var(--color-surface);
   cursor: pointer;
   transition: var(--transition-base);
-  min-height: 120px;
+  min-height: 60px;
   text-align: center;
+  gap: var(--space-2);
 }
 
 .schedule-upload-paste-zone:hover,
@@ -519,9 +545,9 @@ body {
 }
 
 .schedule-upload-paste-icon {
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-lg);
   color: var(--color-text-tertiary);
-  margin-bottom: var(--space-3);
+  flex-shrink: 0;
 }
 
 .schedule-upload-paste-zone:hover .schedule-upload-paste-icon,
@@ -530,10 +556,12 @@ body {
 }
 
 .schedule-upload-paste-text {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-primary);
   margin: 0;
+  display: flex;
+  align-items: center;
 }
 
 .schedule-upload-paste-hint {
@@ -702,9 +730,11 @@ body {
 
 /* ===== FOOTER ===== */
 .uwshuffle-footer {
-  padding: var(--space-3);
-  background-color: var(--color-surface);
-  border-top: 1px solid var(--color-border);
+  padding: var(--space-3) var(--space-4);
+  background-color: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   text-align: center;

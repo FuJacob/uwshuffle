@@ -98,9 +98,12 @@ const Sidebar: React.FC = () => {
             <div className="uwshuffle-main-content">
               {/* Top Action Bar */}
               <div className="uwshuffle-action-bar">
+                <div className="uwshuffle-action-bar-logo">
+                  <img src={logo} alt="UWShuffle" />
+                </div>
                 <div className="uwshuffle-action-bar-author">
                   Created by{" "}
-                  <a href="https://www.linkedin.com/in/fujacob/">Jacob Fu</a>
+                  <a href="https://www.linkedin.com/in/fujacob/">a goose</a>
                 </div>
                 <div className="uwshuffle-action-bar-buttons">
                   {/* Ko-fi Button */}
@@ -129,7 +132,7 @@ const Sidebar: React.FC = () => {
                   <div className="uwshuffle-title-text">
                     <h1 className="uwshuffle-title">UWShuffle</h1>
                     <p className="uwshuffle-subtitle">
-                      Quest Class Schedule Helper
+                      Making Quest Less of a Quest
                     </p>
                   </div>
                 </div>
