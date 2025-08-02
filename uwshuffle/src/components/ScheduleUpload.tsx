@@ -240,6 +240,9 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 
   return (
     <div className="schedule-upload-container">
+      {/* Control Panel Title */}
+      <div className="schedule-upload-title">Control Panel</div>
+
       {/* Button Row */}
       <div className="schedule-upload-buttons">
         <button onClick={handleRefresh} className="schedule-upload-secondary">

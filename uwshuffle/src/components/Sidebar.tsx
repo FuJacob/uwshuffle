@@ -22,8 +22,8 @@ const Sidebar: React.FC = () => {
 
   const instructions = [
     'Click "Swap" and enter your target course',
-    'On Quest, click "Show All" and copy schedule',
-    "Paste below to preview conflicts",
+    'Click "Show All" and copy schedule',
+    "Paste text into UWShuffle",
   ];
 
   const handleNextInstruction = () => {
@@ -127,47 +127,51 @@ const Sidebar: React.FC = () => {
 
               {/* Title Container */}
               <div className="uwshuffle-title-section">
-                <div className="uwshuffle-title-container">
-                  <img src={logo} alt="UWShuffle" className="uwshuffle-logo" />
-                  <div className="uwshuffle-title-text">
-                    <h1 className="uwshuffle-title">UWShuffle</h1>
-                    <p className="uwshuffle-subtitle">
-                      Making Quest Less of a Quest
-                    </p>
-                  </div>
+                <div className="uwshuffle-title-left">
+                  Making Quest Less of a Quest
+                </div>
+                <div className="uwshuffle-title-right">
+                  Rate UWShuffle 5 stars
                 </div>
               </div>
-              {/* Instructions Video */}
-              <div className="uwshuffle-video-section">
-                <video
-                  className="uwshuffle-instructions-video"
-                  muted
-                  autoPlay={true}
-                  preload="metadata"
-                >
-                  <source src={instructionsVideo} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
+              {/* Instructions Container */}
+              <div className="uwshuffle-instructions-container">
+                <div className="uwshuffle-instructions-title">
+                  Instructions:
+                </div>
 
-              {/* Instructions */}
-              <div className="uwshuffle-instructions-section">
-                <div className="uwshuffle-instruction-display">
-                  <div className="uwshuffle-instruction-content">
-                    <span className="uwshuffle-instruction-number">
-                      {currentInstructionStep + 1}.
-                    </span>
-                    <span className="uwshuffle-instruction-text">
-                      {instructions[currentInstructionStep]}
-                    </span>
-                  </div>
-                  <button
-                    onClick={handleNextInstruction}
-                    className="uwshuffle-instruction-next"
-                    title="Next step"
+                {/* Instructions Video */}
+                <div className="uwshuffle-video-section">
+                  <video
+                    className="uwshuffle-instructions-video"
+                    muted
+                    autoPlay={true}
+                    preload="metadata"
                   >
-                    <FiArrowRight className="uwshuffle-icon-button" />
-                  </button>
+                    <source src={instructionsVideo} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+
+                {/* Instructions Steps */}
+                <div className="uwshuffle-instructions-section">
+                  <div className="uwshuffle-instruction-display">
+                    <div className="uwshuffle-instruction-content">
+                      <span className="uwshuffle-instruction-number">
+                        {currentInstructionStep + 1}.
+                      </span>
+                      <span className="uwshuffle-instruction-text">
+                        {instructions[currentInstructionStep]}
+                      </span>
+                    </div>
+                    <button
+                      onClick={handleNextInstruction}
+                      className="uwshuffle-instruction-next"
+                      title="Next step"
+                    >
+                      <FiArrowRight className="uwshuffle-icon-button" />
+                    </button>
+                  </div>
                 </div>
               </div>
 

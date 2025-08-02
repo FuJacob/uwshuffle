@@ -176,18 +176,35 @@ body {
 
 /* ===== TITLE SECTION ===== */
 .uwshuffle-title-section {
-  background-color: white;
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-border);
+  background: transparent;
+  padding: var(--space-3);
+  display: flex;
+  gap: var(--space-3);
   color: black;
 }
 
-.uwshuffle-title-container {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
+.uwshuffle-title-left {
+  background-color: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  flex: 1;
+}
+
+.uwshuffle-title-right {
+  background-color: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  flex: 1;
 }
 
 .uwshuffle-logo {
@@ -331,13 +348,30 @@ body {
   background-color: var(--color-background);
 }
 
-/* ===== INSTRUCTIONS SECTION ===== */
-.uwshuffle-instructions-section {
+/* ===== INSTRUCTIONS CONTAINER ===== */
+.uwshuffle-instructions-container {
   background-color: white;
   border-radius: var(--radius-md);
   padding: var(--space-4);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
+  color: black;
+}
+
+.uwshuffle-instructions-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+/* ===== INSTRUCTIONS SECTION ===== */
+.uwshuffle-instructions-section {
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  border: none;
   color: black;
 }
 
@@ -356,6 +390,13 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+}
+
+.schedule-upload-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
 }
 
 /* ===== BUTTON STYLES ===== */
