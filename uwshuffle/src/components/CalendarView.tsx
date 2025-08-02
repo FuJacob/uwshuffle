@@ -9,23 +9,22 @@ const localizer = momentLocalizer(moment);
 // Function to darken a hex color
 function darkenColor(hex: string, amount: number = 20): string {
   // Remove # if present
-  const cleanHex = hex.replace('#', '');
-  
+  const cleanHex = hex.replace("#", "");
+
   // Parse RGB values
   const r = parseInt(cleanHex.substring(0, 2), 16);
   const g = parseInt(cleanHex.substring(2, 4), 16);
   const b = parseInt(cleanHex.substring(4, 6), 16);
-  
+
   // Darken by reducing each RGB component
   const newR = Math.max(0, r - amount);
   const newG = Math.max(0, g - amount);
   const newB = Math.max(0, b - amount);
-  
+
   // Convert back to hex
-  const toHex = (n: number) => n.toString(16).padStart(2, '0');
+  const toHex = (n: number) => n.toString(16).padStart(2, "0");
   return `#${toHex(newR)}${toHex(newG)}${toHex(newB)}`;
 }
-
 
 interface CalendarViewProps {
   courses: Course[];
@@ -44,7 +43,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   const events = useMemo(() => {
     const allEvents: ParsedScheduleEvent[] = [];
 
-    const convertCourseToEvents = (course: Course, isPreview = false, sourceId = "main", color?: string) => {
+    const convertCourseToEvents = (
+      course: Course,
+      isPreview = false,
+      sourceId = "main",
+      color?: string
+    ) => {
       const courseEvents: ParsedScheduleEvent[] = [];
 
       // Get current week's Monday
@@ -57,6 +61,10 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           We: 2,
           Th: 3,
           Fr: 4,
+          // Also support single-letter format from Quest scraper
+          M: 0,
+          W: 2,
+          F: 4,
         };
 
         const dayOffset = dayMap[day];
@@ -106,12 +114,16 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     // Add regular courses, but filter out selected course if preview is active
     const filteredCourses = courses.filter((course) => {
       // If preview is active and this course is selected to swap, exclude it
-      if (previewCourse && selectedCourseToSwap && course.course === selectedCourseToSwap.course) {
+      if (
+        previewCourse &&
+        selectedCourseToSwap &&
+        course.course === selectedCourseToSwap.course
+      ) {
         return false;
       }
       return true;
     });
-    
+
     filteredCourses.forEach((course) => {
       allEvents.push(...convertCourseToEvents(course, false, "user"));
     });
@@ -121,8 +133,18 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       friendSchedules.forEach((friendSchedule, index) => {
         if (friendSchedule.visible) {
           friendSchedule.schedule.forEach((course) => {
-            const sanitizedName = friendSchedule.name.replace(/[^a-zA-Z0-9]/g, '-');
-            allEvents.push(...convertCourseToEvents(course, false, `friend-${index}-${sanitizedName}`, friendSchedule.color));
+            const sanitizedName = friendSchedule.name.replace(
+              /[^a-zA-Z0-9]/g,
+              "-"
+            );
+            allEvents.push(
+              ...convertCourseToEvents(
+                course,
+                false,
+                `friend-${index}-${sanitizedName}`,
+                friendSchedule.color
+              )
+            );
           });
         }
       });
@@ -130,7 +152,11 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
     // Add preview course
     if (previewCourse) {
-      const previewEvents = convertCourseToEvents(previewCourse, true, "preview");
+      const previewEvents = convertCourseToEvents(
+        previewCourse,
+        true,
+        "preview"
+      );
 
       // Check for conflicts
       previewEvents.forEach((previewEvent) => {
@@ -161,12 +187,19 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     if (event.resource?.color) {
       backgroundColor = event.resource.color;
       // Create darker version for border if it's a hex color
-      if (event.resource.color.startsWith('#')) {
+      if (event.resource.color.startsWith("#")) {
         borderColor = darkenColor(event.resource.color, 30);
       } else {
         borderColor = event.resource.color;
       }
-      console.log('Friend event color:', event.resource.color, 'border:', borderColor, 'for event:', event.title);
+      console.log(
+        "Friend event color:",
+        event.resource.color,
+        "border:",
+        borderColor,
+        "for event:",
+        event.title
+      );
     }
 
     if (event.isPreview) {

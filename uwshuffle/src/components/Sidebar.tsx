@@ -95,15 +95,7 @@ const CurrentStepProgressBar: React.FC<CurrentStepProgressBarProps> = ({
 
 const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [previewCourse, setPreviewCourse] = useState<Course | null>({
-    course: "STAT 230",
-    days: ["Mo", "We", "Fr"],
-    start: "11:30",
-    end: "12:20",
-    location: "UTD 105",
-    section: "001",
-    instructor: "Dr. John Smith",
-  });
+  const [previewCourse, setPreviewCourse] = useState<Course | null>(null);
   const [isMinimized, setIsMinimized] = useState<boolean>(true);
   const [currentInstructionStep, setCurrentInstructionStep] =
     useState<number>(0);
@@ -113,8 +105,14 @@ const Sidebar: React.FC = () => {
   const [scheduleUploadError, setScheduleUploadError] = useState<string | null>(
     null
   );
-  const [selectedCourseToSwap, setSelectedCourseToSwap] = useState<Course | null>(null);
+  const [selectedCourseToSwap, setSelectedCourseToSwap] =
+    useState<Course | null>(null);
   const profInfo = useGetProfInfoFromUwFlow(previewCourse);
+
+  // Debug preview course changes
+  useEffect(() => {
+    console.log("uwshuffle: Preview course changed:", previewCourse);
+  }, [previewCourse]);
 
   // Check Chrome storage for minimized state on component mount
   useEffect(() => {
@@ -175,6 +173,7 @@ const Sidebar: React.FC = () => {
       if (event.data?.type === "uwshuffle_action") {
         switch (event.data.action) {
           case "add_preview_course":
+            console.log("uwshuffle: Received preview course:", event.data.data);
             setPreviewCourse(event.data.data);
             break;
         }
