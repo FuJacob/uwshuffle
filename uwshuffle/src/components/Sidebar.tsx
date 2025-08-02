@@ -7,6 +7,7 @@ import {
   FiX,
   FiArrowRight,
   FiStar,
+  FiChevronUp,
 } from "react-icons/fi";
 import CalendarView from "./CalendarView";
 import ScheduleUpload from "./ScheduleUpload";
@@ -18,6 +19,8 @@ const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [previewCourse, setPreviewCourse] = useState<Course | null>(null);
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  const [isInstructionsCollapsed, setIsInstructionsCollapsed] =
+    useState<boolean>(false);
   const [currentInstructionStep, setCurrentInstructionStep] =
     useState<number>(0);
 
@@ -84,6 +87,10 @@ const Sidebar: React.FC = () => {
     );
   };
 
+  const handleToggleInstructions = () => {
+    setIsInstructionsCollapsed(!isInstructionsCollapsed);
+  };
+
   // addPreviewCourse is handled via message listener
 
   return (
@@ -101,10 +108,11 @@ const Sidebar: React.FC = () => {
               <div className="uwshuffle-action-bar">
                 <div className="uwshuffle-action-bar-logo">
                   <img src={logo} alt="UWShuffle" />
+                  <span className="uwshuffle-action-bar-title">UWShuffle</span>
                 </div>
                 <div className="uwshuffle-action-bar-author">
-                  Created by{" "}
-                  <a href="https://www.linkedin.com/in/fujacob/">a goose</a>
+                  <FiStar className="uwshuffle-icon" />
+                  Rate
                 </div>
                 <div className="uwshuffle-action-bar-buttons">
                   {/* Ko-fi Button */}
@@ -113,7 +121,7 @@ const Sidebar: React.FC = () => {
                     className="uwshuffle-coffee-button"
                   >
                     <FiHeart className="uwshuffle-icon-button" />
-                    Support us
+                    Support
                   </button>
 
                   {/* Close Button */}
@@ -126,59 +134,63 @@ const Sidebar: React.FC = () => {
                 </div>
               </div>
 
-              {/* Title Container */}
-              <div className="uwshuffle-title-section">
-                <a
-                  href="https://chrome.google.com/webstore/detail/uwshuffle/jgcgjieedkddicejglgncnfepggcepma"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="uwshuffle-title-link"
-                >
-                  Found UWShuffle useful? Rate us 5 stars{" "}
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <FiStar key={index} />
-                  ))}
-                </a>
-              </div>
               {/* Instructions Container */}
-              <div className="uwshuffle-instructions-container">
-                <div className="uwshuffle-instructions-title">
-                  Instructions:
-                </div>
-
-                {/* Instructions Video */}
-                <div className="uwshuffle-video-section">
-                  <video
-                    className="uwshuffle-instructions-video"
-                    muted
-                    autoPlay={true}
-                    preload="metadata"
-                  >
-                    <source src={instructionsVideo} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-
-                {/* Instructions Steps */}
-                <div className="uwshuffle-instructions-section">
-                  <div className="uwshuffle-instruction-display">
-                    <div className="uwshuffle-instruction-content">
-                      <span className="uwshuffle-instruction-number">
-                        {currentInstructionStep + 1}.
-                      </span>
-                      <span className="uwshuffle-instruction-text">
-                        {instructions[currentInstructionStep]}
-                      </span>
-                    </div>
-                    <button
-                      onClick={handleNextInstruction}
-                      className="uwshuffle-instruction-next"
-                      title="Next step"
-                    >
-                      <FiArrowRight className="uwshuffle-icon-button" />
-                    </button>
+              <div
+                className={`uwshuffle-instructions-container ${
+                  isInstructionsCollapsed ? "collapsed" : ""
+                }`}
+              >
+                <div
+                  className="uwshuffle-instructions-header"
+                  onClick={handleToggleInstructions}
+                >
+                  <div className="uwshuffle-instructions-title">
+                    Instructions:
                   </div>
+                  <FiChevronUp
+                    className={`uwshuffle-instructions-caret ${
+                      isInstructionsCollapsed
+                        ? "uwshuffle-instructions-caret-collapsed"
+                        : ""
+                    }`}
+                  />
                 </div>
+
+                {!isInstructionsCollapsed && (
+                  <>
+                    {/* Instructions Video */}
+                    <video
+                      className="uwshuffle-instructions-video"
+                      muted
+                      autoPlay={true}
+                      preload="metadata"
+                    >
+                      <source src={instructionsVideo} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+
+                    {/* Instructions Steps */}
+                    <div className="uwshuffle-instructions-section">
+                      <div className="uwshuffle-instruction-display">
+                        <div className="uwshuffle-instruction-content">
+                          <span className="uwshuffle-instruction-number">
+                            {currentInstructionStep + 1}.
+                          </span>
+                          <span className="uwshuffle-instruction-text">
+                            {instructions[currentInstructionStep]}
+                          </span>
+                        </div>
+                        <button
+                          onClick={handleNextInstruction}
+                          className="uwshuffle-instruction-next"
+                          title="Next step"
+                        >
+                          <FiArrowRight className="uwshuffle-icon-button" />
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Upload Section */}
