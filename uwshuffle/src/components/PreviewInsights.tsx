@@ -151,7 +151,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                 <div className="uwshuffle-professor-circle">
                   <div className="uwshuffle-professor-score">
                     {profInfo?.rating.liked
-                      ? profInfo?.rating.liked + "%"
+                      ? Math.round(profInfo?.rating.liked) + "%"
                       : "~%"}
                   </div>
                 </div>
@@ -160,7 +160,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                     <span>
                       Engaging:{" "}
                       {profInfo?.rating.engaging
-                        ? profInfo?.rating.engaging + "%"
+                        ? Math.round(profInfo?.rating.engaging) + "%"
                         : "~%"}
                     </span>
                     <span>
@@ -174,7 +174,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                     <span>
                       Clarity:{" "}
                       {profInfo?.rating.clear
-                        ? profInfo?.rating.clear + "%"
+                        ? Math.round(profInfo?.rating.clear) + "%"
                         : "~%"}
                     </span>
                     <span>

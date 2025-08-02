@@ -1,8 +1,8 @@
-import type { ProfQueryResponse } from "../types";
+import type { ProfInfo } from "../types";
 const UWFLOW_GRAPHQL_URL = "https://uwflow.com/graphql";
 export const fetchProfInfoFromUwFlow = async (
   profName: string
-): Promise<ProfQueryResponse | null> => {
+): Promise<ProfInfo | null> => {
   const query = `
     query Prof($name: String) {
       prof(where: { name: { _eq: $name } }) {

@@ -180,9 +180,10 @@ const Sidebar: React.FC = () => {
     }
   };
 
-
   // addPreviewCourse is handled via message listener
-
+  useEffect(() => {
+    console.log(profInfo);
+  }, [profInfo]);
   return (
     <>
       <div
@@ -202,8 +203,10 @@ const Sidebar: React.FC = () => {
                 onHelpClick={handleOpenModal}
                 onCloseSidebar={handleCloseSidebar}
               />
-
-              <PreviewInsights previewCourse={previewCourse} profInfo={profInfo} />
+              <PreviewInsights
+                previewCourse={previewCourse}
+                profInfo={profInfo}
+              />
 
               <CurrentStep courses={courses} previewCourse={previewCourse} />
 

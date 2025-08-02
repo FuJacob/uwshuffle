@@ -84,6 +84,25 @@
   --transition-fast: 150ms ease;
   --transition-base: 200ms ease;
   --transition-slow: 300ms ease;
+
+  /* Responsive breakpoints */
+  --breakpoint-sm: 640px;  /* Small laptops */
+  --breakpoint-md: 768px;  /* Medium laptops */
+  --breakpoint-lg: 1024px; /* Large laptops */
+  --breakpoint-xl: 1280px; /* Desktop monitors */
+  --breakpoint-2xl: 1536px; /* Large desktop monitors */
+
+  /* Responsive spacing */
+  --sidebar-width-sm: 360px;
+  --sidebar-width-md: 400px;
+  --sidebar-width-lg: 420px;
+  --sidebar-width-xl: 450px;
+
+  /* Responsive font sizes */
+  --font-size-responsive-xs: clamp(0.7rem, 0.5vw + 0.6rem, 0.75rem);
+  --font-size-responsive-sm: clamp(0.8rem, 0.5vw + 0.7rem, 0.875rem);
+  --font-size-responsive-base: clamp(0.9rem, 0.5vw + 0.8rem, 1rem);
+  --font-size-responsive-lg: clamp(1rem, 0.75vw + 0.9rem, 1.125rem);
 }
 
 /* Dark mode variables */
@@ -144,7 +163,7 @@ body {
 
 /* ===== SIDEBAR LAYOUT ===== */
 .uwshuffle-sidebar {
-  width: 100%;
+  width: min(100vw, var(--sidebar-width-md));
   height: 100vh;
   position: fixed;
   bottom: 0;
@@ -241,6 +260,7 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  flex-wrap: wrap;
 }
 
 /* ===== TITLE SECTION ===== */
@@ -460,9 +480,9 @@ body {
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
-  max-width: 600px;
+  max-width: min(600px, 95vw);
   width: 90%;
-  max-height: 80vh;
+  max-height: 85vh;
   overflow-y: auto;
   position: relative;
 }
@@ -516,8 +536,8 @@ body {
   position: fixed;
   bottom: var(--space-5);
   right: var(--space-5);
-  width: 56px;
-  height: 56px;
+  width: clamp(48px, 4vw, 56px);
+  height: clamp(48px, 4vw, 56px);
   background-color: var(--color-surface);
   color: var(--color-text-primary);
   border: 1px solid var(--color-border);
@@ -576,6 +596,7 @@ body {
   box-shadow: var(--shadow-sm);
   margin-bottom: var(--space-4);
   display: block;
+  height: auto;
 }
 
 .rbc-day-slot .rbc-events-container {
@@ -789,6 +810,7 @@ body {
 .uwshuffle-preview-containers {
   display: flex;
   gap: var(--space-3);
+  flex-direction: column;
 }
 
 .uwshuffle-course-container {
@@ -1703,6 +1725,8 @@ body {
   width: 100% !important;
   height: 100% !important;
   border: none !important;
+  overflow: hidden !important;
+  max-width: 100% !important;
 }
 
 /* Hide toolbar completely */
@@ -1792,4 +1816,166 @@ body {
 
 .rbc-time-header-content {
   border: none !important;
+}
+
+/* ===== RESPONSIVE MEDIA QUERIES ===== */
+
+/* Small screens (640px and up) - Small laptops */
+@media (min-width: 640px) {
+  .uwshuffle-sidebar {
+    width: var(--sidebar-width-sm);
+  }
+  
+  .uwshuffle-preview-containers {
+    flex-direction: row;
+  }
+  
+  .schedule-upload-buttons {
+    flex-direction: row;
+  }
+  
+  .uwshuffle-action-bar-buttons {
+    flex-wrap: nowrap;
+  }
+}
+
+/* Medium screens (768px and up) - Standard laptops */
+@media (min-width: 768px) {
+  .uwshuffle-sidebar {
+    width: var(--sidebar-width-md);
+  }
+  
+  .uwshuffle-main-content {
+    padding: var(--space-5);
+  }
+  
+  .uwshuffle-calendar-card {
+    min-height: 400px;
+  }
+}
+
+/* Large screens (1024px and up) - Large laptops */
+@media (min-width: 1024px) {
+  .uwshuffle-sidebar {
+    width: var(--sidebar-width-lg);
+  }
+  
+  .uwshuffle-main-content {
+    padding: var(--space-6);
+    gap: var(--space-5);
+  }
+  
+  .uwshuffle-calendar-card {
+    min-height: 500px;
+  }
+  
+  .uwshuffle-stats-section,
+  .uwshuffle-current-step-section,
+  .uwshuffle-upload-section {
+    padding: var(--space-5);
+  }
+}
+
+/* Extra large screens (1280px and up) - Desktop monitors */
+@media (min-width: 1280px) {
+  .uwshuffle-sidebar {
+    width: var(--sidebar-width-xl);
+  }
+  
+  .uwshuffle-calendar-card {
+    min-height: 600px;
+  }
+}
+
+/* Handle very narrow screens */
+@media (max-width: 639px) {
+  .uwshuffle-sidebar {
+    width: 100vw;
+  }
+  
+  .uwshuffle-action-bar-buttons {
+    gap: var(--space-1);
+  }
+  
+  .uwshuffle-action-bar-buttons button {
+    font-size: var(--font-size-xs);
+    padding: var(--space-1) var(--space-2);
+  }
+  
+  .schedule-upload-buttons {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  
+  .uwshuffle-main-content {
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+  
+  .uwshuffle-preview-containers {
+    flex-direction: column;
+  }
+  
+  .uwshuffle-calendar-card {
+    min-height: 250px;
+  }
+  
+  .uwshuffle-modal {
+    max-width: 95vw;
+    width: 95%;
+    padding: var(--space-3);
+  }
+  
+  .uwshuffle-instructions-video {
+    height: auto;
+    min-height: 200px;
+  }
+  
+  .uwshuffle-expand-button {
+    bottom: var(--space-4);
+    right: var(--space-4);
+    width: 48px;
+    height: 48px;
+  }
+  
+  .rbc-time-gutter {
+    width: 40px !important;
+  }
+  
+  .rbc-time-gutter .rbc-time-slot {
+    font-size: 10px !important;
+    padding-right: var(--space-1) !important;
+  }
+  
+  .rbc-event {
+    font-size: 10px !important;
+    padding: 1px 2px !important;
+  }
+  
+  .uwshuffle-calendar-actions {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  
+  .uwshuffle-export-button {
+    font-size: var(--font-size-xs);
+    padding: var(--space-1) var(--space-2);
+  }
+}
+
+/* Additional responsive improvements for text overflow */
+@media (max-width: 1023px) {
+  .uwshuffle-professor-link {
+    font-size: 10px;
+    padding: var(--space-1);
+  }
+  
+  .uwshuffle-uwflow-icon {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .uwshuffle-course-time-info {
+    font-size: var(--font-size-xs);
+  }
 }
