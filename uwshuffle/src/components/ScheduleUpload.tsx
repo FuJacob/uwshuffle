@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { FiClipboard, FiZap, FiTrash2, FiRefreshCcw } from "react-icons/fi";
+import {
+  FiClipboard,
+  FiZap,
+  FiTrash2,
+  FiRefreshCcw,
+  FiBarChart2,
+} from "react-icons/fi";
 import type { Course } from "../types";
 import "./ScheduleUpload.css";
 
 interface ScheduleUploadProps {
   onCoursesUploaded: (courses: Course[]) => void;
   onClearSchedule: () => void;
+  courses: Course[];
 }
 
 const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   onCoursesUploaded,
   onClearSchedule,
+  courses,
 }) => {
   const [scheduleText, setScheduleText] = useState("");
   const [isPasted, setIsPasted] = useState(false);
@@ -282,6 +290,19 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
               Paste area: click then Ctrl+V / Cmd+V
             </div>
           </div>
+        )}
+      </div>
+
+      {/* Courses Loaded Info */}
+      <div className="schedule-upload-courses-info">
+        {courses.length === 0 ? (
+          <>No courses loaded</>
+        ) : (
+          <>
+            <FiBarChart2 className="uwshuffle-icon" />
+            {new Set(courses.map((c) => c.course)).size} course
+            {new Set(courses.map((c) => c.course)).size !== 1 ? "s" : ""} loaded
+          </>
         )}
       </div>
     </div>

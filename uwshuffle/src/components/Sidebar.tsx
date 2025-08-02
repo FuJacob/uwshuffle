@@ -10,15 +10,24 @@ import {
   FiCalendar,
   FiMapPin,
   FiUser,
+  FiExternalLink,
+  FiCheckCircle,
 } from "react-icons/fi";
 import CalendarView from "./CalendarView";
 import ScheduleUpload from "./ScheduleUpload";
 import type { Course } from "../types";
 import logo from "../assets/logo.svg";
+import uwflowBackground from "../assets/uwflow_background.svg";
 
 const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [previewCourse, setPreviewCourse] = useState<Course | null>(null);
+  const [previewCourse, setPreviewCourse] = useState<Course | null>({
+    course: "STAT 230",
+    days: ["Mon", "Wed", "Fri"],
+    start: "11:30",
+    end: "12:20",
+    location: "UTD 105",
+  });
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const [isInstructionsCollapsed, setIsInstructionsCollapsed] =
     useState<boolean>(false);
@@ -125,15 +134,14 @@ const Sidebar: React.FC = () => {
                   <img src={logo} alt="UWShuffle" />
                   <span className="uwshuffle-action-bar-title">UWShuffle</span>
                 </a>
-                <button
-                  onClick={handleRateClick}
-                  className="uwshuffle-coffee-button"
-                >
-                  <FiStar className="uwshuffle-icon-button" />
-                  Rate us
-                </button>
                 <div className="uwshuffle-action-bar-buttons">
-                  {/* Ko-fi Button */}
+                  <button
+                    onClick={handleRateClick}
+                    className="uwshuffle-coffee-button"
+                  >
+                    <FiStar className="uwshuffle-icon-button" />
+                    Rate us
+                  </button>
                   <button
                     onClick={handleKofiClick}
                     className="uwshuffle-coffee-button"
@@ -141,8 +149,6 @@ const Sidebar: React.FC = () => {
                     <FiHeart className="uwshuffle-icon-button" />
                     Support us
                   </button>
-
-                  {/* Close Button */}
                   <button
                     onClick={handleCloseSidebar}
                     className="uwshuffle-close-button"
@@ -221,61 +227,88 @@ const Sidebar: React.FC = () => {
                     <>
                       <div className="uwshuffle-preview-containers">
                         <div className="uwshuffle-course-container">
-                          <div className="uwshuffle-course-details">
-                            <div className="uwshuffle-course-line">
+                          <div className="uwshuffle-course-info-container">
+                            <div className="uwshuffle-course-info-title">
                               <span className="uwshuffle-icon">
-                                <FiBook />
+                                <FiCheckCircle />
                               </span>
-                              <span className="uwshuffle-value">
-                                {previewCourse.course}
-                              </span>
+                              Course Info:
                             </div>
-                            <div className="uwshuffle-course-line">
-                              <span className="uwshuffle-icon">
-                                <FiCalendar />
-                              </span>
-                              <span className="uwshuffle-value">
-                                {previewCourse.days?.join(", ")} •{" "}
-                                {previewCourse.start} - {previewCourse.end}
-                              </span>
-                            </div>
-                            <div className="uwshuffle-course-line">
-                              <span className="uwshuffle-icon">
-                                <FiMapPin />
-                              </span>
-                              <span className="uwshuffle-value">
-                                {previewCourse.location}
-                              </span>
+                            <div className="uwshuffle-course-details">
+                              <div className="uwshuffle-course-line">
+                                <span className="uwshuffle-icon">
+                                  <FiBook />
+                                </span>
+                                <span className="uwshuffle-value">
+                                  {previewCourse.course}
+                                </span>
+                                <span className="uwshuffle-icon">
+                                  <FiMapPin />
+                                </span>
+                                <span className="uwshuffle-value">
+                                  {previewCourse.location}
+                                </span>
+                              </div>
+                              <div className="uwshuffle-course-line">
+                                <span className="uwshuffle-icon">
+                                  <FiCalendar />
+                                </span>
+                                <span className="uwshuffle-value">
+                                  {previewCourse.days?.join(", ")} •{" "}
+                                  {previewCourse.start} - {previewCourse.end}
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
                         <div className="uwshuffle-professor-container">
-                          <div className="uwshuffle-uwflow-container">
-                            <div className="uwshuffle-uwflow-title">
-                              UW Flow
-                            </div>
-                            <div className="uwshuffle-professor-details">
-                              <div className="uwshuffle-course-line">
-                                <span className="uwshuffle-icon">
-                                  <FiUser />
-                                </span>
-                                <span className="uwshuffle-value">
-                                  Dr. Smith
-                                </span>
+                          <div className="uwshuffle-uwflow-header">
+                            <div
+                              className="uwshuffle-uwflow-title"
+                              style={{
+                                backgroundImage: `url(${uwflowBackground})`,
+                              }}
+                            >
+                              <div className="uwshuffle-uwflow-left">
+                                <a
+                                  href="https://uwflow.com/professor/dr-smith"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="uwshuffle-professor-link"
+                                >
+                                  <div className="uwshuffle-course-line">
+                                    <span className="uwshuffle-icon">
+                                      <FiUser />
+                                    </span>
+                                    <span className="uwshuffle-value">
+                                      Dr. Smith
+                                    </span>
+                                    <span className="uwshuffle-icon">
+                                      <FiExternalLink />
+                                    </span>
+                                  </div>
+                                </a>
                               </div>
-                              <div className="uwshuffle-professor-content">
-                                <div className="uwshuffle-professor-circle">
-                                  <div className="uwshuffle-professor-score">
-                                    95%
-                                  </div>
+                              <div className="uwshuffle-uwflow-right">
+                                UW Flow
+                              </div>
+                            </div>
+                          </div>
+                          <div className="uwshuffle-uwflow-content">
+                            <div className="uwshuffle-professor-content">
+                              <div className="uwshuffle-professor-circle">
+                                <div className="uwshuffle-professor-score">
+                                  95%
                                 </div>
-                                <div className="uwshuffle-professor-info">
-                                  <div className="uwshuffle-professor-ratings">
-                                    Engaging: 4.2 • Clarity: 4.5
-                                  </div>
-                                  <div className="uwshuffle-professor-reviews">
-                                    4 comments • 127 reviews
-                                  </div>
+                              </div>
+                              <div className="uwshuffle-professor-info">
+                                <div className="uwshuffle-professor-ratings">
+                                  <span>Engaging: 4.2</span>
+                                  <span>Clarity: 4.5</span>
+                                </div>
+                                <div className="uwshuffle-professor-reviews">
+                                  <span>4 comments</span>
+                                  <span>127 reviews</span>
                                 </div>
                               </div>
                             </div>
@@ -298,6 +331,7 @@ const Sidebar: React.FC = () => {
                 <ScheduleUpload
                   onCoursesUploaded={handleCoursesUploaded}
                   onClearSchedule={handleClearSchedule}
+                  courses={courses}
                 />
               </div>
 
@@ -314,23 +348,6 @@ const Sidebar: React.FC = () => {
               </div>
 
               {/* Footer with modern styling */}
-              <div className="uwshuffle-footer">
-                {courses.length === 0 ? (
-                  <>
-                    <FiBook className="uwshuffle-icon" />
-                    No courses loaded
-                  </>
-                ) : (
-                  <>
-                    <FiBarChart2 className="uwshuffle-icon" />
-                    {new Set(courses.map((c) => c.course)).size} course
-                    {new Set(courses.map((c) => c.course)).size !== 1
-                      ? "s"
-                      : ""}{" "}
-                    loaded
-                  </>
-                )}
-              </div>
             </div>
           </>
         )}
