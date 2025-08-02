@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
+
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import {
   FiPlus,
   FiMinus,
-  FiHelpCircle,
   FiUsers,
   FiEye,
   FiEyeOff,
+  FiHelpCircle,
 } from "react-icons/fi";
 import type { Course, FriendSchedule } from "../types";
-import ScheduleControls from "./ScheduleControls";
 import CalendarView from "./CalendarView";
 import { Tooltip } from "react-tooltip";
 
@@ -70,7 +68,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                 {/* Friend Schedule Tags */}
                 <div className="uwshuffle-friends-container">
                   <FiUsers className="uwshuffle-friends-icon" />
-                  <span className="uwshuffle-friends-label">Friends</span>
+                  <span className="uwshuffle-friends-label">Friends | </span>
                   {friendSchedules.map((friendSchedule) => (
                     <button
                       className={`uwshuffle-tag-button ${

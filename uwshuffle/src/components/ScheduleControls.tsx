@@ -198,7 +198,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                   }
                 >
                   <FiDownload className="uwshuffle-icon-button" />
-                  Export Schedule
+                  Export Schedule (.ics)
                 </button>
                 <button
                   className="uwshuffle-export-button"
