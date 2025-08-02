@@ -29,11 +29,11 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
       course.days.forEach((day) => {
         const dayMap: { [key: string]: number } = {
-          Mon: 0,
-          Tue: 1,
-          Wed: 2,
-          Thu: 3,
-          Fri: 4,
+          Mo: 0,
+          Tu: 1,
+          We: 2,
+          Th: 3,
+          Fr: 4,
         };
 
         const dayOffset = dayMap[day];

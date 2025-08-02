@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import {
   FiDownload,
   FiRefreshCcw,
-  FiFileText,
   FiPlus,
   FiLink,
+  FiMinus,
 } from "react-icons/fi";
 import CalendarView from "./CalendarView";
 import type { Course } from "../types";
@@ -40,6 +40,10 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
 }) => {
   const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
   const [addFriendLink, setAddFriendLink] = useState<string>("");
+  const [isScheduleControlsCollapsed, setIsScheduleControlsCollapsed] =
+    useState<boolean>(false);
+  const [isCalendarCollapsed, setIsCalendarCollapsed] =
+    useState<boolean>(false);
   const handleAddFriendSchedule = async (schedule: string) => {
     const friendSchedule = await readQuickLink(schedule);
     if (friendSchedule) {
@@ -82,136 +86,160 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
           <div className="uwshuffle-schedule-controls-title">
             Schedule Controls
           </div>
+          <button
+            onClick={() =>
+              setIsScheduleControlsCollapsed(!isScheduleControlsCollapsed)
+            }
+            className="uwshuffle-collapse-button"
+          >
+            {isScheduleControlsCollapsed ? <FiPlus /> : <FiMinus />}
+          </button>
         </div>
-        <div className="uwshuffle-schedule-controls-content">
-          <div className="uwshuffle-input-actions">
-            <div className="uwshuffle-input-group">
+        {!isScheduleControlsCollapsed && (
+          <div className="uwshuffle-schedule-controls-content">
+            <div className="uwshuffle-input-actions">
               <label className="uwshuffle-input-label">
                 Want to see your friend's schedule?
               </label>
-              <div className="uwshuffle-input-wrapper">
-                <input
-                  type="text"
-                  placeholder="Paste their quick link here..."
-                  className="uwshuffle-input-field"
-                  onChange={(e) => {
-                    setAddFriendLink(e.target.value);
-                  }}
-                />
+              <div className="uwshuffle-input-group">
+                <div className="uwshuffle-input-wrapper">
+                  <input
+                    type="text"
+                    placeholder="Paste their quick link here..."
+                    className="uwshuffle-input-field"
+                    onChange={(e) => {
+                      setAddFriendLink(e.target.value);
+                    }}
+                  />
+                  <button
+                    onClick={() => handleAddFriendSchedule(addFriendLink)}
+                    className="uwshuffle-plus-button"
+                  >
+                    <FiPlus className="uwshuffle-plus-icon" />
+                  </button>
+                </div>
                 <button
-                  onClick={() => handleAddFriendSchedule(addFriendLink)}
-                  className="uwshuffle-plus-button"
+                  className="uwshuffle-share-button"
+                  disabled={courses.length === 0}
+                  aria-disabled={courses.length === 0}
+                  onClick={handleShareSchedule}
+                  style={{
+                    opacity: courses.length === 0 ? 0.5 : 1,
+                    cursor: courses.length === 0 ? "not-allowed" : "pointer",
+                  }}
+                  title="Share your schedule with others"
                 >
-                  <FiPlus className="uwshuffle-plus-icon" />
+                  <FiLink className="uwshuffle-share-icon" />
+                  Share mine
+                </button>
+              </div>
+            </div>
+            <div className="uwshuffle-export-actions">
+              <label className="uwshuffle-input-label">
+                Want to export your calendar to Google Calendar?
+              </label>
+              <div className="uwshuffle-export-buttons">
+                <button
+                  className="uwshuffle-export-button"
+                  disabled={courses.length === 0 || !termDatesAvailable}
+                  aria-disabled={courses.length === 0 || !termDatesAvailable}
+                  onClick={onExportCurrentSchedule}
+                  style={{
+                    opacity:
+                      courses.length === 0 || !termDatesAvailable ? 0.5 : 1,
+                    cursor:
+                      courses.length === 0 || !termDatesAvailable
+                        ? "not-allowed"
+                        : "pointer",
+                  }}
+                  title={
+                    !termDatesAvailable
+                      ? "Browse Quest course search results first to enable export"
+                      : ""
+                  }
+                >
+                  <FiDownload className="uwshuffle-icon-button" />
+                  Export Schedule
+                </button>
+                <button
+                  className="uwshuffle-export-button"
+                  disabled={
+                    courses.length === 0 ||
+                    !previewCourse ||
+                    !termDatesAvailable
+                  }
+                  aria-disabled={
+                    courses.length === 0 ||
+                    !previewCourse ||
+                    !termDatesAvailable
+                  }
+                  onClick={onExportWithSwap}
+                  style={{
+                    opacity:
+                      courses.length === 0 ||
+                      !previewCourse ||
+                      !termDatesAvailable
+                        ? 0.5
+                        : 1,
+                    cursor:
+                      courses.length === 0 ||
+                      !previewCourse ||
+                      !termDatesAvailable
+                        ? "not-allowed"
+                        : "pointer",
+                  }}
+                  title={
+                    !termDatesAvailable
+                      ? "Browse Quest course search results first to enable export"
+                      : ""
+                  }
+                >
+                  <FiRefreshCcw className="uwshuffle-icon-button" />
+                  Export w/ Swap
                 </button>
               </div>
             </div>
           </div>
-          <div className="uwshuffle-export-actions">
-            <button
-              className="uwshuffle-export-button"
-              disabled={courses.length === 0}
-              aria-disabled={courses.length === 0}
-              onClick={handleShareSchedule}
-              style={{
-                opacity: courses.length === 0 ? 0.5 : 1,
-                cursor: courses.length === 0 ? "not-allowed" : "pointer",
-              }}
-              title="Share your schedule with others"
-            >
-              <FiLink className="uwshuffle-icon-button" />
-              Share My Schedule
-            </button>
-            <button
-              className="uwshuffle-export-button"
-              disabled={courses.length === 0 || !termDatesAvailable}
-              aria-disabled={courses.length === 0 || !termDatesAvailable}
-              onClick={onExportCurrentSchedule}
-              style={{
-                opacity: courses.length === 0 || !termDatesAvailable ? 0.5 : 1,
-                cursor:
-                  courses.length === 0 || !termDatesAvailable
-                    ? "not-allowed"
-                    : "pointer",
-              }}
-              title={
-                !termDatesAvailable
-                  ? "Browse Quest course search results first to enable export"
-                  : ""
-              }
-            >
-              <FiDownload className="uwshuffle-icon-button" />
-              Export Schedule
-            </button>
-            <button
-              className="uwshuffle-export-button"
-              disabled={
-                courses.length === 0 || !previewCourse || !termDatesAvailable
-              }
-              aria-disabled={
-                courses.length === 0 || !previewCourse || !termDatesAvailable
-              }
-              onClick={onExportWithSwap}
-              style={{
-                opacity:
-                  courses.length === 0 || !previewCourse || !termDatesAvailable
-                    ? 0.5
-                    : 1,
-                cursor:
-                  courses.length === 0 || !previewCourse || !termDatesAvailable
-                    ? "not-allowed"
-                    : "pointer",
-              }}
-              title={
-                !termDatesAvailable
-                  ? "Browse Quest course search results first to enable export"
-                  : ""
-              }
-            >
-              <FiRefreshCcw className="uwshuffle-icon-button" />
-              Export w/ Swap
-            </button>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Schedule Card */}
       <div className="uwshuffle-calendar-card">
         <div className="uwshuffle-calendar-header">
-          <div className="uwshuffle-calendar-title">
-            Schedule
-            {friendSchedules.map((friendSchedule) => (
-              <button
-                className={`uwshuffle-tag-button ${
-                  !friendSchedule.visible ? "uwshuffle-tag-button-hidden" : ""
-                }`}
-                key={friendSchedule.name}
-                onClick={() => handleToggleFriendSchedule(friendSchedule.name)}
-              >
-                {friendSchedule.name}
-              </button>
-            ))}
+          <div className="uwshuffle-calendar-header-top">
+            <div className="uwshuffle-calendar-title">
+              Schedule
+              {friendSchedules.map((friendSchedule) => (
+                <button
+                  className={`uwshuffle-tag-button ${
+                    !friendSchedule.visible ? "uwshuffle-tag-button-hidden" : ""
+                  }`}
+                  key={friendSchedule.name}
+                  onClick={() =>
+                    handleToggleFriendSchedule(friendSchedule.name)
+                  }
+                >
+                  {friendSchedule.name}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setIsCalendarCollapsed(!isCalendarCollapsed)}
+              className="uwshuffle-collapse-button"
+            >
+              {isCalendarCollapsed ? <FiPlus /> : <FiMinus />}
+            </button>
           </div>
         </div>
-        <div className="uwshuffle-calendar-content">
-          {courses.length === 0 ? (
-            <div className="uwshuffle-calendar-empty">
-              <FiFileText className="uwshuffle-calendar-empty-icon" />
-              <div className="uwshuffle-calendar-empty-title">
-                Nothing here yet
-              </div>
-              <div className="uwshuffle-calendar-empty-subtitle">
-                Upload your schedule above to get started
-              </div>
-            </div>
-          ) : (
+        {!isCalendarCollapsed && (
+          <div className="uwshuffle-calendar-content">
             <CalendarView
               courses={courses}
               previewCourse={previewCourse}
               friendSchedules={friendSchedules}
             />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -2,17 +2,9 @@
 
 /* ===== DESIGN SYSTEM VARIABLES ===== */
 :root {
-  /* Neutral Grays - Professional Foundation */
-  --color-gray-50: #f8fafc;
-  --color-gray-100: #f1f5f9;
+  /* Neutral Grays - Only used ones */
   --color-gray-200: #e2e8f0;
   --color-gray-300: #cbd5e1;
-  --color-gray-400: #94a3b8;
-  --color-gray-500: #64748b;
-  --color-gray-600: #475569;
-  --color-gray-700: #334155;
-  --color-gray-800: #1e293b;
-  --color-gray-900: #0f172a;
 
   /* Colors - Professional UWShuffle brand palette */
   --color-background: #f0f4ff;
@@ -29,9 +21,11 @@
   --color-primary: #3b82f6; /* Blue 500 - 4.6:1 contrast */
   --color-primary-hover: #2563eb; /* Blue 600 */
   --color-primary-light: #dbeafe; /* Blue 100 */
+  --color-primary-alpha: rgba(59, 130, 246, 0.1); /* Primary with alpha */
 
   /* Status Colors - WCAG AA Compliant */
   --color-success: #059669; /* Green 600 - 4.8:1 contrast */
+  --color-success-hover: #047857; /* Green 700 */
   --color-success-light: #d1fae5; /* Green 100 */
 
   --color-warning: #d97706; /* Amber 600 - 4.7:1 contrast */
@@ -129,9 +123,11 @@
   --color-primary: #60a5fa; /* Blue 400 - 4.8:1 contrast */
   --color-primary-hover: #3b82f6; /* Blue 500 */
   --color-primary-light: #1e293b;
+  --color-primary-alpha: rgba(96, 165, 250, 0.1); /* Primary with alpha */
 
   /* Status Colors - WCAG AA Compliant */
   --color-success: #34d399; /* Green 400 - 4.9:1 contrast */
+  --color-success-hover: #10b981; /* Green 500 */
   --color-success-light: #064e3b;
 
   --color-warning: #fbbf24; /* Amber 400 - 4.7:1 contrast */
@@ -583,6 +579,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 }
 
 /* ===== VIDEO SECTION ===== */
@@ -1040,7 +1039,7 @@ body {
 }
 
 .uwshuffle-professor-circle::before {
-  content: "Overall";
+  content: "Liked";
   position: absolute;
   top: -8px;
   left: 50%;
@@ -1255,13 +1254,21 @@ body {
   gap: var(--space-2);
 }
 
+.schedule-upload-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
 .schedule-upload-title {
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-3);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--color-border);
+
+  flex: 1;
 }
 
 /* ===== BUTTON STYLES ===== */
@@ -1624,11 +1631,10 @@ body {
 
 /* ===== CALENDAR SECTION ===== */
 .uwshuffle-calendar-section {
-  flex: 1;
-  overflow: hidden;
+  flex: 0 0 auto;
+  overflow: visible;
   display: flex;
   flex-direction: column;
-  min-height: 0;
   gap: var(--space-4);
 }
 
@@ -1644,14 +1650,18 @@ body {
 .uwshuffle-schedule-controls-header {
   padding: var(--space-4);
   background-color: var(--color-surface);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-2);
 }
 
 .uwshuffle-schedule-controls-title {
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-primary);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--color-border);
 }
 
 .uwshuffle-schedule-controls-content {
@@ -1663,7 +1673,7 @@ body {
 }
 
 .uwshuffle-calendar-card {
-  flex: 1;
+  flex: 0 0 auto;
   background-color: var(--color-surface);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -1685,7 +1695,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-2);
 }
 
 .uwshuffle-calendar-title {
@@ -1696,8 +1708,6 @@ body {
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-secondary);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--color-border);
 }
 
 /* Tag button styles - matching action button style */
@@ -1747,23 +1757,30 @@ body {
   align-items: center;
 }
 
-/* Input field styles */
+/* Input field styles - matching action button design */
 .uwshuffle-input-field {
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
+  font-weight: 600;
   background-color: var(--color-surface);
-  color: var(--color-text-primary);
-  transition: border-color var(--transition-hover);
+  color: var(--color-text-secondary);
+  transition: var(--transition-fast);
   min-width: 200px;
   flex: 1;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-family);
+  white-space: nowrap;
 }
 
 .uwshuffle-input-field:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-primary-alpha);
+  border-color: var(--color-border-focus);
+  background-color: var(--color-surface-hover);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 /* Checkbox styles */
@@ -1790,9 +1807,9 @@ body {
 /* Input actions container */
 .uwshuffle-input-actions {
   display: flex;
-  justify-content: space-between;
-  gap: var(--space-2);
-  align-items: center;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: stretch;
 }
 
 /* Input wrapper styles */
@@ -1820,7 +1837,7 @@ body {
   white-space: nowrap;
 }
 
-/* Plus button styles - small and inside input */
+/* Plus button styles - primary icon only */
 .uwshuffle-plus-button {
   position: absolute;
   right: var(--space-2);
@@ -1831,10 +1848,9 @@ body {
   justify-content: center;
   width: 20px;
   height: 20px;
-  background-color: var(--color-primary);
-  color: white;
+  background: none;
+  color: var(--color-primary);
   border: none;
-  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: var(--transition-fast);
   z-index: 1;
@@ -1842,7 +1858,7 @@ body {
 
 .uwshuffle-plus-button:hover,
 .uwshuffle-plus-button:focus {
-  background-color: var(--color-primary-hover);
+  background-color: var(--color-primary-alpha);
   transform: translateY(-50%) scale(1.1);
 }
 
@@ -1851,9 +1867,11 @@ body {
   height: 12px;
 }
 
-.uwshuffle-export-button {
-  display: inline-flex;
+/* Share button styles - matching action button design */
+.uwshuffle-share-button {
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
   background-color: var(--color-surface);
@@ -1867,6 +1885,57 @@ body {
   white-space: nowrap;
   font-family: var(--font-family);
   box-shadow: var(--shadow-sm);
+}
+
+.uwshuffle-share-button:hover,
+.uwshuffle-share-button:focus {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.uwshuffle-share-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Export actions container */
+.uwshuffle-export-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: stretch;
+}
+
+/* Export buttons container */
+.uwshuffle-export-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.uwshuffle-export-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+  font-family: var(--font-family);
+  box-shadow: var(--shadow-sm);
+  flex: 1;
 }
 
 .uwshuffle-export-button:hover,
@@ -1896,11 +1965,38 @@ body {
   outline: none;
 }
 
+/* Collapse button styles */
+.uwshuffle-collapse-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  font-family: var(--font-family);
+}
+
+.uwshuffle-collapse-button:hover,
+.uwshuffle-collapse-button:focus {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 .uwshuffle-calendar-content {
   flex: 1;
-  overflow: hidden;
+  overflow: visible;
   padding: 0;
-  height: 100%;
+  min-height: 40vh;
 }
 
 /* Calendar empty state */
@@ -1990,10 +2086,14 @@ body {
   padding: var(--space-2) !important;
   font-size: var(--font-size-sm) !important;
   font-weight: 600 !important;
-  color: var(--color-text-primary) !important;
+  color: var(--color-text-tertiary) !important;
   text-align: center !important;
   border: none !important;
   text-transform: uppercase !important;
+}
+
+.rbc-label.rbc-time-header-gutter {
+  width: 40px !important;
 }
 
 .rbc-button-link {
@@ -2016,7 +2116,7 @@ body {
 }
 
 .rbc-time-gutter .rbc-time-slot {
-  color: var(--color-text-secondary) !important;
+  color: var(--color-text-tertiary) !important;
   font-size: var(--font-size-xs) !important;
   text-align: right !important;
   padding-right: var(--space-2) !important;

@@ -6,6 +6,8 @@ import {
   FiRefreshCcw,
   FiBarChart2,
   FiCheck,
+  FiPlus,
+  FiMinus,
 } from "react-icons/fi";
 import type { Course } from "../types";
 import "./ScheduleUpload.css";
@@ -28,6 +30,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [showFindSuccess, setShowFindSuccess] = useState(false);
   const [showClearSuccess, setShowClearSuccess] = useState(false);
+  const [isActionCenterCollapsed, setIsActionCenterCollapsed] = useState(false);
 
   useEffect(() => {
     if (window.chrome && chrome.storage && chrome.storage.local) {
@@ -168,11 +171,11 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 
   const parseDayString = (dayString: string): string[] => {
     const dayMap: { [key: string]: string } = {
-      M: "Mon",
-      T: "Tue",
-      W: "Wed",
-      R: "Thu",
-      F: "Fri",
+      M: "Mo",
+      T: "Tu",
+      W: "We",
+      R: "Th",
+      F: "Fr",
     };
 
     return dayString
@@ -262,10 +265,20 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   return (
     <div className="schedule-upload-container">
       {/* Control Panel Title */}
-      <div className="schedule-upload-title">Action Center</div>
+      <div className="schedule-upload-title-container">
+        <div className="schedule-upload-title">Action Center</div>
+        <button
+          onClick={() => setIsActionCenterCollapsed(!isActionCenterCollapsed)}
+          className="uwshuffle-collapse-button"
+        >
+          {isActionCenterCollapsed ? <FiPlus /> : <FiMinus />}
+        </button>
+      </div>
 
       {/* Button Row */}
-      <div className="schedule-upload-buttons">
+      {!isActionCenterCollapsed && (
+        <>
+          <div className="schedule-upload-buttons">
         <button
           onClick={handleRefresh}
           className="schedule-upload-primary"
@@ -344,6 +357,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
           </>
         )}
       </div>
+        </>
+      )}
     </div>
   );
 };
