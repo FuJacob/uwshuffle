@@ -24,7 +24,10 @@ import ScheduleUpload from "./ScheduleUpload";
 import type { Course } from "../types";
 import logo from "../assets/logo.svg";
 import uwflowIcon from "../assets/uwflow.png";
-import { exportCurrentSchedule, exportScheduleWithSwap } from "../utils/icsExport";
+import {
+  exportCurrentSchedule,
+  exportScheduleWithSwap,
+} from "../utils/icsExport";
 
 const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -433,7 +436,10 @@ const Sidebar: React.FC = () => {
                         className="uwshuffle-export-button"
                         disabled={courses.length === 0 || !previewCourse}
                         aria-disabled={courses.length === 0 || !previewCourse}
-                        onClick={() => previewCourse && exportScheduleWithSwap(courses, previewCourse)}
+                        onClick={() =>
+                          previewCourse &&
+                          exportScheduleWithSwap(courses, previewCourse)
+                        }
                         style={{
                           opacity:
                             courses.length === 0 || !previewCourse ? 0.5 : 1,
