@@ -253,7 +253,16 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 
       {/* Button Row */}
       <div className="schedule-upload-buttons">
-        <button onClick={handleRefresh} className="schedule-upload-primary">
+        <button
+          onClick={handleRefresh}
+          className="schedule-upload-primary"
+          disabled={courses.length === 0}
+          aria-disabled={courses.length === 0}
+          style={{
+            opacity: courses.length === 0 ? 0.5 : 1,
+            cursor: courses.length === 0 ? "not-allowed" : "pointer",
+          }}
+        >
           <FiRefreshCcw className="schedule-upload-icon-button" />
           Find Swap Options
         </button>
