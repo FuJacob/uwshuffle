@@ -114,9 +114,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                       <FiUser />
                     </span>
                     <span className="uwshuffle-value">
-                      {profInfo?.name
-                        ? profInfo.name
-                        : "No Instructor Selected"}
+                      {profInfo?.name ? profInfo.name : "~"}
                     </span>
                   </div>
                 </div>

@@ -1,5 +1,12 @@
 import React from "react";
-import { FiStar, FiHeart, FiHelpCircle, FiMoon, FiSun, FiX } from "react-icons/fi";
+import {
+  FiStar,
+  FiHeart,
+  FiHelpCircle,
+  FiMoon,
+  FiSun,
+  FiX,
+} from "react-icons/fi";
 import logo from "../assets/logo.svg";
 
 interface ActionBarProps {
@@ -28,7 +35,7 @@ const ActionBar: React.FC<ActionBarProps> = ({
             <div className="uwshuffle-logo-content">
               <div>UWShuffle</div>
               <div className="uwshuffle-action-bar-author-text">
-                Created by a UW student
+                By @fujacob
               </div>
             </div>
           </button>
@@ -37,16 +44,19 @@ const ActionBar: React.FC<ActionBarProps> = ({
       <div className="uwshuffle-action-bar-buttons">
         <button onClick={onRateClick} className="uwshuffle-coffee-button">
           <FiStar className="uwshuffle-icon-button" />
-          Rate us
+          Rate
         </button>
         <button onClick={onKofiClick} className="uwshuffle-coffee-button">
           <FiHeart className="uwshuffle-icon-button" />
-          Support us
+          Support
         </button>
         <button onClick={onHelpClick} className="uwshuffle-help-button">
           <FiHelpCircle className="uwshuffle-icon-button" />
         </button>
-        <button onClick={onToggleDarkMode} className="uwshuffle-dark-mode-button">
+        <button
+          onClick={onToggleDarkMode}
+          className="uwshuffle-dark-mode-button"
+        >
           {isDarkMode ? (
             <FiSun className="uwshuffle-icon-button" />
           ) : (

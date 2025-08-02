@@ -10,15 +10,17 @@ export const useGetProfInfoFromUwFlow = (
     []
   );
   const [profInfo, setProfInfo] = useState<ProfInfo | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const instructor = course?.instructor;
+    if (isLoading) return;
     if (!instructor) return;
-
     if (fetchedProfs.has(instructor)) {
       setProfInfo(fetchedProfs.get(instructor) ?? null);
       return;
     }
 
+    setIsLoading(true);
     fetchProfInfoFromUwFlow(instructor)
       .then((response) => {
         fetchedProfs.set(instructor, response);
@@ -27,7 +29,10 @@ export const useGetProfInfoFromUwFlow = (
       .catch((error) => {
         console.error("Failed to fetch prof info:", error);
         setProfInfo(null);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-  }, [course, fetchedProfs]);
+  }, [course, fetchedProfs, isLoading]);
   return profInfo;
 };

@@ -43,7 +43,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
               }
             >
               <FiDownload className="uwshuffle-icon-button" />
-              Export Current Schedule
+              Export Original
             </button>
             <button
               className="uwshuffle-export-button"
@@ -71,7 +71,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
               }
             >
               <FiRefreshCcw className="uwshuffle-icon-button" />
-              Export With Swapped Class
+              Export w/ Swapped Class
             </button>
           </div>
         </div>
