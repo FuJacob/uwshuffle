@@ -1,11 +1,28 @@
 import React, { useState, useEffect } from "react";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { arrayMove } from "@dnd-kit/sortable";
 import ScheduleUpload from "./ScheduleUpload";
 import InstructionsModal from "./InstructionsModal";
 import CalendarSection from "./CalendarSection";
 import PreviewInsights from "./PreviewInsights";
 import ActionBar from "./ActionBar";
+import ScheduleControls from "./ScheduleControls";
 import type { Course } from "../types";
+import type { FriendSchedule } from "../types";
 import logo from "../assets/logo.svg";
+import Joyride from "react-joyride";
 
 import {
   exportCurrentSchedule,
@@ -13,7 +30,6 @@ import {
   areTermDatesValid,
 } from "../utils/icsExport";
 import { useGetProfInfoFromUwFlow } from "../hooks/useGetProfInfoFromUwFlow";
-
 const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [previewCourse, setPreviewCourse] = useState<Course | null>(null);
@@ -28,7 +44,20 @@ const Sidebar: React.FC = () => {
   );
   const [selectedCourseToSwap, setSelectedCourseToSwap] =
     useState<Course | null>(null);
+  const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
   const profInfo = useGetProfInfoFromUwFlow(previewCourse);
+
+  const [run, setRun] = useState(false);
+  const steps = [
+    {
+      target: ".my-first-step",
+      content: "This is my awesome feature!",
+    },
+    {
+      target: ".my-other-step",
+      content: "This another awesome feature!",
+    },
+  ];
 
   // Check Chrome storage for minimized state on component mount
   useEffect(() => {
@@ -195,8 +224,85 @@ const Sidebar: React.FC = () => {
   useEffect(() => {
     console.log(profInfo);
   }, [profInfo]);
+  // Drag-and-drop sidebar section order state & logic
+  const [sections, setSections] = useState(() => {
+    const saved = localStorage.getItem("uwshuffle-sidebar-order");
+    return saved
+      ? JSON.parse(saved)
+      : ["preview", "controls", "schedule_controls", "calendar"];
+  });
+
+  // Save sidebar order to localStorage
+  useEffect(() => {
+    localStorage.setItem("uwshuffle-sidebar-order", JSON.stringify(sections));
+  }, [sections]);
+
+  const sensors = useSensors(useSensor(PointerSensor));
+
+  function renderSection(id: string) {
+    switch (id) {
+      case "preview":
+        return (
+          <PreviewInsights previewCourse={previewCourse} profInfo={profInfo} />
+        );
+      case "controls":
+        return (
+          <div className="uwshuffle-upload-section">
+            <ScheduleUpload
+              setScheduleUploadError={setScheduleUploadError}
+              onCoursesUploaded={handleCoursesUploaded}
+              onClearSchedule={handleClearSchedule}
+              courses={courses}
+              onCourseSelectedToSwap={handleCourseSelectedToSwap}
+              selectedCourseToSwap={selectedCourseToSwap}
+            />
+          </div>
+        );
+      case "schedule_controls":
+        return (
+          <ScheduleControls
+            courses={courses}
+            previewCourse={previewCourse}
+            termDatesAvailable={termDatesAvailable}
+            onExportCurrentSchedule={handleExportCurrentSchedule}
+            onExportWithSwap={handleExportWithSwap}
+            onFriendSchedulesChange={setFriendSchedules}
+            friendSchedules={friendSchedules}
+          />
+        );
+      case "calendar":
+        return (
+          <CalendarSection
+            courses={courses}
+            previewCourse={previewCourse}
+            termDatesAvailable={termDatesAvailable}
+            onExportCurrentSchedule={handleExportCurrentSchedule}
+            onExportWithSwap={handleExportWithSwap}
+            selectedCourseToSwap={selectedCourseToSwap}
+          />
+        );
+      default:
+        return null;
+    }
+  }
+
+  const handleJoyrideCallback = (data: any) => {
+    const { status, action } = data;
+    if (status === "finished" && action === "skip") {
+      setRun(false);
+    }
+  };
+
   return (
     <>
+      <Joyride
+        steps={steps}
+        run={run}
+        continuous={true}
+        showSkipButton={true}
+        showProgress={true}
+        callback={handleJoyrideCallback}
+      />
       <div
         className={`uwshuffle-sidebar ${
           isMinimized ? "uwshuffle-sidebar-minimized" : ""
@@ -214,33 +320,28 @@ const Sidebar: React.FC = () => {
                 onHelpClick={handleOpenModal}
                 onCloseSidebar={handleCloseSidebar}
               />
-
-              <PreviewInsights
-                previewCourse={previewCourse}
-                profInfo={profInfo}
-              />
-
-              {/* Upload Section */}
-              <div className="uwshuffle-upload-section">
-                <ScheduleUpload
-                  setScheduleUploadError={setScheduleUploadError}
-                  onCoursesUploaded={handleCoursesUploaded}
-                  onClearSchedule={handleClearSchedule}
-                  courses={courses}
-                  onCourseSelectedToSwap={handleCourseSelectedToSwap}
-                  selectedCourseToSwap={selectedCourseToSwap}
-                />
-              </div>
-
-              <CalendarSection
-                courses={courses}
-                previewCourse={previewCourse}
-                termDatesAvailable={termDatesAvailable}
-                onExportCurrentSchedule={handleExportCurrentSchedule}
-                onExportWithSwap={handleExportWithSwap}
-                selectedCourseToSwap={selectedCourseToSwap}
-              />
-
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={({ active, over }) => {
+                  if (active.id !== over?.id) {
+                    const oldIndex = sections.indexOf(active.id as string);
+                    const newIndex = sections.indexOf(over?.id as string);
+                    setSections(arrayMove(sections, oldIndex, newIndex));
+                  }
+                }}
+              >
+                <SortableContext
+                  items={sections}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {sections.map((id: string) => (
+                    <SortableSection key={id} id={id}>
+                      {renderSection(id)}
+                    </SortableSection>
+                  ))}
+                </SortableContext>
+              </DndContext>
               {/* Footer with modern styling */}
             </div>
           </>
@@ -268,3 +369,25 @@ const Sidebar: React.FC = () => {
 };
 
 export default Sidebar;
+
+// SortableSection wrapper for drag-and-drop
+function SortableSection({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    cursor: "grab",
+  };
+  return (
+    <div ref={setNodeRef} {...attributes} {...listeners} style={style}>
+      {children}
+    </div>
+  );
+}
