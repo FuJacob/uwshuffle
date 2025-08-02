@@ -12,6 +12,7 @@ export const useGetProfInfoFromUwFlow = (
   const [profInfo, setProfInfo] = useState<ProfInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
+    if (!course) return;
     const instructor = course?.instructor;
     if (isLoading) return;
     if (!instructor) return;

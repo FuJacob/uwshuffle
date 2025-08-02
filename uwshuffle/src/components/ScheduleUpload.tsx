@@ -14,6 +14,7 @@ import type { Course } from "../types";
 import { courseCodes } from "../constants/courseCodes";
 import { Tooltip } from "react-tooltip";
 import "./ScheduleUpload.css";
+import CurrentStep from "./CurrentStep";
 
 interface ScheduleUploadProps {
   setScheduleUploadError: (error: string | null) => void;
@@ -251,6 +252,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
             data-tooltip-id="action-center-tooltip"
             data-tooltip-content="Upload your schedule, find swap options, and clear your schedule. The central hub for all schedule management actions."
           />
+          <CurrentStep courses={courses} previewCourse={selectedCourseToSwap} />
         </div>
         <button
           onClick={() => setIsActionCenterCollapsed(!isActionCenterCollapsed)}

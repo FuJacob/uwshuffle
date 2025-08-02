@@ -3,28 +3,9 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import type { View } from "react-big-calendar";
 import moment from "moment";
 import type { Course, ParsedScheduleEvent, FriendSchedule } from "../types";
+import { convertCourseToEvents, getEventStyle } from "../utils/calendarUtils";
 
 const localizer = momentLocalizer(moment);
-
-// Function to darken a hex color
-function darkenColor(hex: string, amount: number = 20): string {
-  // Remove # if present
-  const cleanHex = hex.replace("#", "");
-
-  // Parse RGB values
-  const r = parseInt(cleanHex.substring(0, 2), 16);
-  const g = parseInt(cleanHex.substring(2, 4), 16);
-  const b = parseInt(cleanHex.substring(4, 6), 16);
-
-  // Darken by reducing each RGB component
-  const newR = Math.max(0, r - amount);
-  const newG = Math.max(0, g - amount);
-  const newB = Math.max(0, b - amount);
-
-  // Convert back to hex
-  const toHex = (n: number) => n.toString(16).padStart(2, "0");
-  return `#${toHex(newR)}${toHex(newG)}${toHex(newB)}`;
-}
 
 interface CalendarViewProps {
   courses: Course[];
@@ -42,74 +23,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   // Convert courses to calendar events
   const events = useMemo(() => {
     const allEvents: ParsedScheduleEvent[] = [];
-
-    const convertCourseToEvents = (
-      course: Course,
-      isPreview = false,
-      sourceId = "main",
-      color?: string
-    ) => {
-      const courseEvents: ParsedScheduleEvent[] = [];
-
-      // Get current week's Monday
-      const startOfWeek = moment().startOf("week").add(1, "day"); // Monday
-
-      course.days.forEach((day) => {
-        const dayMap: { [key: string]: number } = {
-          Mo: 0,
-          Tu: 1,
-          We: 2,
-          Th: 3,
-          Fr: 4,
-          // Also support single-letter format from Quest scraper
-          M: 0,
-          W: 2,
-          F: 4,
-        };
-
-        const dayOffset = dayMap[day];
-        if (dayOffset === undefined) return;
-
-        const eventDate = startOfWeek.clone().add(dayOffset, "days");
-
-        // Parse start and end times
-        const [startHour, startMinute] = course.start.split(":").map(Number);
-        const [endHour, endMinute] = course.end.split(":").map(Number);
-
-        const startTime = eventDate
-          .clone()
-          .hour(startHour)
-          .minute(startMinute)
-          .toDate();
-        const endTime = eventDate
-          .clone()
-          .hour(endHour)
-          .minute(endMinute)
-          .toDate();
-
-        courseEvents.push({
-          id: `${sourceId}-${course.course}-${day}-${course.start}-${
-            isPreview ? "preview" : "regular"
-          }`,
-          title: `${course.course} • ${moment(startTime).format(
-            "h:mm"
-          )} - ${moment(endTime).format("h:mm A")}${
-            course.location ? ` • ${course.location}` : ""
-          }${course.instructor ? ` • ${course.instructor}` : ""}`,
-          start: startTime,
-          end: endTime,
-          resource: {
-            course: course.course,
-            isPreview,
-            hasConflict: false,
-            color: color,
-          },
-          isPreview,
-        });
-      });
-
-      return courseEvents;
-    };
 
     // Add regular courses, but filter out selected course if preview is active
     const filteredCourses = courses.filter((course) => {
@@ -180,49 +93,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
   // Custom event style getter
   const eventStyleGetter = (event: ParsedScheduleEvent) => {
-    let backgroundColor = "var(--color-primary)";
-    let borderColor = "var(--color-primary-dark)";
-
-    // Use friend's color if available
-    if (event.resource?.color) {
-      backgroundColor = event.resource.color;
-      // Create darker version for border if it's a hex color
-      if (event.resource.color.startsWith("#")) {
-        borderColor = darkenColor(event.resource.color, 30);
-      } else {
-        borderColor = event.resource.color;
-      }
-      console.log(
-        "Friend event color:",
-        event.resource.color,
-        "border:",
-        borderColor,
-        "for event:",
-        event.title
-      );
-    }
-
-    if (event.isPreview) {
-      if (event.resource?.hasConflict) {
-        backgroundColor = "var(--color-error)";
-        borderColor = "var(--color-error)";
-      } else {
-        backgroundColor = "var(--color-success)";
-        borderColor = "var(--color-success)";
-      }
-    }
-
-    return {
-      style: {
-        backgroundColor,
-        border: `2px solid ${borderColor}`,
-        color: "var(--color-surface)",
-        fontSize: "11px",
-        fontWeight: "600",
-        borderRadius: "6px",
-        boxShadow: "var(--shadow-sm)",
-      },
-    };
+    return getEventStyle(event);
   };
 
   // Always show calendar, even when empty

@@ -1,14 +1,5 @@
 import { useState } from "react";
-import { pastelColors } from "../constants/courseColors";
-
-function getColorFromName(name: string) {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const idx = Math.abs(hash) % pastelColors.length;
-  return pastelColors[idx];
-}
+import { getColorFromName } from "../utils/calendarUtils";
 import {
   FiDownload,
   FiRefreshCcw,

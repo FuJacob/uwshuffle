@@ -23,65 +23,29 @@ const CurrentStep: React.FC<CurrentStepProps> = ({
   };
 
   const steps = [
-    { text: "Upload schedule", icon: FiBook },
-    { text: "Find swap options", icon: FiRefreshCcw },
-    { text: "Ready to swap", icon: FiCheckCircle },
+    { text: "1/3: Upload current schedule", icon: FiBook },
+    { text: "2/3: Click Find Swap", icon: FiRefreshCcw },
+    { text: "Done: Ready to Swap!", icon: FiCheckCircle },
   ];
 
   const currentStep = getCurrentStep();
   const progressPercentage = ((currentStep + 1) / steps.length) * 100;
 
   return (
-    <div className="uwshuffle-current-step-section">
-      <div className="uwshuffle-current-step-title">Current Stage</div>
-
-      {/* Progress Bar with embedded labels */}
-      <div className="uwshuffle-progress-bar">
-        {/* Background progress fill */}
+    <div className="uwshuffle-mini-progress">
+      <div className="uwshuffle-mini-progress-bar">
         <div
-          className="uwshuffle-progress-fill"
+          className="uwshuffle-mini-progress-fill"
           style={{ width: `${progressPercentage}%` }}
         />
-
-        {/* Step labels overlaid on the bar - All steps on wider screens */}
-        <div className="uwshuffle-step-labels uwshuffle-step-labels-full">
-          {steps.map((step, index) => {
-            const IconComponent = step.icon;
-            return (
-              <React.Fragment key={index}>
-                <div
-                  className={`uwshuffle-step-label ${
-                    index <= currentStep ? "uwshuffle-step-label-active" : ""
-                  }`}
-                >
-                  <IconComponent className="uwshuffle-step-icon" />
-                  <span className="uwshuffle-step-text">{step.text}</span>
-                </div>
-                {index < steps.length - 1 && (
-                  <div
-                    className={`uwshuffle-step-arrow ${
-                      index <= currentStep ? "uwshuffle-step-arrow-active" : ""
-                    }`}
-                  >
-                    →
-                  </div>
-                )}
-              </React.Fragment>
-            );
-          })}
-        </div>
-
-        {/* Current Step Only - Narrow screens */}
-        <div className="uwshuffle-step-labels uwshuffle-step-labels-current">
-          <div className="uwshuffle-step-label uwshuffle-step-label-active">
-            {React.createElement(steps[currentStep].icon, {
-              className: "uwshuffle-step-icon",
-            })}
-            <span className="uwshuffle-step-text">
-              {steps[currentStep].text}
-            </span>
-          </div>
-        </div>
+      </div>
+      <div className="uwshuffle-mini-step-indicator">
+        {React.createElement(steps[currentStep].icon, {
+          className: "uwshuffle-mini-step-icon",
+        })}
+        <span className="uwshuffle-mini-step-text">
+          {steps[currentStep].text}
+        </span>
       </div>
     </div>
   );
