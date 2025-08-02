@@ -253,11 +253,20 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 
       {/* Button Row */}
       <div className="schedule-upload-buttons">
-        <button onClick={handleRefresh} className="schedule-upload-secondary">
+        <button onClick={handleRefresh} className="schedule-upload-primary">
           <FiRefreshCcw className="schedule-upload-icon-button" />
           Find Swap Options
         </button>
-        <button onClick={handleReset} className="schedule-upload-secondary">
+        <button
+          onClick={handleReset}
+          className="schedule-upload-secondary schedule-upload-clear-button"
+          disabled={courses.length === 0}
+          aria-disabled={courses.length === 0}
+          style={{
+            opacity: courses.length === 0 ? 0.5 : 1,
+            cursor: courses.length === 0 ? "not-allowed" : "pointer",
+          }}
+        >
           <FiTrash2 className="schedule-upload-icon-button" />
           Clear Schedule
         </button>
@@ -287,7 +296,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
           >
             <FiClipboard className="schedule-upload-paste-icon" />
             <div className="schedule-upload-paste-text">
-              Paste area: click then Ctrl+V / Cmd+V
+              Paste your current schedule here (Click + Ctrl+V / Cmd+V)
             </div>
           </div>
         )}

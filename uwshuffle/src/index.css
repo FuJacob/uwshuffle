@@ -25,6 +25,13 @@
   --color-warning: #f59e0b;
   --color-warning-light: #fef3c7;
 
+  --color-error: #dc2626;
+  --color-error-light: #fee2e2;
+  --color-error-border: #fecaca;
+  --color-error-hover: #b91c1c;
+  --color-error-hover-bg: #fecaca;
+  --color-error-hover-border: #f87171;
+
   /* Spacing scale */
   --space-1: 4px;
   --space-2: 8px;
@@ -104,6 +111,7 @@ body {
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   border-radius: 16px 0 0 16px;
+  border: 3px solid var(--color-border);
 }
 
 /* ===== ACTION BAR SECTION ===== */
@@ -268,7 +276,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: var(--space-2) var(--space-2);
-  background-color: white;
+  background-color: var(--color-surface);
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -280,9 +288,103 @@ body {
 
 .uwshuffle-close-button:hover {
   background-color: var(--color-surface-hover);
-  color: var(--color-text-primary);
   border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
   transform: translateY(-1px);
+}
+
+.uwshuffle-help-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+  font-family: var(--font-family);
+  box-shadow: var(--shadow-sm);
+}
+
+.uwshuffle-help-button:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+}
+
+/* Modal Styles */
+.uwshuffle-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.uwshuffle-modal {
+  background-color: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  color: black;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.uwshuffle-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.uwshuffle-modal-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.uwshuffle-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-2);
+  background-color: var(--color-error-light);
+  color: var(--color-error);
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  font-family: var(--font-family);
+  box-shadow: var(--shadow-sm);
+}
+
+.uwshuffle-modal-close:hover {
+  background-color: var(--color-error-hover-bg);
+  color: var(--color-error-hover);
+  border-color: var(--color-error-hover-border);
+  transform: translateY(-1px);
+}
+
+.uwshuffle-modal-content {
+  /* No padding needed since modal already has padding */
 }
 
 /* Minimized sidebar state */
@@ -582,7 +684,7 @@ body {
 .uwshuffle-course-line {
   display: flex;
   gap: var(--space-2);
-  align-items: flex-start;
+  align-items: center;
 }
 
 .uwshuffle-icon {
@@ -593,6 +695,7 @@ body {
   flex-shrink: 0;
   width: 20px;
   height: 20px;
+  align-self: center;
 }
 
 .uwshuffle-value {
@@ -646,6 +749,7 @@ body {
 .uwshuffle-uwflow-left .uwshuffle-course-line {
   color: white;
   margin: 0;
+  align-items: center;
 }
 
 .uwshuffle-uwflow-left .uwshuffle-value {
@@ -654,6 +758,7 @@ body {
 
 .uwshuffle-uwflow-left .uwshuffle-icon {
   color: white;
+  align-self: center;
 }
 
 .uwshuffle-professor-link {
@@ -703,17 +808,34 @@ body {
 }
 
 .uwshuffle-professor-circle {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background-color: white;
   color: black;
-  border: 2px solid var(--color-primary);
+  border: 3px solid var(--color-primary);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-right: var(--space-2);
+  position: relative;
+}
+
+.uwshuffle-professor-circle::before {
+  content: "Overall";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background-color: white;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
 }
 
 .uwshuffle-professor-score {
@@ -743,11 +865,30 @@ body {
   justify-content: space-between;
 }
 
+.uwshuffle-professor-ratings span {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
 .uwshuffle-professor-reviews {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   display: flex;
   justify-content: space-between;
+}
+
+.uwshuffle-professor-reviews span {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.uwshuffle-professor-ratings .uwshuffle-icon,
+.uwshuffle-professor-reviews .uwshuffle-icon {
+  width: 16px;
+  height: 16px;
+  font-size: 14px;
 }
 
 .uwshuffle-no-preview {
@@ -762,6 +903,30 @@ body {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   text-align: center;
+  font-weight: 500;
+}
+
+/* ===== CURRENT STEP SECTION ===== */
+.uwshuffle-current-step-section {
+  flex: 0 0 auto;
+  background-color: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  color: black;
+}
+
+.uwshuffle-current-step-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.uwshuffle-current-step-content {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
   font-weight: 500;
 }
 
@@ -836,7 +1001,7 @@ body {
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
-  background-color: var(--color-surface);
+  background-color: transparent;
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -862,9 +1027,9 @@ body {
 
 .schedule-upload-clear {
   padding: var(--space-2) var(--space-3);
-  background-color: var(--color-surface);
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
+  background-color: var(--color-error-light);
+  color: var(--color-error);
+  border: 1px solid var(--color-error-border);
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
   font-weight: 500;
@@ -878,9 +1043,21 @@ body {
 }
 
 .schedule-upload-clear:hover {
-  background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
-  color: var(--color-text-primary);
+  background-color: var(--color-error-hover-bg);
+  border-color: var(--color-error-hover-border);
+  color: var(--color-error-hover);
+}
+
+.schedule-upload-clear-button {
+  background-color: var(--color-error-light) !important;
+  color: var(--color-error) !important;
+  border-color: var(--color-error-border) !important;
+}
+
+.schedule-upload-clear-button:hover {
+  background-color: var(--color-error-hover-bg) !important;
+  color: var(--color-error-hover) !important;
+  border-color: var(--color-error-hover-border) !important;
 }
 
 /* ===== FORM STYLES ===== */
@@ -907,14 +1084,13 @@ body {
 .uwshuffle-instruction-display {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-3);
 }
 
 .uwshuffle-instruction-content {
-  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: var(--space-2);
 }
 

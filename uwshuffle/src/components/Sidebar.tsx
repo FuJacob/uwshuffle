@@ -6,12 +6,13 @@ import {
   FiX,
   FiArrowRight,
   FiStar,
-  FiChevronUp,
   FiCalendar,
   FiMapPin,
   FiUser,
   FiExternalLink,
   FiCheckCircle,
+  FiMessageSquare,
+  FiHelpCircle,
 } from "react-icons/fi";
 import CalendarView from "./CalendarView";
 import ScheduleUpload from "./ScheduleUpload";
@@ -29,10 +30,9 @@ const Sidebar: React.FC = () => {
     location: "UTD 105",
   });
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
-  const [isInstructionsCollapsed, setIsInstructionsCollapsed] =
-    useState<boolean>(false);
   const [currentInstructionStep, setCurrentInstructionStep] =
     useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const instructions = [
     'Click "Swap" and enter your target course',
@@ -106,8 +106,23 @@ const Sidebar: React.FC = () => {
     );
   };
 
-  const handleToggleInstructions = () => {
-    setIsInstructionsCollapsed(!isInstructionsCollapsed);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Determine current step based on state
+  const getCurrentStep = () => {
+    if (courses.length === 0) {
+      return "Upload your schedule";
+    } else if (!previewCourse) {
+      return "Find swap options";
+    } else {
+      return "All set";
+    }
   };
 
   // addPreviewCourse is handled via message listener
@@ -150,73 +165,19 @@ const Sidebar: React.FC = () => {
                     Support us
                   </button>
                   <button
+                    onClick={handleOpenModal}
+                    className="uwshuffle-help-button"
+                  >
+                    <FiHelpCircle className="uwshuffle-icon-button" />
+                    Help
+                  </button>
+                  <button
                     onClick={handleCloseSidebar}
                     className="uwshuffle-close-button"
                   >
                     <FiX className="uwshuffle-icon-button" />
                   </button>
                 </div>
-              </div>
-
-              {/* Instructions Container */}
-              <div
-                className={`uwshuffle-instructions-container ${
-                  isInstructionsCollapsed ? "collapsed" : ""
-                }`}
-              >
-                <div
-                  className="uwshuffle-instructions-header"
-                  onClick={handleToggleInstructions}
-                >
-                  <div className="uwshuffle-instructions-title">
-                    Instructions:
-                  </div>
-                  <FiChevronUp
-                    className={`uwshuffle-instructions-caret ${
-                      isInstructionsCollapsed
-                        ? "uwshuffle-instructions-caret-collapsed"
-                        : ""
-                    }`}
-                  />
-                </div>
-
-                {!isInstructionsCollapsed && (
-                  <>
-                    {/* Instructions Video */}
-                    <iframe
-                      className="uwshuffle-instructions-video"
-                      width="560"
-                      height="315"
-                      src="https://www.youtube.com/embed/VkiwIn8Dcaw?si=40WtIsuVn1EgUHlA&amp;controls=0&autoplay=1&mute=1&loop=1"
-                      title="YouTube video player"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                    ></iframe>
-
-                    {/* Instructions Steps */}
-                    <div className="uwshuffle-instructions-section">
-                      <div className="uwshuffle-instruction-display">
-                        <div className="uwshuffle-instruction-content">
-                          <span className="uwshuffle-instruction-number">
-                            {currentInstructionStep + 1}.
-                          </span>
-                          <span className="uwshuffle-instruction-text">
-                            {instructions[currentInstructionStep]}
-                          </span>
-                        </div>
-                        <button
-                          onClick={handleNextInstruction}
-                          className="uwshuffle-instruction-next"
-                          title="Next step"
-                        >
-                          <FiArrowRight className="uwshuffle-icon-button" />
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )}
               </div>
 
               {/* Stats Section */}
@@ -303,12 +264,18 @@ const Sidebar: React.FC = () => {
                               </div>
                               <div className="uwshuffle-professor-info">
                                 <div className="uwshuffle-professor-ratings">
-                                  <span>Engaging: 4.2</span>
-                                  <span>Clarity: 4.5</span>
+                                  <span>Engaging: 84%</span>
+                                  <span>Clarity: 90%</span>
                                 </div>
                                 <div className="uwshuffle-professor-reviews">
-                                  <span>4 comments</span>
-                                  <span>127 reviews</span>
+                                  <span>
+                                    <FiMessageSquare className="uwshuffle-icon" />
+                                    4
+                                  </span>
+                                  <span>
+                                    <FiBarChart2 className="uwshuffle-icon" />
+                                    127
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -323,6 +290,16 @@ const Sidebar: React.FC = () => {
                       </div>
                     </div>
                   )}
+                </div>
+              </div>
+
+              {/* Current Step Section */}
+              <div className="uwshuffle-current-step-section">
+                <div className="uwshuffle-current-step-title">
+                  Current Step:
+                </div>
+                <div className="uwshuffle-current-step-content">
+                  {getCurrentStep()}
                 </div>
               </div>
 
@@ -361,6 +338,58 @@ const Sidebar: React.FC = () => {
         >
           <img src={logo} alt="UWShuffle" className="uwshuffle-expand-logo" />
         </button>
+      )}
+
+      {/* Instructions Modal */}
+      {isModalOpen && (
+        <div className="uwshuffle-modal-overlay" onClick={handleCloseModal}>
+          <div className="uwshuffle-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="uwshuffle-modal-header">
+              <h2 className="uwshuffle-modal-title">Instructions</h2>
+              <button
+                onClick={handleCloseModal}
+                className="uwshuffle-modal-close"
+              >
+                <FiX className="uwshuffle-icon-button" />
+              </button>
+            </div>
+            <div className="uwshuffle-modal-content">
+              {/* Instructions Video */}
+              <iframe
+                className="uwshuffle-instructions-video"
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/VkiwIn8Dcaw?si=40WtIsuVn1EgUHlA&amp;controls=0&autoplay=1&mute=1&loop=1"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+
+              {/* Instructions Steps */}
+              <div className="uwshuffle-instructions-section">
+                <div className="uwshuffle-instruction-display">
+                  <div className="uwshuffle-instruction-content">
+                    <span className="uwshuffle-instruction-number">
+                      {currentInstructionStep + 1}.
+                    </span>
+                    <span className="uwshuffle-instruction-text">
+                      {instructions[currentInstructionStep]}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleNextInstruction}
+                    className="uwshuffle-instruction-next"
+                    title="Next step"
+                  >
+                    <FiArrowRight className="uwshuffle-icon-button" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
