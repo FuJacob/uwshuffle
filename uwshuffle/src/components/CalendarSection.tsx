@@ -19,6 +19,10 @@ import {
   FiCheck,
   FiEye,
   FiEyeOff,
+  FiAlertTriangle,
+  FiCheckCircle,
+  FiUsers,
+  FiUserPlus,
 } from "react-icons/fi";
 import CalendarView from "./CalendarView";
 import type { Course } from "../types";
@@ -149,7 +153,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                     onClick={() => handleAddFriendSchedule(addFriendLink)}
                     className="uwshuffle-plus-button"
                   >
-                    <FiPlus className="uwshuffle-plus-icon" />
+                    <FiUserPlus className="uwshuffle-plus-icon" />
                   </button>
                 </div>
                 <button
@@ -277,34 +281,53 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                 data-tooltip-id="schedule-tooltip"
                 data-tooltip-content="View your weekly schedule with all courses. Preview courses appear with a different color to show potential conflicts."
               />
-              {friendSchedules.map((friendSchedule) => (
-                <button
-                  className={`uwshuffle-tag-button ${
-                    !friendSchedule.visible ? "uwshuffle-tag-button-hidden" : ""
-                  }`}
-                  style={{
-                    backgroundColor: friendSchedule.color,
-                  }}
-                  key={friendSchedule.name}
-                  onClick={() =>
-                    handleToggleFriendSchedule(friendSchedule.name)
-                  }
-                >
-                  {friendSchedule.visible ? (
-                    <FiEye className="uwshuffle-tag-icon" />
-                  ) : (
-                    <FiEyeOff className="uwshuffle-tag-icon" />
-                  )}
-                  {friendSchedule.name}
-                </button>
-              ))}
+              {/* Friend Schedule Tags */}
+              <div className="uwshuffle-friends-container">
+                <FiUsers className="uwshuffle-friends-icon" />
+                <span className="uwshuffle-friends-label">Friends</span>
+                {friendSchedules.map((friendSchedule) => (
+                  <button
+                    className={`uwshuffle-tag-button ${
+                      !friendSchedule.visible
+                        ? "uwshuffle-tag-button-hidden"
+                        : ""
+                    }`}
+                    style={{
+                      backgroundColor: friendSchedule.color,
+                    }}
+                    key={friendSchedule.name}
+                    onClick={() =>
+                      handleToggleFriendSchedule(friendSchedule.name)
+                    }
+                  >
+                    {friendSchedule.visible ? (
+                      <FiEye className="uwshuffle-tag-icon" />
+                    ) : (
+                      <FiEyeOff className="uwshuffle-tag-icon" />
+                    )}
+                    {friendSchedule.name}
+                  </button>
+                ))}
+              </div>
             </div>
+
             <button
               onClick={() => setIsCalendarCollapsed(!isCalendarCollapsed)}
               className="uwshuffle-collapse-button"
             >
               {isCalendarCollapsed ? <FiPlus /> : <FiMinus />}
             </button>
+          </div>
+          <div className="uwshuffle-legend-container">
+            <span className="uwshuffle-legend-label">Legend:</span>
+            <span className="uwshuffle-legend-item uwshuffle-legend-conflict">
+              <FiAlertTriangle className="uwshuffle-legend-icon" />
+              Conflict
+            </span>
+            <span className="uwshuffle-legend-item uwshuffle-legend-no-conflict">
+              <FiCheckCircle className="uwshuffle-legend-icon" />
+              No Conflict
+            </span>
           </div>
         </div>
         {!isCalendarCollapsed && (

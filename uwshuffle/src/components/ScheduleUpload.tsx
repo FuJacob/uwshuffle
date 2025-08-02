@@ -4,7 +4,6 @@ import {
   FiZap,
   FiTrash2,
   FiRefreshCcw,
-  FiBarChart2,
   FiCheck,
   FiPlus,
   FiMinus,
@@ -237,8 +236,9 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     setShowCourseDropdown(false);
   };
 
-  const uniqueCourses = Array.from(new Set(courses.map(c => c.course)))
-    .map(courseName => courses.find(c => c.course === courseName)!);
+  const uniqueCourses = Array.from(new Set(courses.map((c) => c.course))).map(
+    (courseName) => courses.find((c) => c.course === courseName)!
+  );
 
   return (
     <div className="schedule-upload-container">
@@ -246,7 +246,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
       <div className="schedule-upload-title-container">
         <div className="schedule-upload-title">
           Action Center
-          <FiHelpCircle 
+          <FiHelpCircle
             className="uwshuffle-help-icon"
             data-tooltip-id="action-center-tooltip"
             data-tooltip-content="Upload your schedule, find swap options, and clear your schedule. The central hub for all schedule management actions."
@@ -259,129 +259,165 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
           {isActionCenterCollapsed ? <FiPlus /> : <FiMinus />}
         </button>
       </div>
-      <Tooltip id="action-center-tooltip" place="top" className="uwshuffle-tooltip" />
-      <Tooltip id="find-swap-disabled-tooltip" place="top" className="uwshuffle-tooltip" />
-      <Tooltip id="clear-schedule-disabled-tooltip" place="top" className="uwshuffle-tooltip" />
-      <Tooltip id="select-course-disabled-tooltip" place="top" className="uwshuffle-tooltip" />
+      <Tooltip
+        id="action-center-tooltip"
+        place="top"
+        className="uwshuffle-tooltip"
+      />
+      <Tooltip
+        id="find-swap-disabled-tooltip"
+        place="top"
+        className="uwshuffle-tooltip"
+      />
+      <Tooltip
+        id="clear-schedule-disabled-tooltip"
+        place="top"
+        className="uwshuffle-tooltip"
+      />
+      <Tooltip
+        id="select-course-disabled-tooltip"
+        place="top"
+        className="uwshuffle-tooltip"
+      />
 
       {/* Button Row */}
       {!isActionCenterCollapsed && (
         <>
           <div className="schedule-upload-buttons">
-        <button
-          onClick={handleRefresh}
-          className="schedule-upload-primary"
-          disabled={courses.length === 0}
-          aria-disabled={courses.length === 0}
-          style={{
-            opacity: courses.length === 0 ? 0.5 : 1,
-            cursor: courses.length === 0 ? "not-allowed" : "pointer",
-          }}
-          data-tooltip-id={courses.length === 0 ? "find-swap-disabled-tooltip" : undefined}
-          data-tooltip-content={courses.length === 0 ? "Please upload your schedule first to find swap options" : undefined}
-        >
-          {showFindSuccess ? (
-            <FiCheck className="schedule-upload-icon-button" />
-          ) : (
-            <FiRefreshCcw className="schedule-upload-icon-button" />
-          )}
-          Find Swap Options
-        </button>
-        <button
-          onClick={handleReset}
-          className="schedule-upload-secondary schedule-upload-clear-button"
-          disabled={courses.length === 0}
-          aria-disabled={courses.length === 0}
-          style={{
-            opacity: courses.length === 0 ? 0.5 : 1,
-            cursor: courses.length === 0 ? "not-allowed" : "pointer",
-          }}
-          data-tooltip-id={courses.length === 0 ? "clear-schedule-disabled-tooltip" : undefined}
-          data-tooltip-content={courses.length === 0 ? "No schedule to clear - please upload your courses first" : undefined}
-        >
-          {showClearSuccess ? (
-            <FiCheck className="schedule-upload-icon-button" />
-          ) : (
-            <FiTrash2 className="schedule-upload-icon-button" />
-          )}
-          Clear Schedule
-        </button>
-        <div className="schedule-upload-course-dropdown-container">
-          <button
-            onClick={() => setShowCourseDropdown(!showCourseDropdown)}
-            className="schedule-upload-secondary"
-            disabled={courses.length === 0}
-            aria-disabled={courses.length === 0}
-            style={{
-              opacity: courses.length === 0 ? 0.5 : 1,
-              cursor: courses.length === 0 ? "not-allowed" : "pointer",
-            }}
-            data-tooltip-id={courses.length === 0 ? "select-course-disabled-tooltip" : undefined}
-            data-tooltip-content={courses.length === 0 ? "Upload your schedule first to select a course to swap" : undefined}
-          >
-            <FiChevronDown className="schedule-upload-icon-button" />
-            {selectedCourseToSwap ? selectedCourseToSwap.course : "Select Course"}
-          </button>
-          {showCourseDropdown && courses.length > 0 && (
-            <div className="schedule-upload-dropdown">
-              {uniqueCourses.map((course) => (
-                <button
-                  key={course.course}
-                  onClick={() => handleCourseSelect(course)}
-                  className={`schedule-upload-dropdown-item ${
-                    selectedCourseToSwap?.course === course.course ? "selected" : ""
-                  }`}
-                >
-                  {course.course}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+            <button
+              onClick={handleRefresh}
+              className="schedule-upload-primary"
+              disabled={courses.length === 0}
+              aria-disabled={courses.length === 0}
+              style={{
+                opacity: courses.length === 0 ? 0.5 : 1,
+                cursor: courses.length === 0 ? "not-allowed" : "pointer",
+              }}
+              data-tooltip-id={
+                courses.length === 0 ? "find-swap-disabled-tooltip" : undefined
+              }
+              data-tooltip-content={
+                courses.length === 0
+                  ? "Please upload your schedule first to find swap options"
+                  : undefined
+              }
+            >
+              {showFindSuccess ? (
+                <FiCheck className="schedule-upload-icon-button" />
+              ) : (
+                <FiRefreshCcw className="schedule-upload-icon-button" />
+              )}
+              Get my Swaps!
+            </button>
+            <button
+              onClick={handleReset}
+              className="schedule-upload-secondary schedule-upload-clear-button"
+              disabled={courses.length === 0}
+              aria-disabled={courses.length === 0}
+              style={{
+                opacity: courses.length === 0 ? 0.5 : 1,
+                cursor: courses.length === 0 ? "not-allowed" : "pointer",
+              }}
+              data-tooltip-id={
+                courses.length === 0
+                  ? "clear-schedule-disabled-tooltip"
+                  : undefined
+              }
+              data-tooltip-content={
+                courses.length === 0
+                  ? "No schedule to clear - please upload your courses first"
+                  : undefined
+              }
+            >
+              {showClearSuccess ? (
+                <FiCheck className="schedule-upload-icon-button" />
+              ) : (
+                <FiTrash2 className="schedule-upload-icon-button" />
+              )}
+              Clear Schedule
+            </button>
+          </div>
 
-      {/* Large Paste Card */}
-      <div className="schedule-upload-paste-card">
-        {isPasted ? (
-          <div className="schedule-upload-success">
-            <FiZap className="schedule-upload-success-icon" />
-            <div className="schedule-upload-success-text">
-              Schedule uploaded successfully!
-            </div>
+          {/* Large Paste Card */}
+          <div className="schedule-upload-paste-card">
+            {isPasted ? (
+              <div className="schedule-upload-success">
+                <FiCheck className="schedule-upload-success-icon" />
+                <div className="schedule-upload-success-text">
+                  {" "}
+                  {new Set(courses.map((c) => c.course)).size} course
+                  {new Set(courses.map((c) => c.course)).size !== 1
+                    ? "s"
+                    : ""}{" "}
+                  uploaded successfully
+                </div>
+              </div>
+            ) : isProcessing ? (
+              <div className="schedule-upload-processing">
+                <FiZap className="schedule-upload-processing-icon" />
+                <div className="schedule-upload-processing-text">
+                  Processing schedule...
+                </div>
+              </div>
+            ) : (
+              <div
+                className="schedule-upload-paste-zone"
+                onPaste={handlePaste}
+                tabIndex={0}
+              >
+                <FiClipboard className="schedule-upload-paste-icon" />
+                <div className="schedule-upload-paste-text">
+                  Paste your current schedule here (Click + Ctrl+V / Cmd+V)
+                </div>
+              </div>
+            )}
           </div>
-        ) : isProcessing ? (
-          <div className="schedule-upload-processing">
-            <FiZap className="schedule-upload-processing-icon" />
-            <div className="schedule-upload-processing-text">
-              Processing schedule...
-            </div>
-          </div>
-        ) : (
-          <div
-            className="schedule-upload-paste-zone"
-            onPaste={handlePaste}
-            tabIndex={0}
-          >
-            <FiClipboard className="schedule-upload-paste-icon" />
-            <div className="schedule-upload-paste-text">
-              Paste your current schedule here (Click + Ctrl+V / Cmd+V)
-            </div>
-          </div>
-        )}
-      </div>
 
-      {/* Courses Loaded Info */}
-      <div className="schedule-upload-courses-info">
-        {courses.length === 0 ? (
-          <>No courses loaded</>
-        ) : (
-          <>
-            <FiBarChart2 className="uwshuffle-icon" />
-            {new Set(courses.map((c) => c.course)).size} course
-            {new Set(courses.map((c) => c.course)).size !== 1 ? "s" : ""} loaded
-          </>
-        )}
-      </div>
+          {/* Course Selection Dropdown */}
+          <div className="schedule-upload-course-dropdown-container">
+            <button
+              onClick={() => setShowCourseDropdown(!showCourseDropdown)}
+              className="schedule-upload-secondary"
+              disabled={courses.length === 0}
+              aria-disabled={courses.length === 0}
+              style={{
+                opacity: courses.length === 0 ? 0.5 : 1,
+                cursor: courses.length === 0 ? "not-allowed" : "pointer",
+              }}
+              data-tooltip-id={
+                courses.length === 0
+                  ? "select-course-disabled-tooltip"
+                  : undefined
+              }
+              data-tooltip-content={
+                courses.length === 0
+                  ? "Upload your schedule first to select a course to swap"
+                  : undefined
+              }
+            >
+              <FiChevronDown className="schedule-upload-icon-button" />
+              {selectedCourseToSwap
+                ? selectedCourseToSwap.course
+                : "Now, pick the course you want to swap"}
+            </button>
+            {showCourseDropdown && courses.length > 0 && (
+              <div className="schedule-upload-dropdown">
+                {uniqueCourses.map((course) => (
+                  <button
+                    key={course.course}
+                    onClick={() => handleCourseSelect(course)}
+                    className={`schedule-upload-dropdown-item ${
+                      selectedCourseToSwap?.course === course.course
+                        ? "selected"
+                        : ""
+                    }`}
+                  >
+                    {course.course}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </>
       )}
     </div>
