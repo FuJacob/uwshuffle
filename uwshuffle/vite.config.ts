@@ -8,6 +8,11 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  root: '.',
+  server: {
+    port: 5173,
+    open: '/sidebar.html'
+  },
   build: {
     rollupOptions: {
       input: {

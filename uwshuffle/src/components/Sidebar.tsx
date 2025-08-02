@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  FiClipboard,
   FiBook,
   FiBarChart2,
   FiHeart,
@@ -8,6 +7,9 @@ import {
   FiArrowRight,
   FiStar,
   FiChevronUp,
+  FiCalendar,
+  FiMapPin,
+  FiUser,
 } from "react-icons/fi";
 import CalendarView from "./CalendarView";
 import ScheduleUpload from "./ScheduleUpload";
@@ -211,6 +213,86 @@ const Sidebar: React.FC = () => {
                 )}
               </div>
 
+              {/* Stats Section */}
+              <div className="uwshuffle-stats-section">
+                <div className="uwshuffle-stats-title">Preview Insights</div>
+                <div className="uwshuffle-stats-content">
+                  {previewCourse ? (
+                    <>
+                      <div className="uwshuffle-preview-containers">
+                        <div className="uwshuffle-course-container">
+                          <div className="uwshuffle-course-details">
+                            <div className="uwshuffle-course-line">
+                              <span className="uwshuffle-icon">
+                                <FiBook />
+                              </span>
+                              <span className="uwshuffle-value">
+                                {previewCourse.course}
+                              </span>
+                            </div>
+                            <div className="uwshuffle-course-line">
+                              <span className="uwshuffle-icon">
+                                <FiCalendar />
+                              </span>
+                              <span className="uwshuffle-value">
+                                {previewCourse.days?.join(", ")} •{" "}
+                                {previewCourse.start} - {previewCourse.end}
+                              </span>
+                            </div>
+                            <div className="uwshuffle-course-line">
+                              <span className="uwshuffle-icon">
+                                <FiMapPin />
+                              </span>
+                              <span className="uwshuffle-value">
+                                {previewCourse.location}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="uwshuffle-professor-container">
+                          <div className="uwshuffle-uwflow-container">
+                            <div className="uwshuffle-uwflow-title">
+                              UW Flow
+                            </div>
+                            <div className="uwshuffle-professor-details">
+                              <div className="uwshuffle-course-line">
+                                <span className="uwshuffle-icon">
+                                  <FiUser />
+                                </span>
+                                <span className="uwshuffle-value">
+                                  Dr. Smith
+                                </span>
+                              </div>
+                              <div className="uwshuffle-professor-content">
+                                <div className="uwshuffle-professor-circle">
+                                  <div className="uwshuffle-professor-score">
+                                    95%
+                                  </div>
+                                </div>
+                                <div className="uwshuffle-professor-info">
+                                  <div className="uwshuffle-professor-ratings">
+                                    Engaging: 4.2 • Clarity: 4.5
+                                  </div>
+                                  <div className="uwshuffle-professor-reviews">
+                                    4 comments • 127 reviews
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="uwshuffle-no-preview">
+                      <div className="uwshuffle-no-preview-text">
+                        No course selected for preview
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* Upload Section */}
               <div className="uwshuffle-upload-section">
                 <ScheduleUpload
@@ -251,22 +333,6 @@ const Sidebar: React.FC = () => {
               </div>
             </div>
           </>
-        )}
-        {/* Preview Controls with modern card styling */}
-        {previewCourse && !isMinimized && (
-          <div className="uwshuffle-preview-section">
-            <div className="uwshuffle-preview-card">
-              <div className="uwshuffle-preview-title">
-                <FiClipboard className="uwshuffle-icon" />
-                Preview: {previewCourse.course}
-              </div>
-              <div className="uwshuffle-preview-details">
-                {previewCourse.days?.join(", ")} • {previewCourse.start} -{" "}
-                {previewCourse.end}
-                {previewCourse.location && ` • ${previewCourse.location}`}
-              </div>
-            </div>
-          </div>
         )}
       </div>
 

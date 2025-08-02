@@ -17,30 +17,13 @@
   --color-primary: #6366f1;
   --color-primary-hover: #4f46e5;
   --color-primary-light: #e0e7ff;
-  --color-primary-dark: #3730a3;
-
-  --color-secondary: #8b5cf6;
-  --color-secondary-hover: #7c3aed;
-  --color-secondary-light: #ede9fe;
-  --color-secondary-dark: #5b21b6;
-
-  --color-accent: #06b6d4;
-  --color-accent-hover: #0891b2;
-  --color-accent-light: #cffafe;
-  --color-accent-dark: #0e7490;
 
   /* Status Colors */
   --color-success: #10b981;
   --color-success-light: #d1fae5;
-  --color-success-dark: #047857;
 
   --color-warning: #f59e0b;
   --color-warning-light: #fef3c7;
-  --color-warning-dark: #d97706;
-
-  --color-error: #ef4444;
-  --color-error-light: #fee2e2;
-  --color-error-dark: #dc2626;
 
   /* Spacing scale */
   --space-1: 4px;
@@ -364,6 +347,10 @@ body {
   margin-right: auto;
 }
 
+.rbc-day-slot .rbc-events-container {
+  margin-right: 0 !important;
+}
+
 /* ===== INSTRUCTIONS CONTAINER ===== */
 .uwshuffle-instructions-container {
   background-color: white;
@@ -417,6 +404,265 @@ body {
   box-shadow: none;
   border: none;
   color: black;
+}
+
+/* ===== STATS SECTION ===== */
+.uwshuffle-stats-section {
+  flex: 0 0 auto;
+  background-color: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  color: black;
+}
+
+.uwshuffle-stats-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.uwshuffle-stats-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.uwshuffle-stats-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.uwshuffle-stats-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.uwshuffle-stats-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.uwshuffle-stats-like {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.uwshuffle-stats-clear {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.uwshuffle-stats-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.uwshuffle-stats-line {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.uwshuffle-course-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+
+.uwshuffle-course-line {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.uwshuffle-professor-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.uwshuffle-professor-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.uwshuffle-professor-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.uwshuffle-professor-score {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.uwshuffle-professor-name {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.uwshuffle-professor-ratings {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.uwshuffle-preview-containers {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.uwshuffle-course-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.uwshuffle-course-line {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+}
+
+.uwshuffle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.uwshuffle-value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+.uwshuffle-course-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.uwshuffle-professor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.uwshuffle-uwflow-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background-color: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  color: black;
+}
+
+.uwshuffle-uwflow-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.uwshuffle-professor-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.uwshuffle-professor-content {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  margin-top: var(--space-1);
+}
+
+.uwshuffle-professor-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  color: black;
+  border: 2px solid var(--color-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.uwshuffle-professor-score {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.uwshuffle-professor-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1;
+}
+
+.uwshuffle-professor-name {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.uwshuffle-professor-ratings {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.uwshuffle-professor-reviews {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.uwshuffle-no-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  padding: var(--space-4);
+}
+
+.uwshuffle-no-preview-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+  font-weight: 500;
 }
 
 /* ===== UPLOAD SECTION ===== */
@@ -931,4 +1177,8 @@ body {
 
 .uwshuffle-calendar-wrapper {
   height: 100% !important;
+}
+
+.rbc-allday-cell {
+  display: none;
 }

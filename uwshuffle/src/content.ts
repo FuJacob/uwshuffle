@@ -4,7 +4,7 @@
 import QuestScraper from "./utils/questScraper";
 
 const SIDEBAR_ID = "uwshuffle-sidebar";
-const SIDEBAR_WIDTH = "15vw";
+const SIDEBAR_WIDTH = "20vw";
 
 function createSidebar() {
   // Check if sidebar already exists
@@ -28,8 +28,8 @@ function createSidebar() {
   background: transparent;
   border-radius: 16px 0 0 16px;
   resize: horizontal;
-  min-width: 300px;
-  max-width: 50vw;
+  min-width: 20vw;
+  max-width: 60vw;
 `;
   // Add sidebar to page
   document.body.appendChild(sidebar);
