@@ -366,9 +366,9 @@ body {
   align-items: center;
   justify-content: center;
   padding: var(--space-2) var(--space-2);
-  background-color: var(--color-error-light);
-  color: var(--color-error);
-  border: 1px solid var(--color-error-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: var(--transition-fast);
@@ -377,14 +377,10 @@ body {
 }
 
 .uwshuffle-modal-close:hover {
-  background-color: var(--color-error-hover-bg);
-  color: var(--color-error-hover);
-  border-color: var(--color-error-hover-border);
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
   transform: translateY(-1px);
-}
-
-.uwshuffle-modal-content {
-  /* No padding needed since modal already has padding */
 }
 
 /* Minimized sidebar state */
@@ -1387,7 +1383,7 @@ body {
 .rbc-calendar {
   font-family: var(--font-family) !important;
   background: white !important;
-  border: 1px solid var(--color-border) !important;
+  border: 0.5px solid var(--color-border) !important;
   border-radius: var(--radius-md) !important;
   width: 100% !important;
   height: 100% !important;
@@ -1400,13 +1396,13 @@ body {
 
 /* Single row header - Monday to Friday */
 .rbc-time-header {
-  border-bottom: 1px solid var(--color-border) !important;
+  border-bottom: 0.5px solid var(--color-border) !important;
   background: var(--color-background) !important;
 }
 
 .rbc-header {
   background: var(--color-background) !important;
-  border-right: 1px solid var(--color-border) !important;
+  border-right: 0.5px solid var(--color-border) !important;
   padding: var(--space-2) !important;
   font-size: var(--font-size-sm) !important;
   font-weight: 600 !important;
@@ -1422,7 +1418,7 @@ body {
 /* Time column (8am-8pm) */
 .rbc-time-gutter {
   background: var(--color-background) !important;
-  border-right: 1px solid var(--color-border) !important;
+  border-right: 0.5px solid var(--color-border) !important;
   width: 60px !important;
 }
 
@@ -1436,7 +1432,7 @@ body {
 /* Day columns */
 .rbc-day-slot {
   background: white !important;
-  border-right: 1px solid var(--color-border) !important;
+  border-right: 0.5px solid var(--color-border) !important;
 }
 
 .rbc-day-slot:last-child {
@@ -1445,7 +1441,7 @@ body {
 
 /* Time slots */
 .rbc-time-slot {
-  border-top: 1px solid var(--color-border) !important;
+  border-top: 0.5px solid var(--color-border) !important;
 }
 
 /* Events */

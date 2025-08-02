@@ -34,6 +34,16 @@ const Sidebar: React.FC = () => {
     useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  useEffect(() => {
+    chrome.storage.local.get("uwshuffle_new_user").then((result) => {
+      if (result.uwshuffle_onboarding_completed == true) {
+        setIsModalOpen(false);
+      } else {
+        setIsModalOpen(true);
+      }
+    });
+  }, []);
+
   const instructions = [
     'Click "Swap" and enter your target course',
     'Click "Show All" and copy schedule',
@@ -112,6 +122,7 @@ const Sidebar: React.FC = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    chrome.storage.local.set({ uwshuffle_onboarding_completed: true });
   };
 
   // Determine current step based on state
