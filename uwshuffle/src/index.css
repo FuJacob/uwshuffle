@@ -1340,10 +1340,10 @@ body {
 .schedule-upload-container {
   display: flex;
   flex-direction: column;
-  gap: var(--space-);
+  gap: var(--space-3);
   padding: var(--space-4);
   background-color: var(--color-surface);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
 }
@@ -1353,9 +1353,9 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-
-  padding-bottom: var(--space-2);
+  padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-3);
 }
 
 .schedule-upload-title {
@@ -1372,11 +1372,11 @@ body {
   display: flex;
   align-items: center;
   width: 100%;
-  margin-bottom: var(--space-3);
 }
 
 .schedule-upload-course-dropdown-container {
-  margin-bottom: var(--space-3);
+  position: relative;
+  width: 100%;
 }
 
 /* ===== HELP ICON STYLES ===== */
@@ -1450,10 +1450,6 @@ body {
 }
 
 /* Course selection dropdown */
-.schedule-upload-course-dropdown-container {
-  position: relative;
-  width: 100%;
-}
 
 .schedule-upload-dropdown {
   position: absolute;
@@ -2235,7 +2231,7 @@ body {
   font-weight: 500;
   color: var(--color-text-primary);
   white-space: nowrap;
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-1);
 }
 
 /* Plus button styles - primary icon only */

@@ -1,8 +1,18 @@
-import { FiHelpCircle, FiEye, FiEyeOff, FiUsers } from "react-icons/fi";
+import React, { useState } from "react";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import {
+  FiPlus,
+  FiMinus,
+  FiHelpCircle,
+  FiUsers,
+  FiEye,
+  FiEyeOff,
+} from "react-icons/fi";
+import type { Course, FriendSchedule } from "../types";
+import ScheduleControls from "./ScheduleControls";
 import CalendarView from "./CalendarView";
-
-import type { Course } from "../types";
-import type { FriendSchedule } from "../types";
 import { Tooltip } from "react-tooltip";
 
 interface CalendarSectionProps {
@@ -20,8 +30,8 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
   friendSchedules,
   setFriendSchedules,
 }) => {
-  // const [isCalendarCollapsed, setIsCalendarCollapsed] =
-  //   useState<boolean>(false);
+  const [isCalendarCollapsed, setIsCalendarCollapsed] =
+    useState<boolean>(false);
 
   const handleToggleFriendSchedule = (name: string) => {
     setFriendSchedules((prev: FriendSchedule[]) =>
@@ -39,14 +49,24 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
           <div className="uwshuffle-calendar-header-top">
             <div className="uwshuffle-calendar-title">
               <div className="uwshuffle-calendar-title-content">
-                <div className="uwshuffle-schedule-title-group">
-                  <span>Schedule</span>
-                  <FiHelpCircle
-                    className="uwshuffle-help-icon"
-                    data-tooltip-id="schedule-tooltip"
-                    data-tooltip-content="View your weekly schedule with all courses. Preview courses appear with a different color to show potential conflicts."
-                  />
-                </div>
+                <span className="uwshuffle-calendar-title-text">Schedule</span>
+                <FiHelpCircle
+                  className="uwshuffle-help-icon"
+                  data-tooltip-id="calendar-tooltip"
+                  data-tooltip-content="View your current schedule and any friend schedules you've added. You can also export your schedule to Google Calendar."
+                />
+              </div>
+            </div>
+            <button
+              onClick={() => setIsCalendarCollapsed(!isCalendarCollapsed)}
+              className="uwshuffle-collapse-button"
+            >
+              {isCalendarCollapsed ? <FiPlus /> : <FiMinus />}
+            </button>
+          </div>
+          {!isCalendarCollapsed && (
+            <>
+              <div className="uwshuffle-schedule-title-group">
                 {/* Friend Schedule Tags */}
                 <div className="uwshuffle-friends-container">
                   <FiUsers className="uwshuffle-friends-icon" />
@@ -76,15 +96,8 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                   ))}
                 </div>
               </div>
-            </div>
-
-            {/* <button
-              onClick={() => setIsCalendarCollapsed(!isCalendarCollapsed)}
-              className="uwshuffle-collapse-button"
-            >
-              {isCalendarCollapsed ? <FiPlus /> : <FiMinus />}
-            </button> */}
-          </div>
+            </>
+          )}
         </div>
         <div className="uwshuffle-calendar-content">
           <CalendarView

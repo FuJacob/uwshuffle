@@ -6,6 +6,8 @@ import {
   FiBook,
   FiRefreshCcw,
   FiCheckCircle,
+  FiPlus,
+  FiMinus,
 } from "react-icons/fi";
 import type { Course } from "../types";
 import { Tooltip } from "react-tooltip";
@@ -39,7 +41,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [showFindSuccess, setShowFindSuccess] = useState(false);
   const [showClearSuccess, setShowClearSuccess] = useState(false);
-  // const [isActionCenterCollapsed, setIsActionCenterCollapsed] = useState(false);
+  const [isActionCenterCollapsed, setIsActionCenterCollapsed] = useState(false);
   const [showCourseDropdown, setShowCourseDropdown] = useState(false);
 
   useEffect(() => {
@@ -132,12 +134,12 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
             data-tooltip-content="Upload your schedule, find swap options, and clear your schedule. The central hub for all schedule management actions."
           />
         </div>
-        {/* <button
+        <button
           onClick={() => setIsActionCenterCollapsed(!isActionCenterCollapsed)}
           className="uwshuffle-collapse-button"
         >
           {isActionCenterCollapsed ? <FiPlus /> : <FiMinus />}
-        </button> */}
+        </button>
       </div>
       <Tooltip
         id="action-center-tooltip"
@@ -159,145 +161,152 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
         place="top"
         className="uwshuffle-tooltip"
       />
-      {/* Large Paste Card */}
-      <label className="uwshuffle-input-label">
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--space-2)",
-          }}
-        >
-          {courses.length === 0 ? (
-            <FiBook style={{ color: "var(--color-primary)", opacity: 0.7 }} />
-          ) : (
-            <FiCheckCircle style={{ color: "var(--color-primary)" }} />
-          )}
-          <span
-            style={{
-              color:
-                !courses || courses.length === 0
-                  ? "var(--color-text-primary)"
-                  : "var(--color-text-tertiary)",
-            }}
-          >
-            1/3: To start, paste your current schedule below
-          </span>
-        </div>
-      </label>
-      {isPasted ? (
-        <UploadSuccessCard
-          courses={courses}
-          onReset={handleReset}
-          showClearSuccess={showClearSuccess}
-        />
-      ) : isProcessing ? (
-        <ProcessingCard />
-      ) : (
-        <PasteZone onPaste={handlePaste} isActive={courses.length === 0} />
-      )}
-
-      <label className="uwshuffle-input-label">
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--space-2)",
-          }}
-        >
-          {selectedCourseToSwap ? (
-            <FiCheckCircle style={{ color: "var(--color-primary)" }} />
-          ) : (
-            <FiBook style={{ color: "var(--color-primary)", opacity: 0.7 }} />
-          )}
-          <span
-            style={{
-              color:
-                !selectedCourseToSwap && courses.length !== 0
-                  ? "var(--color-text-primary)"
-                  : "var(--color-text-tertiary)",
-            }}
-          >
-            2/3: Then select the existing course you're looking to swap
-          </span>
-        </div>
-      </label>
-      <CourseDropdown
-        courses={courses}
-        selectedCourse={selectedCourseToSwap}
-        onCourseSelect={handleCourseSelect}
-        showDropdown={showCourseDropdown}
-        onToggleDropdown={() => setShowCourseDropdown(!showCourseDropdown)}
-        disabled={courses.length === 0}
-        tooltipId="select-course-disabled-tooltip"
-        tooltipContent="Upload your schedule first to select a course to swap"
-        isActive={courses.length !== 0 && !selectedCourseToSwap}
-      />
-      <label className="uwshuffle-input-label">
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--space-2)",
-          }}
-        >
-          {courses.length === 0 ? (
-            <FiRefreshCcw
-              style={{ color: "var(--color-primary)", opacity: 0.7 }}
+      {!isActionCenterCollapsed && (
+        <>
+          {/* Large Paste Card */}
+          <label className="uwshuffle-input-label">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "var(--space-2)",
+              }}
+            >
+              {courses.length === 0 ? (
+                <FiBook
+                  style={{ color: "var(--color-primary)", opacity: 0.7 }}
+                />
+              ) : (
+                <FiCheckCircle style={{ color: "var(--color-primary)" }} />
+              )}
+              <span
+                style={{
+                  color:
+                    !courses || courses.length === 0
+                      ? "var(--color-text-primary)"
+                      : "var(--color-text-tertiary)",
+                }}
+              >
+                1/3: To start, paste your current schedule below
+              </span>
+            </div>
+          </label>
+          {isPasted ? (
+            <UploadSuccessCard
+              courses={courses}
+              onReset={handleReset}
+              showClearSuccess={showClearSuccess}
             />
+          ) : isProcessing ? (
+            <ProcessingCard />
           ) : (
-            <FiCheckCircle style={{ color: "var(--color-primary)" }} />
+            <PasteZone onPaste={handlePaste} isActive={courses.length === 0} />
           )}
-          <span
-            style={{
-              color:
-                !selectedCourseToSwap && courses.length !== 0
-                  ? "var(--color-text-tertiary)"
-                  : "var(--color-text-primary)",
-            }}
-          >
-            Done! Click Scrape Swaps to get your swap options!
-          </span>
-        </div>
-      </label>
-      <div className="schedule-upload-button-container">
-        <button
-          onClick={handleRefresh}
-          className={`schedule-upload-primary ${
-            courses.length !== 0 && selectedCourseToSwap ? "active" : ""
-          }`}
-          disabled={courses.length === 0 || !selectedCourseToSwap}
-          aria-disabled={courses.length === 0 || !selectedCourseToSwap}
-          style={{
-            opacity: courses.length === 0 || !selectedCourseToSwap ? 0.5 : 1,
-            cursor:
-              courses.length === 0 || !selectedCourseToSwap
-                ? "not-allowed"
-                : "pointer",
-          }}
-          data-tooltip-id={
-            courses.length === 0 || !selectedCourseToSwap
-              ? "find-swap-disabled-tooltip"
-              : undefined
-          }
-          data-tooltip-content={
-            courses.length === 0
-              ? "Please upload your schedule first to find swap options"
-              : !selectedCourseToSwap
-              ? "Please select a course to swap first"
-              : undefined
-          }
-        >
-          {showFindSuccess ? (
-            <FiCheck className="schedule-upload-icon-button" />
-          ) : (
-            <FiEye className="schedule-upload-icon-button" />
-          )}
-          Scrape Swaps
-        </button>
-      </div>
 
-      {/* )} */}
+          <label className="uwshuffle-input-label">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "var(--space-2)",
+              }}
+            >
+              {selectedCourseToSwap ? (
+                <FiCheckCircle style={{ color: "var(--color-primary)" }} />
+              ) : (
+                <FiBook
+                  style={{ color: "var(--color-primary)", opacity: 0.7 }}
+                />
+              )}
+              <span
+                style={{
+                  color:
+                    !selectedCourseToSwap && courses.length !== 0
+                      ? "var(--color-text-primary)"
+                      : "var(--color-text-tertiary)",
+                }}
+              >
+                2/3: Then select the existing course you're looking to swap
+              </span>
+            </div>
+          </label>
+          <CourseDropdown
+            courses={courses}
+            selectedCourse={selectedCourseToSwap}
+            onCourseSelect={handleCourseSelect}
+            showDropdown={showCourseDropdown}
+            onToggleDropdown={() => setShowCourseDropdown(!showCourseDropdown)}
+            disabled={courses.length === 0}
+            tooltipId="select-course-disabled-tooltip"
+            tooltipContent="Upload your schedule first to select a course to swap"
+            isActive={courses.length !== 0 && !selectedCourseToSwap}
+          />
+          <label className="uwshuffle-input-label">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "var(--space-2)",
+              }}
+            >
+              {courses.length === 0 ? (
+                <FiRefreshCcw
+                  style={{ color: "var(--color-primary)", opacity: 0.7 }}
+                />
+              ) : (
+                <FiCheckCircle style={{ color: "var(--color-primary)" }} />
+              )}
+              <span
+                style={{
+                  color:
+                    selectedCourseToSwap && courses.length !== 0
+                      ? "var(--color-text-primary)"
+                      : "var(--color-text-tertiary)",
+                }}
+              >
+                3/3: Click Scrape Swaps to get your swap options!
+              </span>
+            </div>
+          </label>
+          <div className="schedule-upload-button-container">
+            <button
+              onClick={handleRefresh}
+              className={`schedule-upload-primary ${
+                courses.length !== 0 && selectedCourseToSwap ? "active" : ""
+              }`}
+              disabled={courses.length === 0 || !selectedCourseToSwap}
+              aria-disabled={courses.length === 0 || !selectedCourseToSwap}
+              style={{
+                opacity:
+                  courses.length === 0 || !selectedCourseToSwap ? 0.5 : 1,
+                cursor:
+                  courses.length === 0 || !selectedCourseToSwap
+                    ? "not-allowed"
+                    : "pointer",
+              }}
+              data-tooltip-id={
+                courses.length === 0 || !selectedCourseToSwap
+                  ? "find-swap-disabled-tooltip"
+                  : undefined
+              }
+              data-tooltip-content={
+                courses.length === 0
+                  ? "Please upload your schedule first to find swap options"
+                  : !selectedCourseToSwap
+                  ? "Please select a course to swap first"
+                  : undefined
+              }
+            >
+              {showFindSuccess ? (
+                <FiCheck className="schedule-upload-icon-button" />
+              ) : (
+                <FiEye className="schedule-upload-icon-button" />
+              )}
+              Scrape Swaps
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
