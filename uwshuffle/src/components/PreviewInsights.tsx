@@ -124,11 +124,12 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                   <a
                     href={
                       profInfo?.name
-                        ? `https://uwflow.com/professor/${profInfo.name
-                            .toLowerCase()
-                            .replace(/\s+/g, "-")
-                            .replace(/[^a-z0-9-]/g, "")
-                            .replace(/ /g, "-")}`
+                        ? `https://uwflow.com/professor/${
+                            profInfo.name
+                              .toLowerCase()
+                              .replace(/\s+/g, "_") // spaces to underscores
+                              .replace(/[^a-z0-9_]/g, "") // remove everything except a-z, 0-9, _
+                          }`
                         : "https://uwflow.com"
                     }
                     target="_blank"
@@ -174,7 +175,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                     <span>
                       Clarity:{" "}
                       {profInfo?.rating.clear
-                        ? Math.round(profInfo?.rating.clear) + "%"
+                        ? profInfo?.rating.clear + "%"
                         : "~%"}
                     </span>
                     <span>

@@ -84,6 +84,13 @@
   --transition-fast: 150ms ease;
   --transition-base: 200ms ease;
   --transition-slow: 300ms ease;
+  
+  /* Modern hover transitions */
+  --transition-hover: 120ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  --transition-hover-slow: 180ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  --hover-scale: 1.02;
+  --hover-scale-button: 1.01;
+  --shadow-hover: 0 8px 25px -8px rgba(0, 0, 0, 0.18), 0 3px 10px -5px rgba(0, 0, 0, 0.12);
 
   /* Responsive breakpoints */
   --breakpoint-sm: 640px;  /* Small laptops */
@@ -284,13 +291,14 @@ body {
   text-decoration: none;
   display: block;
   text-align: center;
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
 }
 
 .uwshuffle-title-link:hover {
   background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
-  transform: translateY(-1px);
+  border-color: var(--color-primary);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
   text-decoration: none;
   color: var(--color-text-primary);
 }
@@ -355,7 +363,7 @@ body {
   font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
   white-space: nowrap;
   font-family: var(--font-family);
   box-shadow: var(--shadow-sm);
@@ -364,9 +372,9 @@ body {
 .uwshuffle-coffee-button:hover,
 .uwshuffle-coffee-button:focus {
   background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
-  transform: translateY(-1px);
-  text-decoration: underline;
+  border-color: var(--color-primary);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
@@ -381,7 +389,7 @@ body {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
   font-family: var(--font-family);
   box-shadow: var(--shadow-sm);
 }
@@ -389,9 +397,10 @@ body {
 .uwshuffle-close-button:hover,
 .uwshuffle-close-button:focus {
   background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
+  border-color: var(--color-primary);
   color: var(--color-text-primary);
-  transform: translateY(-1px);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
@@ -409,7 +418,7 @@ body {
   font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
   white-space: nowrap;
   font-family: var(--font-family);
   box-shadow: var(--shadow-sm);
@@ -418,9 +427,10 @@ body {
 .uwshuffle-help-button:hover,
 .uwshuffle-help-button:focus {
   background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
+  border-color: var(--color-primary);
   color: var(--color-text-primary);
-  transform: translateY(-1px);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
@@ -436,7 +446,7 @@ body {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
   font-family: var(--font-family);
   box-shadow: var(--shadow-sm);
   font-size: var(--font-size-sm);
@@ -452,9 +462,10 @@ body {
 .uwshuffle-dark-mode-button:hover,
 .uwshuffle-dark-mode-button:focus {
   background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
+  border-color: var(--color-primary);
   color: var(--color-text-primary);
-  transform: translateY(-1px);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
@@ -511,7 +522,7 @@ body {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
   font-family: var(--font-family);
   box-shadow: var(--shadow-sm);
 }
@@ -519,9 +530,10 @@ body {
 .uwshuffle-modal-close:hover,
 .uwshuffle-modal-close:focus {
   background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
+  border-color: var(--color-primary);
   color: var(--color-text-primary);
-  transform: translateY(-1px);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
@@ -547,16 +559,16 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-lg);
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
   z-index: 1001;
   font-size: var(--font-size-lg);
 }
 
 .uwshuffle-expand-button:hover {
   background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-primary);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
 }
 
 .uwshuffle-expand-logo {
@@ -667,6 +679,15 @@ body {
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
+  transition: all var(--transition-hover);
+  cursor: pointer;
+}
+
+.uwshuffle-stats-section:hover {
+  transform: scale(var(--hover-scale));
+  box-shadow: var(--shadow-hover);
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-hover);
 }
 
 .uwshuffle-stats-title {
@@ -826,10 +847,19 @@ body {
   padding: var(--space-4);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
-  color: black;
+  color: var(--color-text-primary);
   height: 100%;
   display: flex;
   flex-direction: column;
+  transition: all var(--transition-hover);
+  cursor: pointer;
+}
+
+.uwshuffle-course-info-container:hover {
+  transform: scale(var(--hover-scale));
+  box-shadow: var(--shadow-hover);
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-hover);
 }
 
 .uwshuffle-location-separator {
@@ -889,6 +919,7 @@ body {
   border-top: 1px solid var(--color-border);
   border-inline: 1px solid var(--color-border);
   overflow: hidden;
+  transition: all var(--transition-hover);
 }
 
 .uwshuffle-uwflow-title {
@@ -940,16 +971,17 @@ body {
   font-size: var(--font-size-xs);
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
   font-family: var(--font-family);
   box-shadow: var(--shadow-sm);
 }
 
 .uwshuffle-professor-link:hover {
   background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
+  border-color: var(--color-primary);
   color: var(--color-text-primary);
-  transform: translateY(-1px);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
   text-decoration: underline;
 }
 
@@ -992,10 +1024,27 @@ body {
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
   border-top: none;
-  color: black;
+  color: var(--color-text-primary);
   flex: 1;
   display: flex;
   flex-direction: column;
+  transition: all var(--transition-hover);
+  cursor: pointer;
+}
+
+.uwshuffle-professor-container:hover .uwshuffle-uwflow-header,
+.uwshuffle-professor-container:hover .uwshuffle-uwflow-content {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-hover);
+}
+
+.uwshuffle-professor-container:hover {
+  transform: scale(var(--hover-scale));
+}
+
+.uwshuffle-professor-container {
+  transition: all var(--transition-hover);
+  cursor: pointer;
 }
 
 .uwshuffle-professor-details {
@@ -1118,7 +1167,16 @@ body {
   padding: var(--space-4);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
-  color: black;
+  color: var(--color-text-primary);
+  transition: all var(--transition-hover);
+  cursor: pointer;
+}
+
+.uwshuffle-current-step-section:hover {
+  transform: scale(var(--hover-scale));
+  box-shadow: var(--shadow-hover);
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-hover);
 }
 
 .uwshuffle-current-step-title {
@@ -1133,12 +1191,15 @@ body {
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
+  flex-wrap: wrap;
 }
 
 .uwshuffle-step-container {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .uwshuffle-step {
@@ -1149,11 +1210,23 @@ body {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   font-weight: 500;
-  white-space: nowrap;
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  text-align: center;
+  min-width: 0;
+  flex: 0 1 auto;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.uwshuffle-step:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-primary);
+  color: var(--color-text-primary);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
 }
 
 .uwshuffle-step-icon {
@@ -1183,7 +1256,16 @@ body {
   padding: var(--space-4);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
-  color: black;
+  color: var(--color-text-primary);
+  transition: all var(--transition-hover);
+  cursor: pointer;
+}
+
+.uwshuffle-upload-section:hover {
+  transform: scale(var(--hover-scale));
+  box-shadow: var(--shadow-hover);
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-hover);
 }
 
 .schedule-upload-container {
@@ -1224,15 +1306,17 @@ body {
   font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
   white-space: nowrap;
   font-family: var(--font-family);
+  box-shadow: var(--shadow-sm);
 }
 
 .schedule-upload-primary:hover:not(:disabled),
 .schedule-upload-primary:focus:not(:disabled) {
   background-color: var(--color-primary-hover);
-  transform: translateY(-1px);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
@@ -1249,24 +1333,26 @@ body {
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
-  background-color: transparent;
+  background-color: var(--color-surface);
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
   white-space: nowrap;
   font-family: var(--font-family);
+  box-shadow: var(--shadow-sm);
 }
 
 .schedule-upload-secondary:hover,
 .schedule-upload-secondary:focus {
   background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
+  border-color: var(--color-primary);
   color: var(--color-text-primary);
-  transform: translateY(-1px);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
@@ -1398,15 +1484,18 @@ body {
   border-radius: var(--radius-md);
   background-color: var(--color-surface);
   cursor: pointer;
-  transition: var(--transition-base);
+  transition: all var(--transition-hover);
   text-align: center;
   gap: var(--space-2);
+  box-shadow: var(--shadow-sm);
 }
 
 .schedule-upload-paste-zone:hover,
 .schedule-upload-paste-zone:focus {
   border-color: var(--color-primary);
   background-color: var(--color-primary-light);
+  transform: scale(var(--hover-scale));
+  box-shadow: var(--shadow-hover);
   outline: none;
 }
 
@@ -1574,6 +1663,15 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 300px;
+  transition: all var(--transition-hover);
+  cursor: pointer;
+}
+
+.uwshuffle-calendar-card:hover {
+  transform: scale(var(--hover-scale));
+  box-shadow: var(--shadow-hover);
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-hover);
 }
 
 .uwshuffle-calendar-header {
@@ -1611,7 +1709,7 @@ body {
   font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--transition-hover);
   white-space: nowrap;
   font-family: var(--font-family);
   box-shadow: var(--shadow-sm);
@@ -1620,9 +1718,10 @@ body {
 .uwshuffle-export-button:hover,
 .uwshuffle-export-button:focus {
   background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
+  border-color: var(--color-primary);
   color: var(--color-text-primary);
-  transform: translateY(-1px);
+  transform: scale(var(--hover-scale-button));
+  box-shadow: var(--shadow-hover);
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
@@ -1960,6 +2059,55 @@ body {
   .uwshuffle-export-button {
     font-size: var(--font-size-xs);
     padding: var(--space-1) var(--space-2);
+  }
+  
+  .uwshuffle-current-step-progress {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  
+  .uwshuffle-step-container {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  
+  .uwshuffle-step {
+    font-size: var(--font-size-xs);
+    padding: var(--space-1) var(--space-2);
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .uwshuffle-step-icon {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .uwshuffle-step-arrow {
+    width: 14px;
+    height: 14px;
+    transform: rotate(90deg);
+  }
+}
+
+/* Medium-small screens - step button improvements */
+@media (max-width: 767px) {
+  .uwshuffle-current-step-progress {
+    gap: var(--space-3);
+  }
+  
+  .uwshuffle-step-container {
+    width: 100%;
+  }
+  
+  .uwshuffle-step {
+    justify-content: flex-start;
+    width: 100%;
+  }
+  
+  .uwshuffle-step-arrow {
+    align-self: center;
+    margin: var(--space-1) 0;
   }
 }
 
