@@ -6,6 +6,26 @@ import type { Course, ParsedScheduleEvent, FriendSchedule } from "../types";
 
 const localizer = momentLocalizer(moment);
 
+// Function to darken a hex color
+function darkenColor(hex: string, amount: number = 20): string {
+  // Remove # if present
+  const cleanHex = hex.replace('#', '');
+  
+  // Parse RGB values
+  const r = parseInt(cleanHex.substr(0, 2), 16);
+  const g = parseInt(cleanHex.substr(2, 2), 16);
+  const b = parseInt(cleanHex.substr(4, 2), 16);
+  
+  // Darken by reducing each RGB component
+  const newR = Math.max(0, r - amount);
+  const newG = Math.max(0, g - amount);
+  const newB = Math.max(0, b - amount);
+  
+  // Convert back to hex
+  const toHex = (n: number) => n.toString(16).padStart(2, '0');
+  return `#${toHex(newR)}${toHex(newG)}${toHex(newB)}`;
+}
+
 
 interface CalendarViewProps {
   courses: Course[];
@@ -135,13 +155,18 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   // Custom event style getter
   const eventStyleGetter = (event: ParsedScheduleEvent) => {
     let backgroundColor = "var(--color-primary)";
-    let borderColor = "var(--color-primary)";
+    let borderColor = "var(--color-primary-dark)";
 
     // Use friend's color if available
     if (event.resource?.color) {
       backgroundColor = event.resource.color;
-      borderColor = event.resource.color;
-      console.log('Friend event color:', event.resource.color, 'for event:', event.title);
+      // Create darker version for border if it's a hex color
+      if (event.resource.color.startsWith('#')) {
+        borderColor = darkenColor(event.resource.color, 30);
+      } else {
+        borderColor = event.resource.color;
+      }
+      console.log('Friend event color:', event.resource.color, 'border:', borderColor, 'for event:', event.title);
     }
 
     if (event.isPreview) {
@@ -157,10 +182,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     return {
       style: {
         backgroundColor,
-        borderTop: `3px solid ${borderColor}`,
-        borderRight: `1px solid ${borderColor}`,
-        borderBottom: `1px solid ${borderColor}`,
-        borderLeft: `1px solid ${borderColor}`,
+        border: `2px solid ${borderColor}`,
         color: "var(--color-surface)",
         fontSize: "11px",
         fontWeight: "600",

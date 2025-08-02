@@ -20,6 +20,7 @@
   /* Brand Colors - Professional Blue Theme (WCAG AA Compliant) */
   --color-primary: #3b82f6; /* Blue 500 - 4.6:1 contrast */
   --color-primary-hover: #2563eb; /* Blue 600 */
+  --color-primary-dark: #1d4ed8; /* Blue 700 - darker for borders */
   --color-primary-light: #dbeafe; /* Blue 100 */
   --color-primary-alpha: rgba(59, 130, 246, 0.1); /* Primary with alpha */
 
@@ -122,6 +123,7 @@
   /* Brand Colors - Professional Blue Theme */
   --color-primary: #60a5fa; /* Blue 400 - 4.8:1 contrast */
   --color-primary-hover: #3b82f6; /* Blue 500 */
+  --color-primary-dark: #2563eb; /* Blue 600 - darker for borders */
   --color-primary-light: #1e293b;
   --color-primary-alpha: rgba(96, 165, 250, 0.1); /* Primary with alpha */
 
@@ -2230,11 +2232,11 @@ body {
 /* Events */
 .rbc-event {
   background-color: var(--color-primary);
-  border: 3px solid var(--color-primary-dark) !important;
-  border-radius: var(--radius-sm) !important;
-  color: var(--color-surface) !important;
-  font-size: var(--font-size-xs) !important;
-  font-weight: 600 !important;
+  border: 3px solid var(--color-primary-dark);
+  border-radius: var(--radius-sm);
+  color: var(--color-surface);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
   padding: 2px 4px !important;
 }
 

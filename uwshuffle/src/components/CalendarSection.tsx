@@ -1,4 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { pastelColors } from "../constants/courseColors";
+
+function getColorFromName(name: string) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const idx = Math.abs(hash) % pastelColors.length;
+  return pastelColors[idx];
+}
 import {
   FiDownload,
   FiRefreshCcw,
@@ -23,18 +33,6 @@ interface CalendarSectionProps {
   onExportCurrentSchedule: () => void;
   onExportWithSwap: () => void;
   selectedCourseToSwap?: Course | null;
-}
-
-function hashStringToHue(str: string) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return Math.abs(hash) % 360;
-}
-function getColorFromName(name: string) {
-  const hue = hashStringToHue(name);
-  return `hsl(${hue}, 78%, 54%)`;
 }
 
 const CalendarSection: React.FC<CalendarSectionProps> = ({
