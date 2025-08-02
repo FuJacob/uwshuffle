@@ -134,11 +134,10 @@ const Sidebar: React.FC = () => {
                   rel="noopener noreferrer"
                   className="uwshuffle-title-link"
                 >
-                  Give UWShuffle 5 stars <FiStar />
-                  <FiStar />
-                  <FiStar />
-                  <FiStar />
-                  <FiStar />
+                  Found UWShuffle useful? Rate us 5 stars{" "}
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <FiStar key={index} />
+                  ))}
                 </a>
               </div>
               {/* Instructions Container */}
@@ -189,6 +188,37 @@ const Sidebar: React.FC = () => {
                   onClearSchedule={handleClearSchedule}
                 />
               </div>
+
+              {/* Calendar View with card styling */}
+              <div className="uwshuffle-calendar-section">
+                <div className="uwshuffle-calendar-card">
+                  <div className="uwshuffle-calendar-content">
+                    <CalendarView
+                      courses={courses}
+                      previewCourse={previewCourse}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer with modern styling */}
+              <div className="uwshuffle-footer">
+                {courses.length === 0 ? (
+                  <>
+                    <FiBook className="uwshuffle-icon" />
+                    No courses loaded
+                  </>
+                ) : (
+                  <>
+                    <FiBarChart2 className="uwshuffle-icon" />
+                    {new Set(courses.map((c) => c.course)).size} course
+                    {new Set(courses.map((c) => c.course)).size !== 1
+                      ? "s"
+                      : ""}{" "}
+                    loaded
+                  </>
+                )}
+              </div>
             </div>
           </>
         )}
@@ -206,38 +236,6 @@ const Sidebar: React.FC = () => {
                 {previewCourse.location && ` • ${previewCourse.location}`}
               </div>
             </div>
-          </div>
-        )}
-
-        {/* Calendar View with card styling */}
-        {!isMinimized && (
-          <div className="uwshuffle-calendar-section">
-            <div className="uwshuffle-calendar-card">
-              <div className="uwshuffle-calendar-content">
-                <CalendarView courses={courses} previewCourse={previewCourse} />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Footer with modern styling */}
-        {!isMinimized && (
-          <div className="uwshuffle-footer">
-            {courses.length === 0 ? (
-              <>
-                <FiBook className="uwshuffle-icon" />
-                No courses loaded
-              </>
-            ) : (
-              <>
-                <FiBarChart2 className="uwshuffle-icon" />
-                {new Set(courses.map((c) => c.course)).size} course
-                {new Set(courses.map((c) => c.course)).size !== 1
-                  ? "s"
-                  : ""}{" "}
-                loaded
-              </>
-            )}
           </div>
         )}
       </div>
