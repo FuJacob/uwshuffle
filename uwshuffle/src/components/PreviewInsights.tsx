@@ -66,13 +66,17 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                     <span className="uwshuffle-icon">
                       <FiBook />
                     </span>
-                    <span className="uwshuffle-value">{previewCourse.course}</span>
+                    <span className="uwshuffle-value">
+                      {previewCourse.course}
+                    </span>
                   </div>
                   <div className="uwshuffle-course-item">
                     <span className="uwshuffle-icon">
                       <FiUsers />
                     </span>
-                    <span className="uwshuffle-value">{previewCourse.section}</span>
+                    <span className="uwshuffle-value">
+                      {previewCourse.section}
+                    </span>
                   </div>
                 </div>
                 <div className="uwshuffle-course-line">
@@ -93,7 +97,9 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                     <span className="uwshuffle-icon">
                       <FiMapPin />
                     </span>
-                    <span className="uwshuffle-value">{previewCourse.location}</span>
+                    <span className="uwshuffle-value">
+                      {previewCourse.location}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -108,7 +114,9 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                       <FiUser />
                     </span>
                     <span className="uwshuffle-value">
-                      {profInfo?.name || "Unknown Instructor"}
+                      {profInfo?.name
+                        ? profInfo.name
+                        : "No Instructor Selected"}
                     </span>
                   </div>
                 </div>
@@ -142,22 +150,38 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
               <div className="uwshuffle-professor-content">
                 <div className="uwshuffle-professor-circle">
                   <div className="uwshuffle-professor-score">
-                    {profInfo?.rating.liked}%
+                    {profInfo?.rating.liked
+                      ? profInfo?.rating.liked + "%"
+                      : "~%"}
                   </div>
                 </div>
                 <div className="uwshuffle-professor-info">
                   <div className="uwshuffle-professor-ratings">
-                    <span>Engaging: {profInfo?.rating.engaging}%</span>
+                    <span>
+                      Engaging:{" "}
+                      {profInfo?.rating.engaging
+                        ? profInfo?.rating.engaging + "%"
+                        : "~%"}
+                    </span>
                     <span>
                       <FiMessageSquare className="uwshuffle-icon" />
-                      {profInfo?.rating.comment_count}
+                      {profInfo?.rating.comment_count
+                        ? profInfo.rating.comment_count
+                        : "~"}
                     </span>
                   </div>
                   <div className="uwshuffle-professor-reviews">
-                    <span>Clarity: {profInfo?.rating.clear}%</span>
+                    <span>
+                      Clarity:{" "}
+                      {profInfo?.rating.clear
+                        ? profInfo?.rating.clear + "%"
+                        : "~%"}
+                    </span>
                     <span>
                       <FiBarChart2 className="uwshuffle-icon" />
-                      {profInfo?.rating.filled_count}
+                      {profInfo?.rating.filled_count
+                        ? profInfo.rating.filled_count
+                        : "~"}
                     </span>
                   </div>
                 </div>

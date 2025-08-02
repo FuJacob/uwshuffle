@@ -1,29 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  FiBook,
-  FiBarChart2,
-  FiHeart,
-  FiX,
-  FiArrowRight,
-  FiStar,
-  FiCalendar,
-  FiMapPin,
-  FiUser,
-  FiCheckCircle,
-  FiMessageSquare,
-  FiHelpCircle,
-  FiFileText,
-  FiRefreshCcw,
-  FiMoon,
-  FiSun,
-  FiUsers,
-  FiDownload,
-} from "react-icons/fi";
-import CalendarView from "./CalendarView";
 import ScheduleUpload from "./ScheduleUpload";
+import InstructionsModal from "./InstructionsModal";
+import CalendarSection from "./CalendarSection";
+import CurrentStep from "./CurrentStep";
+import PreviewInsights from "./PreviewInsights";
+import ActionBar from "./ActionBar";
 import type { Course } from "../types";
 import logo from "../assets/logo.svg";
-import uwflowIcon from "../assets/uwflow.png";
 import {
   exportCurrentSchedule,
   exportScheduleWithSwap,
@@ -90,14 +73,8 @@ const Sidebar: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const instructions = [
-    'Click "Swap" and enter your target course',
-    'Click "Show All" and copy schedule',
-    "Paste text into UWShuffle",
-  ];
-
   const handleNextInstruction = () => {
-    setCurrentInstructionStep((prev) => (prev + 1) % instructions.length);
+    setCurrentInstructionStep((prev) => (prev + 1) % 3);
   };
 
   // Listen for messages from content script
@@ -193,22 +170,16 @@ const Sidebar: React.FC = () => {
     }
   };
 
-  // Determine current step based on state
-  const getCurrentStep = () => {
-    if (courses.length === 0) {
-      return 0; // Upload step
-    } else if (!previewCourse) {
-      return 1; // Find swap step
-    } else {
-      return 2; // All set step
+  const handleExportCurrentSchedule = () => {
+    exportCurrentSchedule(courses);
+  };
+
+  const handleExportWithSwap = () => {
+    if (previewCourse) {
+      exportScheduleWithSwap(courses, previewCourse);
     }
   };
 
-  const steps = [
-    { text: "Upload schedule", icon: FiBook },
-    { text: "Find swap options", icon: FiRefreshCcw },
-    { text: "Ready to swap", icon: FiCheckCircle },
-  ];
 
   // addPreviewCourse is handled via message listener
 
@@ -223,238 +194,18 @@ const Sidebar: React.FC = () => {
           <>
             {/* Main Content Area */}
             <div className="uwshuffle-main-content">
-              {/* Top Action Bar */}
-              <div className="uwshuffle-action-bar">
-                <div className="uwshuffle-action-bar-logo-container">
-                  <div className="uwshuffle-logo-section">
-                    <button
-                      onClick={handleKofiClick}
-                      className="uwshuffle-coffee-button"
-                    >
-                      <img
-                        src={logo}
-                        alt="UWShuffle"
-                        className="uwshuffle-logo"
-                      />
-                      <div className="uwshuffle-logo-content">
-                        <div>UWShuffle</div>
-                        <div className="uwshuffle-action-bar-author-text">
-                          Created by a UW student
-                        </div>
-                      </div>
-                    </button>
-                  </div>
-                </div>
-                <div className="uwshuffle-action-bar-buttons">
-                  <button
-                    onClick={handleRateClick}
-                    className="uwshuffle-coffee-button"
-                  >
-                    <FiStar className="uwshuffle-icon-button" />
-                    Rate us
-                  </button>
-                  <button
-                    onClick={handleKofiClick}
-                    className="uwshuffle-coffee-button"
-                  >
-                    <FiHeart className="uwshuffle-icon-button" />
-                    Support us
-                  </button>
-                  <button
-                    onClick={handleOpenModal}
-                    className="uwshuffle-help-button"
-                  >
-                    <FiHelpCircle className="uwshuffle-icon-button" />
-                  </button>
-                  <button
-                    onClick={handleToggleDarkMode}
-                    className="uwshuffle-dark-mode-button"
-                  >
-                    {isDarkMode ? (
-                      <FiSun className="uwshuffle-icon-button" />
-                    ) : (
-                      <FiMoon className="uwshuffle-icon-button" />
-                    )}
-                  </button>
-                  <button
-                    onClick={handleCloseSidebar}
-                    className="uwshuffle-close-button"
-                  >
-                    <FiX className="uwshuffle-icon-button" />
-                  </button>
-                </div>
-              </div>
+              <ActionBar
+                isDarkMode={isDarkMode}
+                onToggleDarkMode={handleToggleDarkMode}
+                onRateClick={handleRateClick}
+                onKofiClick={handleKofiClick}
+                onHelpClick={handleOpenModal}
+                onCloseSidebar={handleCloseSidebar}
+              />
 
-              {/* Stats Section */}
-              <div className="uwshuffle-stats-section">
-                <div className="uwshuffle-stats-title">Preview Insights</div>
-                <div className="uwshuffle-stats-content">
-                  {previewCourse ? (
-                    <>
-                      <div className="uwshuffle-preview-containers">
-                        <div className="uwshuffle-course-container">
-                          <div className="uwshuffle-course-info-container">
-                            <div className="uwshuffle-course-info-title">
-                              <span className="uwshuffle-icon">
-                                <FiCheckCircle />
-                              </span>
-                              Course Info:
-                            </div>
-                            <div className="uwshuffle-course-details">
-                              <div className="uwshuffle-course-line">
-                                <div className="uwshuffle-course-item">
-                                  <span className="uwshuffle-icon">
-                                    <FiBook />
-                                  </span>
-                                  <span className="uwshuffle-value">
-                                    {previewCourse.course}
-                                  </span>
-                                </div>
-                                <div className="uwshuffle-course-item">
-                                  <span className="uwshuffle-icon">
-                                    <FiUsers />
-                                  </span>
-                                  <span className="uwshuffle-value">
-                                    {previewCourse.section}
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="uwshuffle-course-line">
-                                <div className="uwshuffle-course-item">
-                                  <span className="uwshuffle-icon">
-                                    <FiCalendar />
-                                  </span>
-                                  <div className="uwshuffle-course-time-info">
-                                    <div className="uwshuffle-course-days">
-                                      {previewCourse.days?.join(", ")}
-                                    </div>
-                                    <div className="uwshuffle-course-time">
-                                      {previewCourse.start} -{" "}
-                                      {previewCourse.end}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="uwshuffle-course-item">
-                                  <span className="uwshuffle-icon">
-                                    <FiMapPin />
-                                  </span>
-                                  <span className="uwshuffle-value">
-                                    {previewCourse.location}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="uwshuffle-professor-container">
-                          <div className="uwshuffle-uwflow-header">
-                            <div className="uwshuffle-uwflow-title">
-                              <div className="uwshuffle-uwflow-left">
-                                <div className="uwshuffle-course-line">
-                                  <span className="uwshuffle-icon">
-                                    <FiUser />
-                                  </span>
-                                  <span className="uwshuffle-value">
-                                    {profInfo?.name || "Unknown Instructor"}
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="uwshuffle-uwflow-right">
-                                <a
-                                  href={
-                                    profInfo?.name
-                                      ? `https://uwflow.com/professor/${profInfo.name
-                                          .toLowerCase()
-                                          .replace(/\s+/g, "-")
-                                          .replace(/[^a-z0-9-]/g, "")
-                                          .replace(/ /g, "-")}`
-                                      : "https://uwflow.com"
-                                  }
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="uwshuffle-professor-link uwshuffle-uwflow-link"
-                                >
-                                  Go to{" "}
-                                  <img
-                                    src={uwflowIcon}
-                                    alt="UW Flow"
-                                    className="uwshuffle-uwflow-icon"
-                                  />
-                                  UW Flow
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="uwshuffle-uwflow-content">
-                            <div className="uwshuffle-professor-content">
-                              <div className="uwshuffle-professor-circle">
-                                <div className="uwshuffle-professor-score">
-                                  {profInfo?.rating.liked}%
-                                </div>
-                              </div>
-                              <div className="uwshuffle-professor-info">
-                                <div className="uwshuffle-professor-ratings">
-                                  <span>
-                                    Engaging: {profInfo?.rating.engaging}%
-                                  </span>
-                                  <span>
-                                    <FiMessageSquare className="uwshuffle-icon" />
-                                    {profInfo?.rating.comment_count}
-                                  </span>
-                                </div>
-                                <div className="uwshuffle-professor-reviews">
-                                  <span>
-                                    Clarity: {profInfo?.rating.clear}%
-                                  </span>
-                                  <span>
-                                    <FiBarChart2 className="uwshuffle-icon" />
-                                    {profInfo?.rating.filled_count}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="uwshuffle-no-preview">
-                      <div className="uwshuffle-no-preview-text">
-                        No course selected for preview
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+              <PreviewInsights previewCourse={previewCourse} profInfo={profInfo} />
 
-              {/* Current Step Section */}
-              <div className="uwshuffle-current-step-section">
-                <div className="uwshuffle-current-step-title">
-                  Current Step:
-                </div>
-                <div className="uwshuffle-current-step-progress">
-                  {steps.map((step, index) => {
-                    const IconComponent = step.icon;
-                    return (
-                      <div key={index} className="uwshuffle-step-container">
-                        <div
-                          className={`uwshuffle-step ${
-                            getCurrentStep() === index
-                              ? "uwshuffle-step-active"
-                              : ""
-                          }`}
-                        >
-                          <IconComponent className="uwshuffle-step-icon" />
-                          {step.text}
-                        </div>
-                        {index < steps.length - 1 && (
-                          <FiArrowRight className="uwshuffle-step-arrow" />
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+              <CurrentStep courses={courses} previewCourse={previewCourse} />
 
               {/* Upload Section */}
               <div className="uwshuffle-upload-section">
@@ -465,99 +216,13 @@ const Sidebar: React.FC = () => {
                 />
               </div>
 
-              {/* Calendar View with card styling */}
-              <div className="uwshuffle-calendar-section">
-                <div className="uwshuffle-calendar-card">
-                  <div className="uwshuffle-calendar-header">
-                    <div className="uwshuffle-calendar-title">Schedule</div>
-                    <div className="uwshuffle-calendar-actions">
-                      <button
-                        className="uwshuffle-export-button"
-                        disabled={courses.length === 0 || !termDatesAvailable}
-                        aria-disabled={
-                          courses.length === 0 || !termDatesAvailable
-                        }
-                        onClick={() => exportCurrentSchedule(courses)}
-                        style={{
-                          opacity:
-                            courses.length === 0 || !termDatesAvailable
-                              ? 0.5
-                              : 1,
-                          cursor:
-                            courses.length === 0 || !termDatesAvailable
-                              ? "not-allowed"
-                              : "pointer",
-                        }}
-                        title={
-                          !termDatesAvailable
-                            ? "Browse Quest course search results first to enable export"
-                            : ""
-                        }
-                      >
-                        <FiDownload className="uwshuffle-icon-button" />
-                        Export Current Schedule
-                      </button>
-                      <button
-                        className="uwshuffle-export-button"
-                        disabled={
-                          courses.length === 0 ||
-                          !previewCourse ||
-                          !termDatesAvailable
-                        }
-                        aria-disabled={
-                          courses.length === 0 ||
-                          !previewCourse ||
-                          !termDatesAvailable
-                        }
-                        onClick={() =>
-                          previewCourse &&
-                          exportScheduleWithSwap(courses, previewCourse)
-                        }
-                        style={{
-                          opacity:
-                            courses.length === 0 ||
-                            !previewCourse ||
-                            !termDatesAvailable
-                              ? 0.5
-                              : 1,
-                          cursor:
-                            courses.length === 0 ||
-                            !previewCourse ||
-                            !termDatesAvailable
-                              ? "not-allowed"
-                              : "pointer",
-                        }}
-                        title={
-                          !termDatesAvailable
-                            ? "Browse Quest course search results first to enable export"
-                            : ""
-                        }
-                      >
-                        <FiRefreshCcw className="uwshuffle-icon-button" />
-                        Export With Swapped Class
-                      </button>
-                    </div>
-                  </div>
-                  <div className="uwshuffle-calendar-content">
-                    {courses.length === 0 ? (
-                      <div className="uwshuffle-calendar-empty">
-                        <FiFileText className="uwshuffle-calendar-empty-icon" />
-                        <div className="uwshuffle-calendar-empty-title">
-                          Nothing here yet
-                        </div>
-                        <div className="uwshuffle-calendar-empty-subtitle">
-                          Upload your schedule above to get started
-                        </div>
-                      </div>
-                    ) : (
-                      <CalendarView
-                        courses={courses}
-                        previewCourse={previewCourse}
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
+              <CalendarSection
+                courses={courses}
+                previewCourse={previewCourse}
+                termDatesAvailable={termDatesAvailable}
+                onExportCurrentSchedule={handleExportCurrentSchedule}
+                onExportWithSwap={handleExportWithSwap}
+              />
 
               {/* Footer with modern styling */}
             </div>
@@ -575,57 +240,12 @@ const Sidebar: React.FC = () => {
         </button>
       )}
 
-      {/* Instructions Modal */}
-      {isModalOpen && (
-        <div className="uwshuffle-modal-overlay" onClick={handleCloseModal}>
-          <div className="uwshuffle-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="uwshuffle-modal-header">
-              <h2 className="uwshuffle-modal-title">Instructions</h2>
-              <button
-                onClick={handleCloseModal}
-                className="uwshuffle-modal-close"
-              >
-                <FiX className="uwshuffle-icon-button" />
-              </button>
-            </div>
-            <div className="uwshuffle-modal-content">
-              {/* Instructions Video */}
-              <iframe
-                className="uwshuffle-instructions-video"
-                width="560"
-                height="315"
-                src="https://www.youtube.com/embed/VkiwIn8Dcaw?si=40WtIsuVn1EgUHlA&amp;controls=0&autoplay=1&mute=1&loop=1"
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              ></iframe>
-
-              {/* Instructions Steps */}
-              <div className="uwshuffle-instructions-section">
-                <div className="uwshuffle-instruction-display">
-                  <div className="uwshuffle-instruction-content">
-                    <span className="uwshuffle-instruction-number">
-                      {currentInstructionStep + 1}.
-                    </span>
-                    <span className="uwshuffle-instruction-text">
-                      {instructions[currentInstructionStep]}
-                    </span>
-                  </div>
-                  <button
-                    onClick={handleNextInstruction}
-                    className="uwshuffle-instruction-next"
-                    title="Next step"
-                  >
-                    <FiArrowRight className="uwshuffle-icon-button" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <InstructionsModal
+        isOpen={isModalOpen}
+        currentInstructionStep={currentInstructionStep}
+        onClose={handleCloseModal}
+        onNextInstruction={handleNextInstruction}
+      />
     </>
   );
 };
