@@ -1,12 +1,29 @@
 import React, { useState, useEffect } from "react";
+import {
+  FiBook,
+  FiBarChart2,
+  FiHeart,
+  FiX,
+  FiArrowRight,
+  FiStar,
+  FiCalendar,
+  FiMapPin,
+  FiUser,
+  FiCheckCircle,
+  FiMessageSquare,
+  FiHelpCircle,
+  FiFileText,
+  FiRefreshCcw,
+  FiMoon,
+  FiSun,
+  FiUsers,
+  FiDownload,
+} from "react-icons/fi";
+import CalendarView from "./CalendarView";
 import ScheduleUpload from "./ScheduleUpload";
-import ActionBar from "./ActionBar";
-import PreviewInsights from "./PreviewInsights";
-import CurrentStep from "./CurrentStep";
-import CalendarSection from "./CalendarSection";
-import InstructionsModal from "./InstructionsModal";
 import type { Course } from "../types";
 import logo from "../assets/logo.svg";
+import uwflowIcon from "../assets/uwflow.png";
 import {
   exportCurrentSchedule,
   exportScheduleWithSwap,
@@ -73,8 +90,14 @@ const Sidebar: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const instructions = [
+    'Click "Swap" and enter your target course',
+    'Click "Show All" and copy schedule',
+    "Paste text into UWShuffle",
+  ];
+
   const handleNextInstruction = () => {
-    setCurrentInstructionStep((prev) => (prev + 1) % 3);
+    setCurrentInstructionStep((prev) => (prev + 1) % instructions.length);
   };
 
   // Listen for messages from content script
@@ -170,15 +193,22 @@ const Sidebar: React.FC = () => {
     }
   };
 
-  const handleExportCurrentSchedule = () => {
-    exportCurrentSchedule(courses);
-  };
-
-  const handleExportWithSwap = () => {
-    if (previewCourse) {
-      exportScheduleWithSwap(courses, previewCourse);
+  // Determine current step based on state
+  const getCurrentStep = () => {
+    if (courses.length === 0) {
+      return 0; // Upload step
+    } else if (!previewCourse) {
+      return 1; // Find swap step
+    } else {
+      return 2; // All set step
     }
   };
+
+  const steps = [
+    { text: "Upload schedule", icon: FiBook },
+    { text: "Find swap options", icon: FiRefreshCcw },
+    { text: "Ready to swap", icon: FiCheckCircle },
+  ];
 
   // addPreviewCourse is handled via message listener
 
@@ -193,14 +223,67 @@ const Sidebar: React.FC = () => {
           <>
             {/* Main Content Area */}
             <div className="uwshuffle-main-content">
-              <ActionBar
-                isDarkMode={isDarkMode}
-                onToggleDarkMode={handleToggleDarkMode}
-                onRateClick={handleRateClick}
-                onKofiClick={handleKofiClick}
-                onHelpClick={handleOpenModal}
-                onCloseSidebar={handleCloseSidebar}
-              />
+              {/* Top Action Bar */}
+              <div className="uwshuffle-action-bar">
+                <div className="uwshuffle-action-bar-logo-container">
+                  <div className="uwshuffle-logo-section">
+                    <button
+                      onClick={handleKofiClick}
+                      className="uwshuffle-coffee-button"
+                    >
+                      <img
+                        src={logo}
+                        alt="UWShuffle"
+                        className="uwshuffle-logo"
+                      />
+                      <div className="uwshuffle-logo-content">
+                        <div>UWShuffle</div>
+                        <div className="uwshuffle-action-bar-author-text">
+                          Created by a UW student
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                <div className="uwshuffle-action-bar-buttons">
+                  <button
+                    onClick={handleRateClick}
+                    className="uwshuffle-coffee-button"
+                  >
+                    <FiStar className="uwshuffle-icon-button" />
+                    Rate us
+                  </button>
+                  <button
+                    onClick={handleKofiClick}
+                    className="uwshuffle-coffee-button"
+                  >
+                    <FiHeart className="uwshuffle-icon-button" />
+                    Support us
+                  </button>
+                  <button
+                    onClick={handleOpenModal}
+                    className="uwshuffle-help-button"
+                  >
+                    <FiHelpCircle className="uwshuffle-icon-button" />
+                  </button>
+                  <button
+                    onClick={handleToggleDarkMode}
+                    className="uwshuffle-dark-mode-button"
+                  >
+                    {isDarkMode ? (
+                      <FiSun className="uwshuffle-icon-button" />
+                    ) : (
+                      <FiMoon className="uwshuffle-icon-button" />
+                    )}
+                  </button>
+                  <button
+                    onClick={handleCloseSidebar}
+                    className="uwshuffle-close-button"
+                  >
+                    <FiX className="uwshuffle-icon-button" />
+                  </button>
+                </div>
+              </div>
 
               {/* Stats Section */}
               <div className="uwshuffle-stats-section">
