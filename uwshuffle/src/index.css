@@ -1336,27 +1336,24 @@ body {
 }
 
 /* ===== UPLOAD SECTION ===== */
-.uwshuffle-upload-section {
-  flex: 0 0 auto;
-  background-color: var(--color-surface);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-border);
-  color: black;
-}
 
 .schedule-upload-container {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-);
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
 }
 
 .schedule-upload-title-container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-3);
+  justify-content: space-between;
+  gap: var(--space-3);
+
   padding-bottom: var(--space-2);
   border-bottom: 1px solid var(--color-border);
 }
@@ -1368,6 +1365,18 @@ body {
   flex: 1;
   display: flex;
   align-items: center;
+}
+
+.schedule-upload-button-container {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: var(--space-3);
+}
+
+.schedule-upload-course-dropdown-container {
+  margin-bottom: var(--space-3);
 }
 
 /* ===== HELP ICON STYLES ===== */
@@ -1413,6 +1422,31 @@ body {
 
 .schedule-upload-buttons button {
   flex: 1;
+}
+
+/* Combined row layout for button and paste zone */
+.schedule-upload-combined-row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: stretch;
+  margin-bottom: var(--space-3);
+}
+
+.schedule-upload-button-container {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.schedule-upload-button-container button {
+  width: 100%;
+}
+
+.schedule-upload-paste-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 /* Course selection dropdown */
@@ -1461,14 +1495,14 @@ body {
 }
 
 .schedule-upload-primary {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
   font-weight: 600;
@@ -1476,20 +1510,24 @@ body {
   transition: var(--transition-fast);
   white-space: nowrap;
   font-family: var(--font-family);
+  box-shadow: var(--shadow-sm);
 }
 
 .schedule-upload-primary:hover:not(:disabled),
 .schedule-upload-primary:focus:not(:disabled) {
-  background-color: var(--color-primary-hover);
+  background-color: var(--color-surface-hover);
   border-color: var(--color-border-focus);
-  color: var(--color-surface);
+  color: var(--color-text-primary);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .schedule-upload-primary:disabled {
-  background-color: var(--color-text-tertiary);
+  opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
+  background-color: var(--color-surface);
+  color: var(--color-text-tertiary);
+  border-color: var(--color-border);
 }
 
 .schedule-upload-secondary {
@@ -1555,11 +1593,20 @@ body {
 }
 
 .schedule-upload-secondary-full:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
   background-color: var(--color-surface);
   color: var(--color-text-tertiary);
-  border-color: var(--color-border);
-  cursor: not-allowed;
-  transform: none;
+}
+
+.schedule-upload-secondary-full.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.schedule-upload-secondary-full.active .schedule-upload-icon-button {
+  color: var(--color-surface);
 }
 
 .schedule-upload-icon-button {
@@ -1683,37 +1730,52 @@ body {
 /* Paste zone styles - large card */
 .schedule-upload-paste-zone {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  padding: var(--space-3) var(--space-4);
-  border: 2px dashed var(--color-border);
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background-color: var(--color-surface);
   cursor: pointer;
-  transition: var(--transition-base);
-  text-align: center;
-  gap: var(--space-2);
+  transition: var(--transition-fast);
+  min-height: 44px;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+}
+
+.schedule-upload-paste-zone.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.schedule-upload-paste-zone.active .schedule-upload-paste-icon,
+.schedule-upload-paste-zone.active .schedule-upload-paste-text {
+  color: var(--color-surface);
 }
 
 .schedule-upload-paste-zone:hover,
 .schedule-upload-paste-zone:focus {
   background-color: var(--color-surface-hover);
   border-color: var(--color-border-focus);
-  color: var(--color-text-primary);
   transform: translateY(-1px);
-  outline: none;
+  box-shadow: var(--shadow-md);
+}
+
+.schedule-upload-paste-zone:hover .schedule-upload-paste-icon,
+.schedule-upload-paste-zone:focus .schedule-upload-paste-icon {
+  color: var(--color-primary);
+}
+
+.schedule-upload-paste-zone:hover .schedule-upload-paste-text,
+.schedule-upload-paste-zone:focus .schedule-upload-paste-text {
+  color: var(--color-text-primary);
 }
 
 .schedule-upload-paste-icon {
   font-size: var(--font-size-lg);
   color: var(--color-text-tertiary);
   flex-shrink: 0;
-}
-
-.schedule-upload-paste-zone:hover .schedule-upload-paste-icon,
-.schedule-upload-paste-zone:focus .schedule-upload-paste-icon {
-  color: var(--color-primary);
 }
 
 .schedule-upload-paste-text {
@@ -2173,6 +2235,7 @@ body {
   font-weight: 500;
   color: var(--color-text-primary);
   white-space: nowrap;
+  margin-bottom: var(--space-2);
 }
 
 /* Plus button styles - primary icon only */
@@ -2260,15 +2323,14 @@ body {
 .uwshuffle-export-actions {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
   align-items: stretch;
 }
 
 /* Export buttons container */
 .uwshuffle-export-buttons {
   display: flex;
-  flex-direction: row;
-  gap: var(--space-2);
+  gap: var(--space-3);
   align-items: center;
 }
 
@@ -2699,4 +2761,77 @@ body {
   .uwshuffle-course-time-info {
     font-size: var(--font-size-xs);
   }
+}
+
+/* ===== JOYRIDE OVERRIDES ===== */
+/* Ensure Joyride appears above sidebar */
+.react-joyride__overlay {
+  z-index: 10000 !important;
+}
+
+.react-joyride__tooltip {
+  z-index: 10001 !important;
+}
+
+.react-joyride__beacon {
+  z-index: 10002 !important;
+}
+
+.react-joyride__overlay__hole {
+  z-index: 10003 !important;
+}
+
+/* Joyride button hover effects */
+.react-joyride__tooltip button[data-test-id="button-primary"]:hover {
+  background-color: var(--color-primary-hover) !important;
+  transform: translateY(-1px) !important;
+}
+
+.react-joyride__tooltip button[data-test-id="button-back"]:hover {
+  background-color: var(--color-surface-hover) !important;
+  color: var(--color-text-primary) !important;
+  transform: translateY(-1px) !important;
+}
+
+.react-joyride__tooltip button[data-test-id="button-skip"]:hover {
+  color: var(--color-text-secondary) !important;
+}
+
+.react-joyride__tooltip button[data-test-id="button-close"]:hover {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Keyboard shortcut styling */
+.schedule-upload-paste-text {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.schedule-upload-paste-text .keyboard-shortcut {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  margin-left: var(--space-2);
+  font-family: var(--font-family);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.schedule-upload-primary.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.schedule-upload-primary.active .schedule-upload-icon-button {
+  color: var(--color-surface);
 }

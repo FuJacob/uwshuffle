@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import {
-  FiClipboard,
-  FiZap,
-  FiTrash2,
   FiCheck,
-  FiChevronDown,
   FiHelpCircle,
   FiEye,
+  FiBook,
+  FiRefreshCcw,
+  FiCheckCircle,
 } from "react-icons/fi";
 import type { Course } from "../types";
-import { courseCodes } from "../constants/courseCodes";
 import { Tooltip } from "react-tooltip";
 import "./ScheduleUpload.css";
-import CurrentStep from "./CurrentStep";
+
+import UploadSuccessCard from "./UploadSuccessCard";
+import ProcessingCard from "./ProcessingCard";
+import PasteZone from "./PasteZone";
+import CourseDropdown from "./CourseDropdown";
+import { parseScheduleText } from "../utils/scheduleParser";
 
 interface ScheduleUploadProps {
   setScheduleUploadError: (error: string | null) => void;
@@ -49,163 +52,6 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     }
     // eslint-disable-next-line
   }, []);
-
-  const parseScheduleText = (text: string): Course[] => {
-    const lines = text
-      .trim()
-      .split("\n")
-      .filter((line) => line.trim() !== "");
-    const courses: Course[] = [];
-
-    let currentCourse: Partial<Course> | null = null;
-    let expectingLocation = false;
-
-    for (let i = 0; i < lines.length; i++) {
-      const trimmedLine = lines[i].trim();
-      const COURSE_REGEX = new RegExp(
-        `^(${Array.from(courseCodes).join("|")})\\s*\\d{3}[A-Z]?`,
-        "i"
-      );
-
-      // Check if this line starts a new course (course code pattern)
-      const courseMatch = trimmedLine.match(COURSE_REGEX);
-      if (courseMatch) {
-        // Save previous course if exists
-        if (
-          currentCourse &&
-          currentCourse.course &&
-          currentCourse.days &&
-          currentCourse.start &&
-          currentCourse.end
-        ) {
-          courses.push(currentCourse as Course);
-        }
-
-        // Start new course
-        currentCourse = {
-          course: courseMatch[0].replace(/\s+/g, " ").trim(),
-        };
-        expectingLocation = false;
-
-        // Parse the rest of the line for time and location info
-        const timeMatch = trimmedLine.match(
-          /([MTWRF]+)\s+(\d{1,2}:\d{2}[AP]M)\s*-\s*(\d{1,2}:\d{2}[AP]M)(?:\s+(.+))?/
-        );
-        if (timeMatch) {
-          const [, dayString, startTime, endTime, location] = timeMatch;
-          currentCourse.days = parseDayString(dayString);
-          currentCourse.start = convertTo24Hour(startTime);
-          currentCourse.end = convertTo24Hour(endTime);
-          currentCourse.location = location?.trim();
-          expectingLocation = false;
-        }
-      } else if (currentCourse) {
-        // Check if this is a time line (additional time slot for the same course)
-        const timeMatch = trimmedLine.match(
-          /([MTWRF]+)\s+(\d{1,2}:\d{2}[AP]M)\s*-\s*(\d{1,2}:\d{2}[AP]M)(?:\s+(.+))?/
-        );
-
-        if (timeMatch) {
-          // Save current course and create a new instance for this time slot
-          if (
-            currentCourse.course &&
-            currentCourse.days &&
-            currentCourse.start &&
-            currentCourse.end
-          ) {
-            courses.push(currentCourse as Course);
-          }
-
-          const [, dayString, startTime, endTime, location] = timeMatch;
-          currentCourse = {
-            course: currentCourse.course,
-            days: parseDayString(dayString),
-            start: convertTo24Hour(startTime),
-            end: convertTo24Hour(endTime),
-            location: location?.trim(),
-          };
-
-          // If no location on this line, expect it on the next line
-          if (!location || location.trim() === "") {
-            expectingLocation = true;
-          } else {
-            expectingLocation = false;
-          }
-        } else if (
-          expectingLocation &&
-          currentCourse.course &&
-          currentCourse.days &&
-          currentCourse.start &&
-          currentCourse.end
-        ) {
-          // This line should be the location for the previous time slot
-          currentCourse.location = trimmedLine;
-          expectingLocation = false;
-        } else if (
-          currentCourse.course &&
-          !currentCourse.days &&
-          !currentCourse.start &&
-          !currentCourse.end
-        ) {
-          // This might be a time line right after a course code
-          const timeOnlyMatch = trimmedLine.match(
-            /([MTWRF]+)\s+(\d{1,2}:\d{2}[AP]M)\s*-\s*(\d{1,2}:\d{2}[AP]M)/
-          );
-          if (timeOnlyMatch) {
-            const [, dayString, startTime, endTime] = timeOnlyMatch;
-            currentCourse.days = parseDayString(dayString);
-            currentCourse.start = convertTo24Hour(startTime);
-            currentCourse.end = convertTo24Hour(endTime);
-            expectingLocation = true;
-          }
-        }
-      }
-    }
-
-    // Add the last course
-    if (
-      currentCourse &&
-      currentCourse.course &&
-      currentCourse.days &&
-      currentCourse.start &&
-      currentCourse.end
-    ) {
-      courses.push(currentCourse as Course);
-    }
-
-    return courses;
-  };
-
-  const parseDayString = (dayString: string): string[] => {
-    const dayMap: { [key: string]: string } = {
-      M: "Mo",
-      T: "Tu",
-      W: "We",
-      R: "Th",
-      F: "Fr",
-    };
-
-    return dayString
-      .split("")
-      .map((day) => dayMap[day])
-      .filter(Boolean);
-  };
-
-  const convertTo24Hour = (time12h: string): string => {
-    const [time, modifier] = time12h.split(/([AP]M)/);
-    let [hours] = time.split(":");
-    const [, minutes] = time.split(":");
-
-    if (hours === "12") {
-      hours = "00";
-    }
-
-    if (modifier === "PM") {
-      hours = (parseInt(hours, 10) + 12).toString();
-    }
-
-    return `${hours.padStart(2, "0")}:${minutes}`;
-  };
 
   const handleUpload = (text?: string) => {
     const textToProcess = text || scheduleText;
@@ -274,10 +120,6 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     setShowCourseDropdown(false);
   };
 
-  const uniqueCourses = Array.from(new Set(courses.map((c) => c.course))).map(
-    (courseName) => courses.find((c) => c.course === courseName)!
-  );
-
   return (
     <div className="schedule-upload-container">
       {/* Control Panel Title */}
@@ -289,7 +131,6 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
             data-tooltip-id="action-center-tooltip"
             data-tooltip-content="Upload your schedule, find swap options, and clear your schedule. The central hub for all schedule management actions."
           />
-          <CurrentStep courses={courses} previewCourse={selectedCourseToSwap} />
         </div>
         {/* <button
           onClick={() => setIsActionCenterCollapsed(!isActionCenterCollapsed)}
@@ -318,148 +159,144 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
         place="top"
         className="uwshuffle-tooltip"
       />
-
-      {/* Button Row */}
-      {/* {!isActionCenterCollapsed && ( */}
-      <>
-        <div className="schedule-upload-buttons">
-          <button
-            onClick={handleRefresh}
-            className="schedule-upload-primary"
-            disabled={courses.length === 0}
-            aria-disabled={courses.length === 0}
-            style={{
-              opacity: courses.length === 0 ? 0.5 : 1,
-              cursor: courses.length === 0 ? "not-allowed" : "pointer",
-            }}
-            data-tooltip-id={
-              courses.length === 0 ? "find-swap-disabled-tooltip" : undefined
-            }
-            data-tooltip-content={
-              courses.length === 0
-                ? "Please upload your schedule first to find swap options"
-                : undefined
-            }
-          >
-            {showFindSuccess ? (
-              <FiCheck className="schedule-upload-icon-button" />
-            ) : (
-              <FiEye className="schedule-upload-icon-button" />
-            )}
-            Preview my Swap Options!
-          </button>
-        </div>
-
-        {/* Large Paste Card */}
-        <div className="schedule-upload-paste-card">
-          {isPasted ? (
-            <div className="schedule-upload-success-container">
-              <div className="schedule-upload-success">
-                <FiCheck className="schedule-upload-success-icon" />
-                <div className="schedule-upload-success-text">
-                  {" "}
-                  {new Set(courses.map((c) => c.course)).size} course
-                  {new Set(courses.map((c) => c.course)).size !== 1
-                    ? "s"
-                    : ""}{" "}
-                  uploaded successfully
-                </div>
-              </div>
-              <button
-                onClick={handleReset}
-                className="schedule-upload-secondary schedule-upload-clear-button"
-                disabled={courses.length === 0}
-                aria-disabled={courses.length === 0}
-                style={{
-                  opacity: courses.length === 0 ? 0.5 : 1,
-                  cursor: courses.length === 0 ? "not-allowed" : "pointer",
-                }}
-                data-tooltip-id={
-                  courses.length === 0
-                    ? "clear-schedule-disabled-tooltip"
-                    : undefined
-                }
-                data-tooltip-content={
-                  courses.length === 0
-                    ? "No schedule to clear - please upload your courses first"
-                    : undefined
-                }
-              >
-                {showClearSuccess ? (
-                  <FiCheck className="schedule-upload-icon-button" />
-                ) : (
-                  <FiTrash2 className="schedule-upload-icon-button" />
-                )}
-                Clear Schedule
-              </button>
-            </div>
-          ) : isProcessing ? (
-            <div className="schedule-upload-processing">
-              <FiZap className="schedule-upload-processing-icon" />
-              <div className="schedule-upload-processing-text">
-                Processing schedule...
-              </div>
-            </div>
+      {/* Large Paste Card */}
+      <label className="uwshuffle-input-label">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "var(--space-2)",
+          }}
+        >
+          {courses.length === 0 ? (
+            <FiBook style={{ color: "var(--color-primary)", opacity: 0.7 }} />
           ) : (
-            <div
-              className="schedule-upload-paste-zone"
-              onPaste={handlePaste}
-              tabIndex={0}
-            >
-              <FiClipboard className="schedule-upload-paste-icon" />
-              <div className="schedule-upload-paste-text">
-                Paste your current schedule here (Click + Ctrl+V / Cmd+V)
-              </div>
-            </div>
+            <FiCheckCircle style={{ color: "var(--color-primary)" }} />
           )}
-        </div>
-
-        {/* Course Selection Dropdown */}
-        <div className="schedule-upload-course-dropdown-container">
-          <button
-            onClick={() => setShowCourseDropdown(!showCourseDropdown)}
-            className="schedule-upload-secondary-full"
-            disabled={courses.length === 0}
-            aria-disabled={courses.length === 0}
+          <span
             style={{
-              opacity: courses.length === 0 ? 0.5 : 1,
-              cursor: courses.length === 0 ? "not-allowed" : "pointer",
+              color:
+                !courses || courses.length === 0
+                  ? "var(--color-text-primary)"
+                  : "var(--color-text-tertiary)",
             }}
-            data-tooltip-id={
-              courses.length === 0
-                ? "select-course-disabled-tooltip"
-                : undefined
-            }
-            data-tooltip-content={
-              courses.length === 0
-                ? "Upload your schedule first to select a course to swap"
-                : undefined
-            }
           >
-            <FiChevronDown className="schedule-upload-icon-button" />
-            {selectedCourseToSwap
-              ? selectedCourseToSwap.course
-              : "Now, pick the course you want to swap"}
-          </button>
-          {showCourseDropdown && courses.length > 0 && (
-            <div className="schedule-upload-dropdown">
-              {uniqueCourses.map((course) => (
-                <button
-                  key={course.course}
-                  onClick={() => handleCourseSelect(course)}
-                  className={`schedule-upload-dropdown-item ${
-                    selectedCourseToSwap?.course === course.course
-                      ? "selected"
-                      : ""
-                  }`}
-                >
-                  {course.course}
-                </button>
-              ))}
-            </div>
-          )}
+            1/3: To start, paste your current schedule below
+          </span>
         </div>
-      </>
+      </label>
+      {isPasted ? (
+        <UploadSuccessCard
+          courses={courses}
+          onReset={handleReset}
+          showClearSuccess={showClearSuccess}
+        />
+      ) : isProcessing ? (
+        <ProcessingCard />
+      ) : (
+        <PasteZone onPaste={handlePaste} isActive={courses.length === 0} />
+      )}
+
+      <label className="uwshuffle-input-label">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "var(--space-2)",
+          }}
+        >
+          {selectedCourseToSwap ? (
+            <FiCheckCircle style={{ color: "var(--color-primary)" }} />
+          ) : (
+            <FiBook style={{ color: "var(--color-primary)", opacity: 0.7 }} />
+          )}
+          <span
+            style={{
+              color:
+                !selectedCourseToSwap && courses.length !== 0
+                  ? "var(--color-text-primary)"
+                  : "var(--color-text-tertiary)",
+            }}
+          >
+            2/3: Then select the existing course you're looking to swap
+          </span>
+        </div>
+      </label>
+      <CourseDropdown
+        courses={courses}
+        selectedCourse={selectedCourseToSwap}
+        onCourseSelect={handleCourseSelect}
+        showDropdown={showCourseDropdown}
+        onToggleDropdown={() => setShowCourseDropdown(!showCourseDropdown)}
+        disabled={courses.length === 0}
+        tooltipId="select-course-disabled-tooltip"
+        tooltipContent="Upload your schedule first to select a course to swap"
+        isActive={courses.length !== 0 && !selectedCourseToSwap}
+      />
+      <label className="uwshuffle-input-label">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "var(--space-2)",
+          }}
+        >
+          {courses.length === 0 ? (
+            <FiRefreshCcw
+              style={{ color: "var(--color-primary)", opacity: 0.7 }}
+            />
+          ) : (
+            <FiCheckCircle style={{ color: "var(--color-primary)" }} />
+          )}
+          <span
+            style={{
+              color:
+                !selectedCourseToSwap && courses.length !== 0
+                  ? "var(--color-text-tertiary)"
+                  : "var(--color-text-primary)",
+            }}
+          >
+            Done! Click Scrape Swaps to get your swap options!
+          </span>
+        </div>
+      </label>
+      <div className="schedule-upload-button-container">
+        <button
+          onClick={handleRefresh}
+          className={`schedule-upload-primary ${
+            courses.length !== 0 && selectedCourseToSwap ? "active" : ""
+          }`}
+          disabled={courses.length === 0 || !selectedCourseToSwap}
+          aria-disabled={courses.length === 0 || !selectedCourseToSwap}
+          style={{
+            opacity: courses.length === 0 || !selectedCourseToSwap ? 0.5 : 1,
+            cursor:
+              courses.length === 0 || !selectedCourseToSwap
+                ? "not-allowed"
+                : "pointer",
+          }}
+          data-tooltip-id={
+            courses.length === 0 || !selectedCourseToSwap
+              ? "find-swap-disabled-tooltip"
+              : undefined
+          }
+          data-tooltip-content={
+            courses.length === 0
+              ? "Please upload your schedule first to find swap options"
+              : !selectedCourseToSwap
+              ? "Please select a course to swap first"
+              : undefined
+          }
+        >
+          {showFindSuccess ? (
+            <FiCheck className="schedule-upload-icon-button" />
+          ) : (
+            <FiEye className="schedule-upload-icon-button" />
+          )}
+          Scrape Swaps
+        </button>
+      </div>
+
       {/* )} */}
     </div>
   );

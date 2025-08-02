@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { FiHelpCircle, FiEye, FiEyeOff, FiUsers } from "react-icons/fi";
 import CalendarView from "./CalendarView";
-import ScheduleControls from "./ScheduleControls";
+
 import type { Course } from "../types";
 import type { FriendSchedule } from "../types";
 import { Tooltip } from "react-tooltip";
@@ -9,43 +8,31 @@ import { Tooltip } from "react-tooltip";
 interface CalendarSectionProps {
   courses: Course[];
   previewCourse: Course | null;
-  termDatesAvailable: boolean;
-  onExportCurrentSchedule: () => void;
-  onExportWithSwap: () => void;
   selectedCourseToSwap?: Course | null;
+  friendSchedules: FriendSchedule[];
+  setFriendSchedules: React.Dispatch<React.SetStateAction<FriendSchedule[]>>;
 }
 
 const CalendarSection: React.FC<CalendarSectionProps> = ({
   courses,
   previewCourse,
-  termDatesAvailable,
-  onExportCurrentSchedule,
-  onExportWithSwap,
   selectedCourseToSwap,
+  friendSchedules,
+  setFriendSchedules,
 }) => {
-  const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
   // const [isCalendarCollapsed, setIsCalendarCollapsed] =
   //   useState<boolean>(false);
 
   const handleToggleFriendSchedule = (name: string) => {
-    setFriendSchedules((prev) =>
-      prev.map((f) => (f.name === name ? { ...f, visible: !f.visible } : f))
+    setFriendSchedules((prev: FriendSchedule[]) =>
+      prev.map((f: FriendSchedule) =>
+        f.name === name ? { ...f, visible: !f.visible } : f
+      )
     );
   };
 
   return (
     <div className="uwshuffle-calendar-section">
-      {/* Schedule Controls Card */}
-      <ScheduleControls
-        courses={courses}
-        previewCourse={previewCourse}
-        termDatesAvailable={termDatesAvailable}
-        onExportCurrentSchedule={onExportCurrentSchedule}
-        onExportWithSwap={onExportWithSwap}
-        onFriendSchedulesChange={setFriendSchedules}
-        friendSchedules={friendSchedules}
-      />
-
       {/* Schedule Card */}
       <div className="uwshuffle-calendar-card">
         <div className="uwshuffle-calendar-header">

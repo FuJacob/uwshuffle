@@ -18,9 +18,7 @@ import InstructionsModal from "./InstructionsModal";
 import CalendarSection from "./CalendarSection";
 import PreviewInsights from "./PreviewInsights";
 import ActionBar from "./ActionBar";
-import ScheduleControls from "./ScheduleControls";
-import type { Course } from "../types";
-import type { FriendSchedule } from "../types";
+import type { Course, FriendSchedule } from "../types";
 import logo from "../assets/logo.svg";
 import Joyride, { type CallBackProps } from "react-joyride";
 
@@ -30,6 +28,7 @@ import {
   areTermDatesValid,
 } from "../utils/icsExport";
 import { useGetProfInfoFromUwFlow } from "../hooks/useGetProfInfoFromUwFlow";
+import ScheduleControls from "./ScheduleControls";
 const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [previewCourse, setPreviewCourse] = useState<Course | null>(null);
@@ -44,9 +43,8 @@ const Sidebar: React.FC = () => {
   );
   const [selectedCourseToSwap, setSelectedCourseToSwap] =
     useState<Course | null>(null);
-  const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
   const profInfo = useGetProfInfoFromUwFlow(previewCourse);
-
+  const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
   const [run, setRun] = useState(false);
   const steps = [
     {
@@ -295,12 +293,23 @@ const Sidebar: React.FC = () => {
   useEffect(() => {
     console.log(profInfo);
   }, [profInfo]);
+  const defaultSections = [
+    "action-bar",
+    "preview",
+    "controls",
+    "schedule-controls",
+    "calendar",
+  ];
   // Drag-and-drop sidebar section order state & logic
   const [sections, setSections] = useState(() => {
     const saved = localStorage.getItem("uwshuffle-sidebar-order");
-    return saved
-      ? JSON.parse(saved)
-      : ["preview", "controls", "schedule_controls", "calendar"];
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.length === defaultSections.length) {
+        return parsed;
+      }
+    }
+    return defaultSections;
   });
 
   // Save sidebar order to localStorage
@@ -308,13 +317,30 @@ const Sidebar: React.FC = () => {
     localStorage.setItem("uwshuffle-sidebar-order", JSON.stringify(sections));
   }, [sections]);
 
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 15,
+      },
+    })
+  );
 
   function renderSection(id: string) {
     switch (id) {
       case "preview":
         return (
           <PreviewInsights previewCourse={previewCourse} profInfo={profInfo} />
+        );
+      case "action-bar":
+        return (
+          <ActionBar
+            isDarkMode={isDarkMode}
+            onToggleDarkMode={handleToggleDarkMode}
+            onRateClick={handleRateClick}
+            onKofiClick={handleKofiClick}
+            onHelpClick={handleOpenModal}
+            onCloseSidebar={handleCloseSidebar}
+          />
         );
       case "controls":
         return (
@@ -329,7 +355,7 @@ const Sidebar: React.FC = () => {
             />
           </div>
         );
-      case "schedule_controls":
+      case "schedule-controls":
         return (
           <ScheduleControls
             courses={courses}
@@ -346,10 +372,9 @@ const Sidebar: React.FC = () => {
           <CalendarSection
             courses={courses}
             previewCourse={previewCourse}
-            termDatesAvailable={termDatesAvailable}
-            onExportCurrentSchedule={handleExportCurrentSchedule}
-            onExportWithSwap={handleExportWithSwap}
             selectedCourseToSwap={selectedCourseToSwap}
+            friendSchedules={friendSchedules}
+            setFriendSchedules={setFriendSchedules}
           />
         );
       default:
@@ -380,6 +405,110 @@ const Sidebar: React.FC = () => {
         showSkipButton={true}
         showProgress={true}
         callback={handleJoyrideCallback}
+        styles={{
+          options: {
+            zIndex: 10000,
+            primaryColor: "var(--color-primary)",
+            backgroundColor: "var(--color-surface)",
+            textColor: "var(--color-text-primary)",
+            arrowColor: "var(--color-surface)",
+            overlayColor: "rgba(0, 0, 0, 0.5)",
+          },
+          overlay: {
+            zIndex: 10000,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          tooltip: {
+            zIndex: 10001,
+            backgroundColor: "var(--color-surface)",
+            borderRadius: "var(--radius-md)",
+            border: "1px solid var(--color-border)",
+            boxShadow: "var(--shadow-lg)",
+            color: "var(--color-text-primary)",
+            fontSize: "var(--font-size-sm)",
+            fontFamily: "var(--font-family)",
+            padding: "var(--space-4)",
+            maxWidth: "400px",
+          },
+          tooltipContainer: {
+            textAlign: "left",
+            lineHeight: "1.5",
+          },
+          tooltipTitle: {
+            color: "var(--color-text-primary)",
+            fontSize: "var(--font-size-base)",
+            fontWeight: "600",
+            marginBottom: "var(--space-2)",
+          },
+          tooltipContent: {
+            color: "var(--color-text-secondary)",
+            fontSize: "var(--font-size-sm)",
+            lineHeight: "1.5",
+            padding: "var(--space-2) 0",
+          },
+          buttonNext: {
+            backgroundColor: "var(--color-primary)",
+            color: "white",
+            border: "none",
+            borderRadius: "var(--radius-md)",
+            fontSize: "var(--font-size-sm)",
+            fontWeight: "600",
+            padding: "var(--space-2) var(--space-3)",
+            cursor: "pointer",
+            transition: "var(--transition-fast)",
+            fontFamily: "var(--font-family)",
+          },
+          buttonBack: {
+            backgroundColor: "var(--color-surface)",
+            color: "var(--color-text-secondary)",
+            border: "1px solid var(--color-border)",
+            borderRadius: "var(--radius-md)",
+            fontSize: "var(--font-size-sm)",
+            fontWeight: "600",
+            padding: "var(--space-2) var(--space-3)",
+            cursor: "pointer",
+            transition: "var(--transition-fast)",
+            fontFamily: "var(--font-family)",
+          },
+          buttonSkip: {
+            backgroundColor: "transparent",
+            color: "var(--color-text-tertiary)",
+            border: "none",
+            fontSize: "var(--font-size-sm)",
+            fontWeight: "500",
+            padding: "var(--space-2) var(--space-3)",
+            cursor: "pointer",
+            transition: "var(--transition-fast)",
+            fontFamily: "var(--font-family)",
+          },
+          buttonClose: {
+            backgroundColor: "transparent",
+            color: "var(--color-text-tertiary)",
+            border: "none",
+            fontSize: "var(--font-size-sm)",
+            padding: "var(--space-2)",
+            cursor: "pointer",
+            transition: "var(--transition-fast)",
+            position: "absolute",
+            right: "var(--space-2)",
+            top: "var(--space-2)",
+          },
+          beacon: {
+            zIndex: 10002,
+            backgroundColor: "var(--color-primary)",
+            border: "2px solid var(--color-primary-dark)",
+            borderRadius: "50%",
+            width: "20px",
+            height: "20px",
+          },
+          beaconInner: {
+            backgroundColor: "var(--color-primary)",
+          },
+          beaconOuter: {
+            backgroundColor: "var(--color-primary-alpha)",
+            border: "2px solid var(--color-primary)",
+          },
+        }}
       />
       <div
         className={`uwshuffle-sidebar ${
@@ -405,15 +534,6 @@ const Sidebar: React.FC = () => {
                   items={sections}
                   strategy={verticalListSortingStrategy}
                 >
-                  {" "}
-                  <ActionBar
-                    isDarkMode={isDarkMode}
-                    onToggleDarkMode={handleToggleDarkMode}
-                    onRateClick={handleRateClick}
-                    onKofiClick={handleKofiClick}
-                    onHelpClick={handleOpenModal}
-                    onCloseSidebar={handleCloseSidebar}
-                  />
                   {sections.map((id: string) => (
                     <SortableSection key={id} id={id}>
                       {renderSection(id)}
