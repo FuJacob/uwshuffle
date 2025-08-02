@@ -1,20 +1,58 @@
 {
   "manifest_version": 3,
-  "name": "uwshuffle",
-  "version": "1.0",
-  "description": "Chrome extension that improves class swapping on Quest by providing a sidebar with calendar view and conflict detection",
-  "permissions": ["scripting", "activeTab", "storage"],
-  "host_permissions": ["https://quest.pecs.uwaterloo.ca/*"],
+  "name": "UWShuffle - UWaterloo Course Swapper",
+  "short_name": "UWShuffle",
+  "version": "1.0.0",
+  "description": "Streamline University of Waterloo course swapping with an intelligent sidebar featuring calendar visualization, conflict detection, and ICS export for Quest.",
+  "author": "Jacob Fu",
+  "homepage_url": "https://uwshuffle.vercel.app",
+  
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  
+  "permissions": [
+    "scripting",
+    "activeTab", 
+    "storage"
+  ],
+  
+  "host_permissions": [
+    "https://quest.pecs.uwaterloo.ca/*",
+    "https://uwflow.com/*"
+  ],
+  
   "content_scripts": [
     {
       "matches": ["https://quest.pecs.uwaterloo.ca/*"],
-      "js": ["content.js"]
+      "js": ["content.js"],
+      "css": [],
+      "run_at": "document_end"
     }
   ],
+  
   "web_accessible_resources": [
     {
-      "resources": ["sidebar.html"],
+      "resources": [
+        "sidebar.html",
+        "assets/*",
+        "*.css",
+        "*.js"
+      ],
       "matches": ["<all_urls>"]
     }
-  ]
+  ],
+  
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://uwflow.com https://quest.pecs.uwaterloo.ca;"
+  },
+  
+  "minimum_chrome_version": "88",
+  
+  "externally_connectable": {
+    "matches": ["https://quest.pecs.uwaterloo.ca/*"]
+  }
 }
