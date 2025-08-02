@@ -58,9 +58,11 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           id: `${course.course}-${day}-${course.start}-${
             isPreview ? "preview" : "regular"
           }`,
-          title: `${course.course}${
-            course.location ? ` (${course.location})` : ""
-          }`,
+          title: `${course.course} • ${moment(startTime).format(
+            "h:mm"
+          )} - ${moment(endTime).format("h:mm A")}${
+            course.location ? ` • ${course.location}` : ""
+          }${course.instructor ? ` • ${course.instructor}` : ""}`,
           start: startTime,
           end: endTime,
           resource: {
@@ -106,16 +108,16 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
   // Custom event style getter
   const eventStyleGetter = (event: ParsedScheduleEvent) => {
-    let backgroundColor = "#0052CC";
-    let borderColor = "#0052CC";
+    let backgroundColor = "var(--color-primary)";
+    let borderColor = "var(--color-primary)";
 
     if (event.isPreview) {
       if (event.resource?.hasConflict) {
-        backgroundColor = "#DC3545";
-        borderColor = "#DC3545";
+        backgroundColor = "var(--color-error)";
+        borderColor = "var(--color-error)";
       } else {
-        backgroundColor = "#28A745";
-        borderColor = "#28A745";
+        backgroundColor = "var(--color-success)";
+        borderColor = "var(--color-success)";
       }
     }
 
@@ -123,12 +125,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       style: {
         backgroundColor,
         borderColor,
-        color: "white",
+        color: "var(--color-surface)",
         fontSize: "11px",
         fontWeight: "600",
         border: "none",
         borderRadius: "6px",
-        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+        boxShadow: "var(--shadow-sm)",
       },
     };
   };
@@ -148,13 +150,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         defaultView={"work_week" as View}
         min={moment().hour(8).minute(0).toDate()}
         max={moment().hour(20).minute(0).toDate()}
-        step={30  }
+        step={30}
         timeslots={1}
         toolbar={false}
         eventPropGetter={eventStyleGetter}
         dayPropGetter={() => ({
           style: {
-            backgroundColor: "white",
+            backgroundColor: "var(--color-surface)",
           },
         })}
         formats={{

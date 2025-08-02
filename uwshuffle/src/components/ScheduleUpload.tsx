@@ -5,6 +5,7 @@ import {
   FiTrash2,
   FiRefreshCcw,
   FiBarChart2,
+  FiCheck,
 } from "react-icons/fi";
 import type { Course } from "../types";
 import "./ScheduleUpload.css";
@@ -23,6 +24,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   const [scheduleText, setScheduleText] = useState("");
   const [isPasted, setIsPasted] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showFindSuccess, setShowFindSuccess] = useState(false);
+  const [showClearSuccess, setShowClearSuccess] = useState(false);
 
   useEffect(() => {
     if (window.chrome && chrome.storage && chrome.storage.local) {
@@ -234,6 +237,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
         },
         "*"
       );
+      setShowFindSuccess(true);
+      setTimeout(() => setShowFindSuccess(false), 2000);
     } catch (error) {
       console.error("UWShuffle: Error sending scraper start message:", error);
     }
@@ -244,6 +249,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     setScheduleText("");
     setIsProcessing(false);
     onClearSchedule();
+    setShowClearSuccess(true);
+    setTimeout(() => setShowClearSuccess(false), 2000);
   };
 
   return (
@@ -263,7 +270,11 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
             cursor: courses.length === 0 ? "not-allowed" : "pointer",
           }}
         >
-          <FiRefreshCcw className="schedule-upload-icon-button" />
+          {showFindSuccess ? (
+            <FiCheck className="schedule-upload-icon-button" />
+          ) : (
+            <FiRefreshCcw className="schedule-upload-icon-button" />
+          )}
           Find Swap Options
         </button>
         <button
@@ -276,7 +287,11 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
             cursor: courses.length === 0 ? "not-allowed" : "pointer",
           }}
         >
-          <FiTrash2 className="schedule-upload-icon-button" />
+          {showClearSuccess ? (
+            <FiCheck className="schedule-upload-icon-button" />
+          ) : (
+            <FiTrash2 className="schedule-upload-icon-button" />
+          )}
           Clear Schedule
         </button>
       </div>

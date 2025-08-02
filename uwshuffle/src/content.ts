@@ -35,7 +35,7 @@ function createSidebar() {
   document.body.appendChild(sidebar);
 
   // Adjust main content to accommodate sidebar
-  adjustMainContent();
+  // adjustMainContent();
 }
   
 function adjustMainContent(isMinimized = false) {

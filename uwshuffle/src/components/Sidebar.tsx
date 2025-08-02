@@ -16,12 +16,15 @@ import {
   FiRefreshCcw,
   FiMoon,
   FiSun,
+  FiUsers,
+  FiDownload,
 } from "react-icons/fi";
 import CalendarView from "./CalendarView";
 import ScheduleUpload from "./ScheduleUpload";
 import type { Course } from "../types";
 import logo from "../assets/logo.svg";
 import uwflowIcon from "../assets/uwflow.png";
+import { exportCurrentSchedule, exportScheduleWithSwap } from "../utils/icsExport";
 
 const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -31,8 +34,9 @@ const Sidebar: React.FC = () => {
     start: "11:30",
     end: "12:20",
     location: "UTD 105",
+    section: "001",
   });
-  const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  const [isMinimized, setIsMinimized] = useState<boolean>(true);
   const [currentInstructionStep, setCurrentInstructionStep] =
     useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -259,27 +263,41 @@ const Sidebar: React.FC = () => {
                             </div>
                             <div className="uwshuffle-course-details">
                               <div className="uwshuffle-course-line">
-                                <span className="uwshuffle-icon">
-                                  <FiBook />
-                                </span>
-                                <span className="uwshuffle-value">
-                                  {previewCourse.course}
-                                </span>
-                                <span className="uwshuffle-icon">
-                                  <FiMapPin />
-                                </span>
-                                <span className="uwshuffle-value">
-                                  {previewCourse.location}
-                                </span>
+                                <div className="uwshuffle-course-item">
+                                  <span className="uwshuffle-icon">
+                                    <FiBook />
+                                  </span>
+                                  <span className="uwshuffle-value">
+                                    {previewCourse.course}
+                                  </span>
+                                </div>
+                                <div className="uwshuffle-course-item">
+                                  <span className="uwshuffle-icon">
+                                    <FiUsers />
+                                  </span>
+                                  <span className="uwshuffle-value">
+                                    {previewCourse.section}
+                                  </span>
+                                </div>
                               </div>
                               <div className="uwshuffle-course-line">
-                                <span className="uwshuffle-icon">
-                                  <FiCalendar />
-                                </span>
-                                <span className="uwshuffle-value">
-                                  {previewCourse.days?.join(", ")} •{" "}
-                                  {previewCourse.start} - {previewCourse.end}
-                                </span>
+                                <div className="uwshuffle-course-item">
+                                  <span className="uwshuffle-icon">
+                                    <FiCalendar />
+                                  </span>
+                                  <span className="uwshuffle-value">
+                                    {previewCourse.days?.join(", ")} •{" "}
+                                    {previewCourse.start} - {previewCourse.end}
+                                  </span>
+                                </div>
+                                <div className="uwshuffle-course-item">
+                                  <span className="uwshuffle-icon">
+                                    <FiMapPin />
+                                  </span>
+                                  <span className="uwshuffle-value">
+                                    {previewCourse.location}
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -325,13 +343,13 @@ const Sidebar: React.FC = () => {
                               <div className="uwshuffle-professor-info">
                                 <div className="uwshuffle-professor-ratings">
                                   <span>Engaging: 84%</span>
-                                  <span>Clarity: 90%</span>
-                                </div>
-                                <div className="uwshuffle-professor-reviews">
                                   <span>
                                     <FiMessageSquare className="uwshuffle-icon" />
                                     4
                                   </span>
+                                </div>
+                                <div className="uwshuffle-professor-reviews">
+                                  <span>Clarity: 90%</span>
                                   <span>
                                     <FiBarChart2 className="uwshuffle-icon" />
                                     127
@@ -394,24 +412,60 @@ const Sidebar: React.FC = () => {
               {/* Calendar View with card styling */}
               <div className="uwshuffle-calendar-section">
                 <div className="uwshuffle-calendar-card">
-                  {courses.length === 0 ? (
-                    <div className="uwshuffle-calendar-empty">
-                      <FiFileText className="uwshuffle-calendar-empty-icon" />
-                      <div className="uwshuffle-calendar-empty-title">
-                        Nothing here yet
-                      </div>
-                      <div className="uwshuffle-calendar-empty-subtitle">
-                        Upload your schedule above to get started
-                      </div>
+                  <div className="uwshuffle-calendar-header">
+                    <div className="uwshuffle-calendar-title">Schedule</div>
+                    <div className="uwshuffle-calendar-actions">
+                      <button
+                        className="uwshuffle-export-button"
+                        disabled={courses.length === 0}
+                        aria-disabled={courses.length === 0}
+                        onClick={() => exportCurrentSchedule(courses)}
+                        style={{
+                          opacity: courses.length === 0 ? 0.5 : 1,
+                          cursor:
+                            courses.length === 0 ? "not-allowed" : "pointer",
+                        }}
+                      >
+                        <FiDownload className="uwshuffle-icon-button" />
+                        Export Current Schedule
+                      </button>
+                      <button
+                        className="uwshuffle-export-button"
+                        disabled={courses.length === 0 || !previewCourse}
+                        aria-disabled={courses.length === 0 || !previewCourse}
+                        onClick={() => previewCourse && exportScheduleWithSwap(courses, previewCourse)}
+                        style={{
+                          opacity:
+                            courses.length === 0 || !previewCourse ? 0.5 : 1,
+                          cursor:
+                            courses.length === 0 || !previewCourse
+                              ? "not-allowed"
+                              : "pointer",
+                        }}
+                      >
+                        <FiRefreshCcw className="uwshuffle-icon-button" />
+                        Export With Swapped Class
+                      </button>
                     </div>
-                  ) : (
-                    <div className="uwshuffle-calendar-content">
+                  </div>
+                  <div className="uwshuffle-calendar-content">
+                    {courses.length === 0 ? (
+                      <div className="uwshuffle-calendar-empty">
+                        <FiFileText className="uwshuffle-calendar-empty-icon" />
+                        <div className="uwshuffle-calendar-empty-title">
+                          Nothing here yet
+                        </div>
+                        <div className="uwshuffle-calendar-empty-subtitle">
+                          Upload your schedule above to get started
+                        </div>
+                      </div>
+                    ) : (
                       <CalendarView
                         courses={courses}
                         previewCourse={previewCourse}
                       />
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
 
