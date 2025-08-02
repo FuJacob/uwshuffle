@@ -17,6 +17,7 @@ export interface ParsedScheduleEvent {
     course?: string;
     isPreview?: boolean;
     hasConflict?: boolean;
+    color?: string;
   };
   isPreview?: boolean;
 }

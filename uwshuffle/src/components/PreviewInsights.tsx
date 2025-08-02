@@ -8,9 +8,11 @@ import {
   FiUser,
   FiMessageSquare,
   FiBarChart2,
+  FiHelpCircle,
 } from "react-icons/fi";
 import type { Course } from "../types";
 import uwflowIcon from "../assets/uwflow.png";
+import { Tooltip } from "react-tooltip";
 
 interface ProfInfo {
   name: string;
@@ -35,7 +37,14 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
   if (!previewCourse) {
     return (
       <div className="uwshuffle-stats-section">
-        <div className="uwshuffle-stats-title">Preview Insights</div>
+        <div className="uwshuffle-stats-title">
+          Preview Insights
+          <FiHelpCircle
+            className="uwshuffle-help-icon"
+            data-tooltip-id="preview-insights-tooltip"
+            data-tooltip-content="View detailed information about the course you're considering swapping to, including professor ratings and course details."
+          />
+        </div>
         <div className="uwshuffle-stats-content">
           <div className="uwshuffle-no-preview">
             <div className="uwshuffle-no-preview-text">
@@ -43,13 +52,25 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
             </div>
           </div>
         </div>
+        <Tooltip
+          id="preview-insights-tooltip"
+          place="top"
+          className="uwshuffle-tooltip"
+        />
       </div>
     );
   }
 
   return (
     <div className="uwshuffle-stats-section">
-      <div className="uwshuffle-stats-title">Preview Insights</div>
+      <div className="uwshuffle-stats-title">
+        Preview Insights
+        <FiHelpCircle
+          className="uwshuffle-help-icon"
+          data-tooltip-id="preview-insights-tooltip"
+          data-tooltip-content="View detailed information about the course you're considering swapping to, including professor ratings and course details."
+        />
+      </div>
       <div className="uwshuffle-stats-content">
         <div className="uwshuffle-preview-containers">
           <div className="uwshuffle-course-container">
@@ -145,7 +166,14 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="uwshuffle-professor-link uwshuffle-uwflow-link"
+                    className={`uwshuffle-professor-link uwshuffle-uwflow-link ${
+                      !previewCourse ? "uwshuffle-disabled" : ""
+                    }`}
+                    style={{
+                      opacity: !previewCourse ? 0.5 : 1,
+                      cursor: !previewCourse ? "not-allowed" : "pointer",
+                      pointerEvents: !previewCourse ? "none" : "auto",
+                    }}
                   >
                     Go to{" "}
                     <img
@@ -202,6 +230,11 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
           </div>
         </div>
       </div>
+      <Tooltip
+        id="preview-insights-tooltip"
+        place="top"
+        className="uwshuffle-tooltip"
+      />
     </div>
   );
 };

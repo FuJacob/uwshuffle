@@ -9,8 +9,11 @@ import {
   FiPlus,
   FiMinus,
   FiChevronDown,
+  FiHelpCircle,
 } from "react-icons/fi";
 import type { Course } from "../types";
+import { courseCodes } from "../constants/courseCodes";
+import { Tooltip } from "react-tooltip";
 import "./ScheduleUpload.css";
 
 interface ScheduleUploadProps {
@@ -60,47 +63,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 
     for (const line of lines) {
       const trimmedLine = line.trim();
-      const COURSE_CODES = [
-        "ACTSC",
-        "AE",
-        "AFM",
-        "AMATH",
-        "ANTH",
-        "APPLS",
-        "ARABIC",
-        "ARBUS",
-        "ARCH",
-        "ARTS",
-        "ASL",
-        "AVIA",
-        "BET",
-        "BIOL",
-        "BLKST",
-        "BME",
-        "BUS",
-        "CC",
-        "CDNST",
-        "CFM",
-        "CHE",
-        "CHEM",
-        "CHINA",
-        "CI",
-        "CIVE",
-        "CLAS",
-        "CMW",
-        "CO",
-        "COGSCI",
-        "COMM",
-        "COMMST",
-        "CROAT",
-        "CS",
-        "DAC",
-        "DUTCH",
-        "EARTH",
-        "EASIA",
-      ];
       const COURSE_REGEX = new RegExp(
-        `^(${COURSE_CODES.join("|")})\\s*\\d{3}[A-Z]?`,
+        `^(${Array.from(courseCodes).join("|")})\\s*\\d{3}[A-Z]?`,
         "i"
       );
       // Check if this line starts a new course (course code pattern)
@@ -280,7 +244,14 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     <div className="schedule-upload-container">
       {/* Control Panel Title */}
       <div className="schedule-upload-title-container">
-        <div className="schedule-upload-title">Action Center</div>
+        <div className="schedule-upload-title">
+          Action Center
+          <FiHelpCircle 
+            className="uwshuffle-help-icon"
+            data-tooltip-id="action-center-tooltip"
+            data-tooltip-content="Upload your schedule, find swap options, and clear your schedule. The central hub for all schedule management actions."
+          />
+        </div>
         <button
           onClick={() => setIsActionCenterCollapsed(!isActionCenterCollapsed)}
           className="uwshuffle-collapse-button"
@@ -288,6 +259,10 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
           {isActionCenterCollapsed ? <FiPlus /> : <FiMinus />}
         </button>
       </div>
+      <Tooltip id="action-center-tooltip" place="top" className="uwshuffle-tooltip" />
+      <Tooltip id="find-swap-disabled-tooltip" place="top" className="uwshuffle-tooltip" />
+      <Tooltip id="clear-schedule-disabled-tooltip" place="top" className="uwshuffle-tooltip" />
+      <Tooltip id="select-course-disabled-tooltip" place="top" className="uwshuffle-tooltip" />
 
       {/* Button Row */}
       {!isActionCenterCollapsed && (
@@ -302,6 +277,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
             opacity: courses.length === 0 ? 0.5 : 1,
             cursor: courses.length === 0 ? "not-allowed" : "pointer",
           }}
+          data-tooltip-id={courses.length === 0 ? "find-swap-disabled-tooltip" : undefined}
+          data-tooltip-content={courses.length === 0 ? "Please upload your schedule first to find swap options" : undefined}
         >
           {showFindSuccess ? (
             <FiCheck className="schedule-upload-icon-button" />
@@ -319,6 +296,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
             opacity: courses.length === 0 ? 0.5 : 1,
             cursor: courses.length === 0 ? "not-allowed" : "pointer",
           }}
+          data-tooltip-id={courses.length === 0 ? "clear-schedule-disabled-tooltip" : undefined}
+          data-tooltip-content={courses.length === 0 ? "No schedule to clear - please upload your courses first" : undefined}
         >
           {showClearSuccess ? (
             <FiCheck className="schedule-upload-icon-button" />
@@ -337,6 +316,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
               opacity: courses.length === 0 ? 0.5 : 1,
               cursor: courses.length === 0 ? "not-allowed" : "pointer",
             }}
+            data-tooltip-id={courses.length === 0 ? "select-course-disabled-tooltip" : undefined}
+            data-tooltip-content={courses.length === 0 ? "Upload your schedule first to select a course to swap" : undefined}
           >
             <FiChevronDown className="schedule-upload-icon-button" />
             {selectedCourseToSwap ? selectedCourseToSwap.course : "Select Course"}

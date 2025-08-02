@@ -680,6 +680,8 @@ body {
   margin-bottom: var(--space-3);
   padding-bottom: var(--space-2);
   border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
 }
 
 .uwshuffle-stats-content {
@@ -1264,8 +1266,42 @@ body {
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-secondary);
-
   flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* ===== HELP ICON STYLES ===== */
+.uwshuffle-help-icon {
+  width: 12px;
+  height: 12px;
+  color: var(--color-text-tertiary);
+  margin-left: var(--space-1);
+  cursor: help;
+  transition: var(--transition-fast);
+  flex-shrink: 0;
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+}
+
+.uwshuffle-help-icon:hover {
+  color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+/* Tooltip styling */
+.uwshuffle-tooltip {
+  background-color: var(--color-text-primary) !important;
+  color: var(--color-surface) !important;
+  border-radius: var(--radius-md) !important;
+  padding: var(--space-2) var(--space-3) !important;
+  font-size: var(--font-size-xs) !important;
+  font-family: var(--font-family) !important;
+  max-width: 250px !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: none !important;
+  z-index: 1000 !important;
 }
 
 /* ===== BUTTON STYLES ===== */
@@ -1347,7 +1383,7 @@ body {
 .schedule-upload-primary:focus:not(:disabled) {
   background-color: var(--color-primary-hover);
   border-color: var(--color-border-focus);
-  color: var(--color-text-primary);
+  color: var(--color-surface);
   transform: translateY(-1px);
 }
 
@@ -1375,12 +1411,20 @@ body {
   font-family: var(--font-family);
 }
 
-.schedule-upload-secondary:hover,
-.schedule-upload-secondary:focus {
+.schedule-upload-secondary:hover:not(:disabled),
+.schedule-upload-secondary:focus:not(:disabled) {
   background-color: var(--color-surface-hover);
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-1px);
+}
+
+.schedule-upload-secondary:disabled {
+  background-color: var(--color-surface);
+  color: var(--color-text-tertiary);
+  border-color: var(--color-border);
+  cursor: not-allowed;
+  transform: none;
 }
 
 .schedule-upload-icon-button {
@@ -1584,7 +1628,7 @@ body {
 .schedule-upload-success:hover {
   background-color: var(--color-surface-hover);
   border-color: var(--color-border-focus);
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
   transform: translateY(-1px);
   outline: none;
 }
@@ -1596,7 +1640,7 @@ body {
 }
 
 .schedule-upload-success:hover .schedule-upload-success-icon {
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
 }
 
 .schedule-upload-success-text {
@@ -1609,7 +1653,7 @@ body {
 }
 
 .schedule-upload-success:hover .schedule-upload-success-text {
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
 }
 
 /* Processing state */
@@ -1686,33 +1730,33 @@ body {
 
 /* ===== SCHEDULE CONTROLS CARD ===== */
 .uwshuffle-schedule-controls-card {
+  flex: 0 0 auto;
   background-color: var(--color-surface);
   border-radius: var(--radius-md);
+  padding: var(--space-4);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
-  overflow: hidden;
+  color: var(--color-text-primary);
 }
 
 .uwshuffle-schedule-controls-header {
-  padding: var(--space-4);
-  background-color: var(--color-surface);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--color-border);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
   padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .uwshuffle-schedule-controls-title {
   font-size: var(--font-size-sm);
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
 }
 
 .uwshuffle-schedule-controls-content {
-  padding-bottom: var(--space-4);
-  padding-inline: var(--space-4);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -1749,7 +1793,7 @@ body {
 .uwshuffle-calendar-title {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-1);
   margin: 0;
   font-size: var(--font-size-sm);
   font-weight: 600;
@@ -1796,6 +1840,13 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-1px);
+}
+
+.uwshuffle-tag-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: var(--space-1);
+  flex-shrink: 0;
 }
 
 .uwshuffle-calendar-actions {
@@ -1916,16 +1967,16 @@ body {
   height: 12px;
 }
 
-/* Share button styles - matching action button design */
+/* Share button styles - matching primary button design */
 .uwshuffle-share-button {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
-  background-color: var(--color-surface);
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: 1px solid var(--color-primary);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
   font-weight: 600;
@@ -1938,9 +1989,9 @@ body {
 
 .uwshuffle-share-button:hover,
 .uwshuffle-share-button:focus {
-  background-color: var(--color-surface-hover);
-  border-color: var(--color-border-focus);
-  color: var(--color-text-primary);
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  color: var(--color-surface);
   transform: translateY(-1px);
 }
 
@@ -2178,8 +2229,8 @@ body {
 
 /* Events */
 .rbc-event {
-  background-color: var(--color-primary) !important;
-  border: none !important;
+  background-color: var(--color-primary);
+  border: 3px solid var(--color-primary-dark) !important;
   border-radius: var(--radius-sm) !important;
   color: var(--color-surface) !important;
   font-size: var(--font-size-xs) !important;

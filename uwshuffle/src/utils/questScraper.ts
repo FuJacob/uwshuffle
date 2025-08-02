@@ -305,13 +305,13 @@ export class QuestScraper {
   private parseQuestDayString(dayString: string): string[] {
     // Quest uses full day names like "MoWeFr", "Tu", "Th", etc.
     const dayMap: { [key: string]: string } = {
-      Mo: "Mon",
-      Tu: "Tue",
-      We: "Wed",
-      Th: "Thu",
-      Fr: "Fri",
-      Sa: "Sat",
-      Su: "Sun",
+      Mo: "M",
+      Tu: "Tu",
+      We: "W",
+      Th: "Th",
+      Fr: "F",
+      Sa: "Sa",
+      Su: "Su",
     };
 
     const days: string[] = [];
@@ -327,11 +327,11 @@ export class QuestScraper {
         // Single character fallback (shouldn't happen in Quest format)
         const oneChar = dayString.charAt(i);
         const singleDayMap: { [key: string]: string } = {
-          M: "Mon",
-          T: "Tue",
-          W: "Wed",
-          R: "Thu",
-          F: "Fri",
+          M: "M",
+          T: "Tu",
+          W: "W",
+          R: "Th",
+          F: "F",
         };
         if (singleDayMap[oneChar]) {
           days.push(singleDayMap[oneChar]);

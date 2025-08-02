@@ -6,6 +6,7 @@ import type { Course, ParsedScheduleEvent, FriendSchedule } from "../types";
 
 const localizer = momentLocalizer(moment);
 
+
 interface CalendarViewProps {
   courses: Course[];
   previewCourse?: Course | null;
@@ -23,7 +24,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   const events = useMemo(() => {
     const allEvents: ParsedScheduleEvent[] = [];
 
-    const convertCourseToEvents = (course: Course, isPreview = false) => {
+    const convertCourseToEvents = (course: Course, isPreview = false, sourceId = "main", color?: string) => {
       const courseEvents: ParsedScheduleEvent[] = [];
 
       // Get current week's Monday
@@ -59,7 +60,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           .toDate();
 
         courseEvents.push({
-          id: `${course.course}-${day}-${course.start}-${
+          id: `${sourceId}-${course.course}-${day}-${course.start}-${
             isPreview ? "preview" : "regular"
           }`,
           title: `${course.course} • ${moment(startTime).format(
@@ -73,6 +74,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
             course: course.course,
             isPreview,
             hasConflict: false,
+            color: color,
           },
           isPreview,
         });
@@ -91,15 +93,16 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     });
     
     filteredCourses.forEach((course) => {
-      allEvents.push(...convertCourseToEvents(course, false));
+      allEvents.push(...convertCourseToEvents(course, false, "user"));
     });
 
     // add friend schedules
     if (friendSchedules) {
-      friendSchedules.forEach((friendSchedule) => {
+      friendSchedules.forEach((friendSchedule, index) => {
         if (friendSchedule.visible) {
           friendSchedule.schedule.forEach((course) => {
-            allEvents.push(...convertCourseToEvents(course, false));
+            const sanitizedName = friendSchedule.name.replace(/[^a-zA-Z0-9]/g, '-');
+            allEvents.push(...convertCourseToEvents(course, false, `friend-${index}-${sanitizedName}`, friendSchedule.color));
           });
         }
       });
@@ -107,7 +110,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
     // Add preview course
     if (previewCourse) {
-      const previewEvents = convertCourseToEvents(previewCourse, true);
+      const previewEvents = convertCourseToEvents(previewCourse, true, "preview");
 
       // Check for conflicts
       previewEvents.forEach((previewEvent) => {
@@ -134,6 +137,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     let backgroundColor = "var(--color-primary)";
     let borderColor = "var(--color-primary)";
 
+    // Use friend's color if available
+    if (event.resource?.color) {
+      backgroundColor = event.resource.color;
+      borderColor = event.resource.color;
+      console.log('Friend event color:', event.resource.color, 'for event:', event.title);
+    }
+
     if (event.isPreview) {
       if (event.resource?.hasConflict) {
         backgroundColor = "var(--color-error)";
@@ -147,11 +157,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     return {
       style: {
         backgroundColor,
-        borderColor,
+        borderTop: `3px solid ${borderColor}`,
+        borderRight: `1px solid ${borderColor}`,
+        borderBottom: `1px solid ${borderColor}`,
+        borderLeft: `1px solid ${borderColor}`,
         color: "var(--color-surface)",
         fontSize: "11px",
         fontWeight: "600",
-        border: "none",
         borderRadius: "6px",
         boxShadow: "var(--shadow-sm)",
       },
