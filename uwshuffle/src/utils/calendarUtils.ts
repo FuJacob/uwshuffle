@@ -83,11 +83,9 @@ export function convertCourseToEvents(
       id: `${sourceId}-${course.course}-${day}-${course.start}-${
         isPreview ? "preview" : "regular"
       }`,
-      title: `${course.course} • ${moment(startTime).format("h:mm")} - ${moment(
-        endTime
-      ).format("h:mm A")}${course.location ? ` • ${course.location}` : ""}${
-        course.instructor ? ` • ${course.instructor}` : ""
-      }`,
+      title: `${course.course}\n${
+        course.location ? ` • ${course.location}` : ""
+      }${course.instructor ? ` • ${course.instructor}` : ""}`,
       start: startTime,
       end: endTime,
       resource: {

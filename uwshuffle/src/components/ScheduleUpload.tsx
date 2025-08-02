@@ -9,6 +9,7 @@ import {
   FiMinus,
   FiChevronDown,
   FiHelpCircle,
+  FiEye,
 } from "react-icons/fi";
 import type { Course } from "../types";
 import { courseCodes } from "../constants/courseCodes";
@@ -60,13 +61,15 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     const courses: Course[] = [];
 
     let currentCourse: Partial<Course> | null = null;
+    let expectingLocation = false;
 
-    for (const line of lines) {
-      const trimmedLine = line.trim();
+    for (let i = 0; i < lines.length; i++) {
+      const trimmedLine = lines[i].trim();
       const COURSE_REGEX = new RegExp(
         `^(${Array.from(courseCodes).join("|")})\\s*\\d{3}[A-Z]?`,
         "i"
       );
+
       // Check if this line starts a new course (course code pattern)
       const courseMatch = trimmedLine.match(COURSE_REGEX);
       if (courseMatch) {
@@ -85,6 +88,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
         currentCourse = {
           course: courseMatch[0].replace(/\s+/g, " ").trim(),
         };
+        expectingLocation = false;
 
         // Parse the rest of the line for time and location info
         const timeMatch = trimmedLine.match(
@@ -96,12 +100,14 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
           currentCourse.start = convertTo24Hour(startTime);
           currentCourse.end = convertTo24Hour(endTime);
           currentCourse.location = location?.trim();
+          expectingLocation = false;
         }
       } else if (currentCourse) {
-        // This might be additional time slot for the same course
+        // Check if this is a time line (additional time slot for the same course)
         const timeMatch = trimmedLine.match(
           /([MTWRF]+)\s+(\d{1,2}:\d{2}[AP]M)\s*-\s*(\d{1,2}:\d{2}[AP]M)(?:\s+(.+))?/
         );
+
         if (timeMatch) {
           // Save current course and create a new instance for this time slot
           if (
@@ -121,6 +127,40 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
             end: convertTo24Hour(endTime),
             location: location?.trim(),
           };
+
+          // If no location on this line, expect it on the next line
+          if (!location || location.trim() === "") {
+            expectingLocation = true;
+          } else {
+            expectingLocation = false;
+          }
+        } else if (
+          expectingLocation &&
+          currentCourse.course &&
+          currentCourse.days &&
+          currentCourse.start &&
+          currentCourse.end
+        ) {
+          // This line should be the location for the previous time slot
+          currentCourse.location = trimmedLine;
+          expectingLocation = false;
+        } else if (
+          currentCourse.course &&
+          !currentCourse.days &&
+          !currentCourse.start &&
+          !currentCourse.end
+        ) {
+          // This might be a time line right after a course code
+          const timeOnlyMatch = trimmedLine.match(
+            /([MTWRF]+)\s+(\d{1,2}:\d{2}[AP]M)\s*-\s*(\d{1,2}:\d{2}[AP]M)/
+          );
+          if (timeOnlyMatch) {
+            const [, dayString, startTime, endTime] = timeOnlyMatch;
+            currentCourse.days = parseDayString(dayString);
+            currentCourse.start = convertTo24Hour(startTime);
+            currentCourse.end = convertTo24Hour(endTime);
+            expectingLocation = true;
+          }
         }
       }
     }
@@ -307,52 +347,54 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
               {showFindSuccess ? (
                 <FiCheck className="schedule-upload-icon-button" />
               ) : (
-                <FiRefreshCcw className="schedule-upload-icon-button" />
+                <FiEye className="schedule-upload-icon-button" />
               )}
-              Get my Swaps!
-            </button>
-            <button
-              onClick={handleReset}
-              className="schedule-upload-secondary schedule-upload-clear-button"
-              disabled={courses.length === 0}
-              aria-disabled={courses.length === 0}
-              style={{
-                opacity: courses.length === 0 ? 0.5 : 1,
-                cursor: courses.length === 0 ? "not-allowed" : "pointer",
-              }}
-              data-tooltip-id={
-                courses.length === 0
-                  ? "clear-schedule-disabled-tooltip"
-                  : undefined
-              }
-              data-tooltip-content={
-                courses.length === 0
-                  ? "No schedule to clear - please upload your courses first"
-                  : undefined
-              }
-            >
-              {showClearSuccess ? (
-                <FiCheck className="schedule-upload-icon-button" />
-              ) : (
-                <FiTrash2 className="schedule-upload-icon-button" />
-              )}
-              Clear Schedule
+              Preview my Swap Options!
             </button>
           </div>
 
           {/* Large Paste Card */}
           <div className="schedule-upload-paste-card">
             {isPasted ? (
-              <div className="schedule-upload-success">
-                <FiCheck className="schedule-upload-success-icon" />
-                <div className="schedule-upload-success-text">
-                  {" "}
-                  {new Set(courses.map((c) => c.course)).size} course
-                  {new Set(courses.map((c) => c.course)).size !== 1
-                    ? "s"
-                    : ""}{" "}
-                  uploaded successfully
+              <div className="schedule-upload-success-container">
+                <div className="schedule-upload-success">
+                  <FiCheck className="schedule-upload-success-icon" />
+                  <div className="schedule-upload-success-text">
+                    {" "}
+                    {new Set(courses.map((c) => c.course)).size} course
+                    {new Set(courses.map((c) => c.course)).size !== 1
+                      ? "s"
+                      : ""}{" "}
+                    uploaded successfully
+                  </div>
                 </div>
+                <button
+                  onClick={handleReset}
+                  className="schedule-upload-secondary schedule-upload-clear-button"
+                  disabled={courses.length === 0}
+                  aria-disabled={courses.length === 0}
+                  style={{
+                    opacity: courses.length === 0 ? 0.5 : 1,
+                    cursor: courses.length === 0 ? "not-allowed" : "pointer",
+                  }}
+                  data-tooltip-id={
+                    courses.length === 0
+                      ? "clear-schedule-disabled-tooltip"
+                      : undefined
+                  }
+                  data-tooltip-content={
+                    courses.length === 0
+                      ? "No schedule to clear - please upload your courses first"
+                      : undefined
+                  }
+                >
+                  {showClearSuccess ? (
+                    <FiCheck className="schedule-upload-icon-button" />
+                  ) : (
+                    <FiTrash2 className="schedule-upload-icon-button" />
+                  )}
+                  Clear Schedule
+                </button>
               </div>
             ) : isProcessing ? (
               <div className="schedule-upload-processing">
@@ -379,7 +421,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
           <div className="schedule-upload-course-dropdown-container">
             <button
               onClick={() => setShowCourseDropdown(!showCourseDropdown)}
-              className="schedule-upload-secondary"
+              className="schedule-upload-secondary-full"
               disabled={courses.length === 0}
               aria-disabled={courses.length === 0}
               style={{

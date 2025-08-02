@@ -34,9 +34,9 @@ const ActionBar: React.FC<ActionBarProps> = ({
             <img src={logo} alt="UWShuffle" className="uwshuffle-logo" />
             <div className="uwshuffle-logo-content">
               <div>UWShuffle</div>
-              <div className="uwshuffle-action-bar-author-text">
+              {/* <div className="uwshuffle-action-bar-author-text">
                 By @fujacob
-              </div>
+              </div> */}
             </div>
           </button>
         </div>

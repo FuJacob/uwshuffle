@@ -1449,7 +1449,7 @@ body {
 .schedule-upload-secondary {
   display: inline-flex;
   align-items: center;
-  width: 100%;
+
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
@@ -1474,6 +1474,41 @@ body {
 }
 
 .schedule-upload-secondary:disabled {
+  background-color: var(--color-surface);
+  color: var(--color-text-tertiary);
+  border-color: var(--color-border);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.schedule-upload-secondary-full {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+  font-family: var(--font-family);
+}
+
+.schedule-upload-secondary-full:hover:not(:disabled),
+.schedule-upload-secondary-full:focus:not(:disabled) {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+}
+
+.schedule-upload-secondary-full:disabled {
   background-color: var(--color-surface);
   color: var(--color-text-tertiary);
   border-color: var(--color-border);
@@ -1663,6 +1698,15 @@ body {
   border-radius: var(--radius-sm);
 }
 
+/* Success state container */
+.schedule-upload-success-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+
 /* Success state */
 .schedule-upload-success {
   display: flex;
@@ -1677,6 +1721,7 @@ body {
   transition: var(--transition-base);
   text-align: center;
   gap: var(--space-2);
+  flex: 1;
 }
 
 .schedule-upload-success:hover {
@@ -1861,6 +1906,12 @@ body {
   align-items: center;
   gap: var(--space-4);
   flex: 1;
+}
+
+.uwshuffle-schedule-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
 }
 
 /* Tag button styles - matching action button style */
@@ -2087,14 +2138,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   background: none;
   color: var(--color-primary);
   border: none;
   cursor: pointer;
   transition: var(--transition-fast);
   z-index: 1;
+  border-radius: var(--radius-md);
 }
 
 .uwshuffle-plus-button:hover,
@@ -2106,8 +2158,8 @@ body {
 }
 
 .uwshuffle-plus-icon {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 
 /* Share button styles - matching primary button design */
@@ -2135,6 +2187,21 @@ body {
   background-color: var(--color-primary-hover);
   border-color: var(--color-primary-hover);
   color: var(--color-surface);
+  transform: translateY(-1px);
+}
+
+/* Share button success state - green color */
+.uwshuffle-share-button-success {
+  background-color: var(--color-success) !important;
+  border-color: var(--color-success) !important;
+  color: var(--color-surface) !important;
+}
+
+.uwshuffle-share-button-success:hover,
+.uwshuffle-share-button-success:focus {
+  background-color: var(--color-success-hover) !important;
+  border-color: var(--color-success-hover) !important;
+  color: var(--color-surface) !important;
   transform: translateY(-1px);
 }
 
@@ -2379,6 +2446,9 @@ body {
   font-size: var(--font-size-xs);
   font-weight: 600;
   padding: 2px 4px !important;
+  white-space: pre-line;
+  text-align: center;
+  line-height: 1.2;
 }
 
 /* Calendar container */

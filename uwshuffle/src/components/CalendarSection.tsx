@@ -127,7 +127,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
           <div className="uwshuffle-schedule-controls-content">
             <div className="uwshuffle-input-actions">
               <label className="uwshuffle-input-label">
-                Want to see your friend's schedule?
+                Want to see your friend's schedule on top of yours?
               </label>
               <div className="uwshuffle-input-group">
                 <div className="uwshuffle-input-wrapper">
@@ -148,7 +148,9 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                   </button>
                 </div>
                 <button
-                  className="uwshuffle-share-button"
+                  className={`uwshuffle-share-button ${
+                    showShareSuccess ? "uwshuffle-share-button-success" : ""
+                  }`}
                   disabled={courses.length === 0}
                   aria-disabled={courses.length === 0}
                   onClick={handleShareSchedule}
@@ -166,11 +168,16 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                   }
                 >
                   {showShareSuccess ? (
-                    <FiCheck className="uwshuffle-share-icon" />
+                    <>
+                      <FiCheck className="uwshuffle-share-icon" />
+                      Copied to clipboard
+                    </>
                   ) : (
-                    <FiLink className="uwshuffle-share-icon" />
+                    <>
+                      <FiLink className="uwshuffle-share-icon" />
+                      Share my calendar
+                    </>
                   )}
-                  Share mine
                 </button>
               </div>
             </div>
@@ -267,23 +274,25 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
           <div className="uwshuffle-calendar-header-top">
             <div className="uwshuffle-calendar-title">
               <div className="uwshuffle-calendar-title-content">
-                <span>Schedule</span>
-                <FiHelpCircle
-                  className="uwshuffle-help-icon"
-                  data-tooltip-id="schedule-tooltip"
-                  data-tooltip-content="View your weekly schedule with all courses. Preview courses appear with a different color to show potential conflicts."
-                />
-                {/* Legend container - moved to left of friends */}
+                <div className="uwshuffle-schedule-title-group">
+                  <span>Schedule</span>
+                  <FiHelpCircle
+                    className="uwshuffle-help-icon"
+                    data-tooltip-id="schedule-tooltip"
+                    data-tooltip-content="View your weekly schedule with all courses. Preview courses appear with a different color to show potential conflicts."
+                  />
+                </div>
+                {/* Legend container - moved to left of friends
                 <div className="uwshuffle-legend-container">
                   <span className="uwshuffle-legend-item uwshuffle-legend-conflict">
                     <FiAlertTriangle className="uwshuffle-legend-icon" />
-                    Conflict
+                    Red
                   </span>
                   <span className="uwshuffle-legend-item uwshuffle-legend-no-conflict">
                     <FiCheckCircle className="uwshuffle-legend-icon" />
-                    No Conflict
-                  </span>
+                    Green
                 </div>
+                  </span> */}
                 {/* Friend Schedule Tags */}
                 <div className="uwshuffle-friends-container">
                   <FiUsers className="uwshuffle-friends-icon" />
