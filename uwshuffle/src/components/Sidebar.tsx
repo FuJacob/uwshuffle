@@ -13,7 +13,6 @@ import CalendarView from "./CalendarView";
 import ScheduleUpload from "./ScheduleUpload";
 import type { Course } from "../types";
 import logo from "../assets/logo.svg";
-import instructionsVideo from "../assets/instructions.mp4";
 
 const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -63,6 +62,15 @@ const Sidebar: React.FC = () => {
     window.open("https://ko-fi.com/jacobfu", "_blank", "noopener,noreferrer");
   };
 
+  const handleRateClick = () => {
+    // Open Chrome Web Store page
+    window.open(
+      "https://chrome.google.com/webstore/detail/uwshuffle/jgcgjieedkddicejglgncnfepggcepma",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
   const handleCloseSidebar = () => {
     setIsMinimized(true);
     // Notify parent window about sidebar state change
@@ -110,10 +118,13 @@ const Sidebar: React.FC = () => {
                   <img src={logo} alt="UWShuffle" />
                   <span className="uwshuffle-action-bar-title">UWShuffle</span>
                 </div>
-                <div className="uwshuffle-action-bar-author">
-                  <FiStar className="uwshuffle-icon" />
+                <button
+                  onClick={handleRateClick}
+                  className="uwshuffle-coffee-button"
+                >
+                  <FiStar className="uwshuffle-icon-button" />
                   Rate
-                </div>
+                </button>
                 <div className="uwshuffle-action-bar-buttons">
                   {/* Ko-fi Button */}
                   <button
@@ -159,15 +170,17 @@ const Sidebar: React.FC = () => {
                 {!isInstructionsCollapsed && (
                   <>
                     {/* Instructions Video */}
-                    <video
+                    <iframe
                       className="uwshuffle-instructions-video"
-                      muted
-                      autoPlay={true}
-                      preload="metadata"
-                    >
-                      <source src={instructionsVideo} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+                      width="560"
+                      height="315"
+                      src="https://www.youtube.com/embed/VkiwIn8Dcaw?si=40WtIsuVn1EgUHlA&amp;controls=0"
+                      title="YouTube video player"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    ></iframe>
 
                     {/* Instructions Steps */}
                     <div className="uwshuffle-instructions-section">

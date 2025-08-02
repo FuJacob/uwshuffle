@@ -247,11 +247,11 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
       <div className="schedule-upload-buttons">
         <button onClick={handleRefresh} className="schedule-upload-secondary">
           <FiRefreshCcw className="schedule-upload-icon-button" />
-          Apply Preview
+          Find Swap Options
         </button>
         <button onClick={handleReset} className="schedule-upload-secondary">
           <FiTrash2 className="schedule-upload-icon-button" />
-          Reset
+          Clear Schedule
         </button>
       </div>
 

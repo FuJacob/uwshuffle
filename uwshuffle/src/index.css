@@ -303,9 +303,9 @@ body {
   right: var(--space-5);
   width: 56px;
   height: 56px;
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
+  background-color: white;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -318,15 +318,15 @@ body {
 }
 
 .uwshuffle-expand-button:hover {
-  background-color: var(--color-primary-hover);
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .uwshuffle-expand-logo {
   width: 28px;
   height: 28px;
-  filter: brightness(0) invert(1);
 }
 
 /* ===== MAIN CONTENT AREA ===== */
@@ -354,10 +354,9 @@ body {
 .uwshuffle-instructions-video {
   width: 100%;
   max-width: 300px;
-  height: auto;
+  height: 169px;
   border-radius: var(--radius-md);
   background-color: var(--color-background);
-  object-fit: cover;
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
   margin-bottom: var(--space-4);
@@ -370,7 +369,7 @@ body {
 .uwshuffle-instructions-container {
   background-color: white;
   border-radius: var(--radius-md);
-  padding: var(--space-4);
+  padding: var(--space-3);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
   color: black;
