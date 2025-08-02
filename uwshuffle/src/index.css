@@ -208,6 +208,10 @@ body {
 }
 
 .uwshuffle-action-bar-logo:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
   text-decoration: underline;
 }
 
@@ -371,10 +375,9 @@ body {
 .uwshuffle-coffee-button:focus {
   background-color: var(--color-surface-hover);
   border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
   transform: translateY(-1px);
   text-decoration: underline;
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 .uwshuffle-close-button {
@@ -398,8 +401,6 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-1px);
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 .uwshuffle-help-button {
@@ -427,8 +428,6 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-1px);
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 .uwshuffle-dark-mode-button {
@@ -461,8 +460,6 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-1px);
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 /* Modal Styles */
@@ -528,8 +525,6 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-1px);
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 /* Minimized sidebar state */
@@ -974,6 +969,8 @@ body {
   background-color: var(--color-surface-hover) !important;
   color: var(--color-text-primary) !important;
   border-color: var(--color-border-focus) !important;
+  transform: translateY(-1px);
+  text-decoration: underline;
 }
 
 .uwshuffle-uwflow-icon {
@@ -1318,6 +1315,9 @@ body {
 
 .schedule-upload-dropdown-item:hover {
   background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
 }
 
 .schedule-upload-dropdown-item.selected {
@@ -1346,9 +1346,9 @@ body {
 .schedule-upload-primary:hover:not(:disabled),
 .schedule-upload-primary:focus:not(:disabled) {
   background-color: var(--color-primary-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
   transform: translateY(-1px);
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 .schedule-upload-primary:disabled {
@@ -1381,8 +1381,6 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-1px);
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 .schedule-upload-icon-button {
@@ -1411,6 +1409,7 @@ body {
   background-color: var(--color-error-hover-bg);
   border-color: var(--color-error-hover-border);
   color: var(--color-error-hover);
+  transform: translateY(-1px);
 }
 
 .schedule-upload-clear-button {
@@ -1423,6 +1422,7 @@ body {
   background-color: var(--color-error-hover-bg) !important;
   color: var(--color-error-hover) !important;
   border-color: var(--color-error-hover-border) !important;
+  transform: translateY(-1px);
 }
 
 .schedule-upload-clear-button:disabled {
@@ -1519,8 +1519,10 @@ body {
 
 .schedule-upload-paste-zone:hover,
 .schedule-upload-paste-zone:focus {
-  border-color: var(--color-primary);
-  background-color: var(--color-primary-light);
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
   outline: none;
 }
 
@@ -1580,8 +1582,10 @@ body {
 }
 
 .schedule-upload-success:hover {
-  border-color: var(--color-success-hover);
-  background-color: var(--color-success-light);
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
   outline: none;
 }
 
@@ -1592,7 +1596,7 @@ body {
 }
 
 .schedule-upload-success:hover .schedule-upload-success-icon {
-  color: var(--color-success-hover);
+  color: var(--color-text-primary);
 }
 
 .schedule-upload-success-text {
@@ -1605,7 +1609,7 @@ body {
 }
 
 .schedule-upload-success:hover .schedule-upload-success-text {
-  color: var(--color-success-hover);
+  color: var(--color-text-primary);
 }
 
 /* Processing state */
@@ -1774,10 +1778,10 @@ body {
 
 .uwshuffle-tag-button:hover,
 .uwshuffle-tag-button:focus {
-  background-color: var(--color-primary-hover);
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
   transform: translateY(-1px);
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 .uwshuffle-tag-button-hidden {
@@ -1788,9 +1792,10 @@ body {
 
 .uwshuffle-tag-button-hidden:hover,
 .uwshuffle-tag-button-hidden:focus {
-  background-color: var(--color-gray-300) !important;
-  transform: none;
-  outline: none;
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
 }
 
 .uwshuffle-calendar-actions {
@@ -1900,8 +1905,10 @@ body {
 
 .uwshuffle-plus-button:hover,
 .uwshuffle-plus-button:focus {
-  background-color: var(--color-primary-alpha);
-  transform: translateY(-50%) scale(1.1);
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
+  transform: translateY(-50%) translateY(-1px);
 }
 
 .uwshuffle-plus-icon {
@@ -1935,8 +1942,6 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-1px);
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 .uwshuffle-share-icon {
@@ -1986,8 +1991,6 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-1px);
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 .uwshuffle-export-button:disabled {
@@ -2030,8 +2033,6 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-1px);
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
 
 .uwshuffle-calendar-content {
