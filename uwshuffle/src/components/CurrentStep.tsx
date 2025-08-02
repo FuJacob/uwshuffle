@@ -33,7 +33,7 @@ const CurrentStep: React.FC<CurrentStepProps> = ({
 
   return (
     <div className="uwshuffle-current-step-section">
-      <div className="uwshuffle-current-step-title">Current Step:</div>
+      <div className="uwshuffle-current-step-title">Current Stage</div>
 
       {/* Progress Bar with embedded labels */}
       <div className="uwshuffle-progress-bar">

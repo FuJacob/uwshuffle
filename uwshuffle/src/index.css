@@ -1130,12 +1130,6 @@ body {
   transition: all var(--transition-hover);
 }
 
-.uwshuffle-current-step-section:hover {
-  box-shadow: var(--shadow-hover);
-  border-color: var(--color-primary);
-  background-color: var(--color-surface-hover);
-}
-
 .uwshuffle-current-step-title {
   font-size: var(--font-size-sm);
   font-weight: 600;
@@ -1643,8 +1637,14 @@ body {
   padding: var(--space-4);
   background-color: var(--color-surface);
   display: flex;
+  flex-direction: column;
+}
+
+.uwshuffle-calendar-header-top {
+  display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: var(--space-3);
 }
 
 .uwshuffle-calendar-title {
@@ -1660,6 +1660,98 @@ body {
 .uwshuffle-calendar-actions {
   display: flex;
   gap: var(--space-2);
+  align-items: center;
+}
+
+/* Input field styles */
+.uwshuffle-input-field {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  transition: border-color var(--transition-hover);
+  min-width: 200px;
+}
+
+.uwshuffle-input-field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-alpha);
+}
+
+/* Checkbox styles */
+.uwshuffle-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.uwshuffle-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.uwshuffle-checkbox-text {
+  font-weight: 500;
+}
+
+/* Input actions container */
+.uwshuffle-input-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* Input wrapper styles */
+.uwshuffle-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Input group styles */
+.uwshuffle-input-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Plus button styles - small and inside input */
+.uwshuffle-plus-button {
+  position: absolute;
+  right: var(--space-2);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  z-index: 1;
+}
+
+.uwshuffle-plus-button:hover,
+.uwshuffle-plus-button:focus {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.uwshuffle-plus-icon {
+  width: 12px;
+  height: 12px;
 }
 
 .uwshuffle-export-button {

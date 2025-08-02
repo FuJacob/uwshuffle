@@ -262,7 +262,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   return (
     <div className="schedule-upload-container">
       {/* Control Panel Title */}
-      <div className="schedule-upload-title">Control Panel</div>
+      <div className="schedule-upload-title">Action Center</div>
 
       {/* Button Row */}
       <div className="schedule-upload-buttons">
