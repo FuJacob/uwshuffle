@@ -1,5 +1,4 @@
 import type { Course } from "../types";
-import { updateTermDates } from "./icsExport";
 
 export class QuestScraper {
   private static instance: QuestScraper;
@@ -371,10 +370,9 @@ export class QuestScraper {
     if (courseElements.length > 0) {
       const termDates = this.extractTermDatesFromElement(courseElements[0]);
       if (termDates) {
-        console.log(
-          "uwshuffle: Updating ICS export term dates based on Quest data"
-        );
-        updateTermDates(termDates.startDate, termDates.endDate);
+        console.log("uwshuffle: Saving term dates to localStorage");
+        localStorage.setItem("uwshuffle-term-start", termDates.startDate);
+        localStorage.setItem("uwshuffle-term-end", termDates.endDate);
       } else {
         console.log(
           "uwshuffle: Could not extract term dates from Quest - export buttons will remain disabled"

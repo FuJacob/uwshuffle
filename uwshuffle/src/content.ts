@@ -37,7 +37,7 @@ function createSidebar() {
   // Adjust main content to accommodate sidebar
   // adjustMainContent();
 }
-  
+
 function adjustMainContent(isMinimized = false) {
   // Find the main content area and adjust its width
   const body = document.body;
