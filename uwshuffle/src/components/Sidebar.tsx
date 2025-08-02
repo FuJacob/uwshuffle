@@ -6,6 +6,7 @@ import {
   FiHeart,
   FiX,
   FiArrowRight,
+  FiStar,
 } from "react-icons/fi";
 import CalendarView from "./CalendarView";
 import ScheduleUpload from "./ScheduleUpload";
@@ -127,12 +128,18 @@ const Sidebar: React.FC = () => {
 
               {/* Title Container */}
               <div className="uwshuffle-title-section">
-                <div className="uwshuffle-title-left">
-                  Making Quest Less of a Quest
-                </div>
-                <div className="uwshuffle-title-right">
-                  Rate UWShuffle 5 stars
-                </div>
+                <a
+                  href="https://chrome.google.com/webstore/detail/uwshuffle/jgcgjieedkddicejglgncnfepggcepma"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="uwshuffle-title-link"
+                >
+                  Give UWShuffle 5 stars <FiStar />
+                  <FiStar />
+                  <FiStar />
+                  <FiStar />
+                  <FiStar />
+                </a>
               </div>
               {/* Instructions Container */}
               <div className="uwshuffle-instructions-container">

@@ -118,7 +118,6 @@ body {
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-background);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   border-radius: 16px 0 0 16px;
@@ -178,12 +177,10 @@ body {
 .uwshuffle-title-section {
   background: transparent;
   padding: var(--space-3);
-  display: flex;
-  gap: var(--space-3);
   color: black;
 }
 
-.uwshuffle-title-left {
+.uwshuffle-title-link {
   background-color: white;
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
@@ -192,19 +189,18 @@ body {
   color: var(--color-text-primary);
   font-size: var(--font-size-sm);
   font-weight: 600;
-  flex: 1;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  transition: var(--transition-fast);
 }
 
-.uwshuffle-title-right {
-  background-color: white;
-  border-radius: var(--radius-md);
-  padding: var(--space-3) var(--space-4);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-border);
+.uwshuffle-title-link:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  transform: translateY(-1px);
+  text-decoration: none;
   color: var(--color-text-primary);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  flex: 1;
 }
 
 .uwshuffle-logo {
@@ -699,7 +695,7 @@ body {
   flex: 1;
   overflow: hidden;
   padding: 0 var(--space-3) var(--space-3) var(--space-3);
-  background-color: var(--color-background);
+  border-radius: 50%;
   display: flex;
   flex-direction: column;
 }
