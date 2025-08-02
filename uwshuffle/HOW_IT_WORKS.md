@@ -1,10 +1,10 @@
-# How UWShuffle Works - Technical Deep Dive
+# How uwshuffle Works - Technical Deep Dive
 
-This document explains the technical architecture and implementation details of the UWShuffle Chrome extension.
+This document explains the technical architecture and implementation details of the uwshuffle Chrome extension.
 
 ## Architecture Overview
 
-UWShuffle is a Chrome Extension (Manifest V3) that consists of three main components:
+uwshuffle is a Chrome Extension (Manifest V3) that consists of three main components:
 
 1. **Content Script** (`content.ts`) - Runs on Quest pages
 2. **Sidebar React App** (`sidebar.tsx` + components) - The main UI

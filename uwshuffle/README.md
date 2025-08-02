@@ -1,4 +1,4 @@
-# UWShuffle Chrome Extension
+# uwshuffle Chrome Extension
 
 A Chrome extension that improves class swapping on Quest by providing a sidebar with calendar view and conflict detection.
 
@@ -28,7 +28,7 @@ A Chrome extension that improves class swapping on Quest by providing a sidebar 
 ## Usage
 
 1. **Visit Quest**: Navigate to quest.pecs.uwaterloo.ca
-2. **Sidebar Appears**: The UWShuffle sidebar will automatically appear on the right side
+2. **Sidebar Appears**: The uwshuffle sidebar will automatically appear on the right side
 3. **Upload Schedule**: Click "Upload Schedule" and paste your current course schedule:
    ```
    AFM 272 MW 10:00AM - 11:20AM HH 2107

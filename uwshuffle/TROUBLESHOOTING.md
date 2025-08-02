@@ -1,4 +1,4 @@
-# UWShuffle Troubleshooting Guide
+# uwshuffle Troubleshooting Guide
 
 ## Debug Mode Installation & Testing
 
@@ -21,7 +21,7 @@ The extension now includes comprehensive logging to help debug issues.
 
 3. **Check Extension Loaded:**
    - Extension should appear in the extensions list
-   - Should show "UWShuffle" with version 1.0
+   - Should show "uwshuffle" with version 1.0
 
 ### 2. Test on Quest
 
@@ -33,31 +33,31 @@ The extension now includes comprehensive logging to help debug issues.
 2. **Open Developer Console:**
    - Press `F12` or right-click → "Inspect"
    - Go to "Console" tab
-   - Look for messages starting with "UWShuffle:"
+   - Look for messages starting with "uwshuffle:"
 
 ### 3. Expected Debug Output
 
 You should see console messages like:
 
 ```
-UWShuffle: Content script initializing...
-UWShuffle: Current URL: https://quest.pecs.uwaterloo.ca/...
-UWShuffle: Is Quest site? true
-UWShuffle: Creating sidebar...
-UWShuffle: Initializing Quest scraper...
-UWShuffle: Finding course elements...
-UWShuffle: Found X Quest table rows
-UWShuffle: Checking row 1: trSSR_CLSRCH_MTG1$0_row1
-UWShuffle: Has select button: true
-UWShuffle: Has day/time: true
-UWShuffle: Valid course row found
-UWShuffle: Total valid course elements found: X
-UWShuffle: Adding interaction buttons...
-UWShuffle: Found X course elements
-UWShuffle: Processing element 1: [object HTMLTableRowElement]
-UWShuffle: Scraped course data: {course: "COURSE", days: ["Mon", "Wed", "Fri"], ...}
-UWShuffle: Select button cell: [object HTMLTableCellElement]
-UWShuffle: Preview button added successfully
+uwshuffle: Content script initializing...
+uwshuffle: Current URL: https://quest.pecs.uwaterloo.ca/...
+uwshuffle: Is Quest site? true
+uwshuffle: Creating sidebar...
+uwshuffle: Initializing Quest scraper...
+uwshuffle: Finding course elements...
+uwshuffle: Found X Quest table rows
+uwshuffle: Checking row 1: trSSR_CLSRCH_MTG1$0_row1
+uwshuffle: Has select button: true
+uwshuffle: Has day/time: true
+uwshuffle: Valid course row found
+uwshuffle: Total valid course elements found: X
+uwshuffle: Adding interaction buttons...
+uwshuffle: Found X course elements
+uwshuffle: Processing element 1: [object HTMLTableRowElement]
+uwshuffle: Scraped course data: {course: "COURSE", days: ["Mon", "Wed", "Fri"], ...}
+uwshuffle: Select button cell: [object HTMLTableCellElement]
+uwshuffle: Preview button added successfully
 ```
 
 ## Common Issues & Solutions
@@ -71,7 +71,7 @@ UWShuffle: Preview button added successfully
 1. **Check Extension Permissions:**
 
    - Go to `chrome://extensions/`
-   - Find UWShuffle extension
+   - Find uwshuffle extension
    - Ensure it's enabled
    - Check that it has access to Quest site
 
@@ -142,7 +142,7 @@ UWShuffle: Preview button added successfully
 
 1. **Check Console for Sidebar Messages:**
 
-   - Should see "UWShuffle: Creating sidebar..."
+   - Should see "uwshuffle: Creating sidebar..."
 
 2. **Manual Check:**
 
@@ -161,12 +161,12 @@ UWShuffle: Preview button added successfully
 
 1. **Check Scraper Data:**
 
-   - Look for "UWShuffle: Scraped course data: null"
+   - Look for "uwshuffle: Scraped course data: null"
    - If null, course data extraction is failing
 
 2. **Check Cell Selection:**
 
-   - Look for "UWShuffle: No select button cell found"
+   - Look for "uwshuffle: No select button cell found"
    - Table structure may be different
 
 3. **Visual Check:**
@@ -203,7 +203,7 @@ If issues persist:
 
 1. **Share Console Output:**
 
-   - Copy all "UWShuffle:" messages from console
+   - Copy all "uwshuffle:" messages from console
    - Include any error messages (red text)
 
 2. **Share Page Info:**

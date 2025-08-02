@@ -239,50 +239,53 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   };
 
   return (
-    <div>
+    <div className="schedule-upload-container">
+      {/* Button Row */}
       <div className="schedule-upload-buttons">
-        <button onClick={handleRefresh} className="schedule-upload-clear">
+        <button
+          onClick={() => handleUpload()}
+          className="schedule-upload-primary"
+          disabled={!scheduleText.trim()}
+        >
+          <FiZap className="schedule-upload-icon-button" />
+          Paste Schedule
+        </button>
+        <button onClick={handleRefresh} className="schedule-upload-secondary">
           <FiRefreshCcw className="schedule-upload-icon-button" />
           Refresh
         </button>
-        <button onClick={handleReset} className="schedule-upload-clear">
+        <button onClick={handleReset} className="schedule-upload-secondary">
           <FiTrash2 className="schedule-upload-icon-button" />
           Reset
         </button>
       </div>
 
-      <div className="schedule-upload-form">
-        <div className="schedule-upload-form-group">
-          <label className="schedule-upload-label">
-            <FiClipboard className="schedule-upload-icon" />
-            Paste Your Schedule
-          </label>
-          <ol className="uwshuffle-instructions">
-            <li>Click <strong>"Swap"</strong> and enter the course you want to swap into.</li>
-            <li>On your Quest class schedule, click <strong>"Show All"</strong> and copy the entire schedule text.</li>
-            <li>Paste your copied schedule into <strong>UWShuffle</strong> to visualize your week and check for conflicts.</li>
-          </ol>
-        </div>
-
+      {/* Large Paste Card */}
+      <div className="schedule-upload-paste-card">
         {isPasted ? (
           <div className="schedule-upload-success">
             <FiZap className="schedule-upload-success-icon" />
-            <div className="schedule-upload-success-text">failed</div>
+            <div className="schedule-upload-success-text">
+              Schedule uploaded successfully!
+            </div>
           </div>
         ) : isProcessing ? (
           <div className="schedule-upload-processing">
             <FiZap className="schedule-upload-processing-icon" />
-            <div className="schedule-upload-processing-text">Processing schedule...</div>
+            <div className="schedule-upload-processing-text">
+              Processing schedule...
+            </div>
           </div>
         ) : (
-          <div 
+          <div
             className="schedule-upload-paste-zone"
             onPaste={handlePaste}
             tabIndex={0}
           >
             <FiClipboard className="schedule-upload-paste-icon" />
-            <div className="schedule-upload-paste-text">Click here and paste your schedule</div>
-            <div className="schedule-upload-paste-hint">Ctrl+V or Cmd+V</div>
+            <div className="schedule-upload-paste-text">
+              Paste area: click then Ctrl+V / Cmd+V
+            </div>
           </div>
         )}
       </div>

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "UWShuffle",
+  "name": "uwshuffle",
   "version": "1.0",
   "description": "Chrome extension that improves class swapping on Quest by providing a sidebar with calendar view and conflict detection",
   "permissions": ["scripting", "activeTab", "storage"],

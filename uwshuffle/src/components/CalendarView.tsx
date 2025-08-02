@@ -148,7 +148,9 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         defaultView={"work_week" as View}
         min={moment().hour(8).minute(0).toDate()}
         max={moment().hour(20).minute(0).toDate()}
-        step={30}
+        step={60}
+        timeslots={1}
+        toolbar={false}
         eventPropGetter={eventStyleGetter}
         dayPropGetter={() => ({
           style: {
