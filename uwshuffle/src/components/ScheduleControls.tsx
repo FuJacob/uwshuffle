@@ -2,9 +2,7 @@ import { useState } from "react";
 import {
   FiDownload,
   FiRefreshCcw,
-  FiPlus,
   FiLink,
-  FiMinus,
   FiHelpCircle,
   FiCheck,
   FiUserPlus,

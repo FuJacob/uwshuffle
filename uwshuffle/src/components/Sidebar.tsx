@@ -22,7 +22,7 @@ import ScheduleControls from "./ScheduleControls";
 import type { Course } from "../types";
 import type { FriendSchedule } from "../types";
 import logo from "../assets/logo.svg";
-import Joyride from "react-joyride";
+import Joyride, { type CallBackProps } from "react-joyride";
 
 import {
   exportCurrentSchedule,
@@ -50,12 +50,65 @@ const Sidebar: React.FC = () => {
   const [run, setRun] = useState(false);
   const steps = [
     {
-      target: ".my-first-step",
-      content: "This is my awesome feature!",
+      target: ".uwshuffle-upload-section",
+      content:
+        "Welcome to UWShuffle! Let's start by uploading your current schedule. This is your Action Center where you'll manage your schedule.",
+      placement: "bottom" as const,
+      disableBeacon: true,
     },
     {
-      target: ".my-other-step",
-      content: "This another awesome feature!",
+      target: ".schedule-upload-paste-zone",
+      content:
+        "First, paste your current schedule here. Click in this area and press Ctrl+V (or Cmd+V on Mac) to paste your schedule from Quest.",
+      placement: "top" as const,
+    },
+    {
+      target: ".schedule-upload-course-dropdown-container",
+      content:
+        "Once your schedule is uploaded, select the course you want to swap from this dropdown. This will be the course you're looking to replace.",
+      placement: "top" as const,
+    },
+    {
+      target: ".schedule-upload-buttons",
+      content:
+        "Now click 'Preview my Swap Options!' to find available courses you can swap into. This will search Quest for compatible courses.",
+      placement: "top" as const,
+    },
+    {
+      target: ".uwshuffle-preview-section",
+      content:
+        "Great! Now you're in Preview Insights. Here you can see detailed information about the course you're considering, including professor ratings and course details.",
+      placement: "bottom" as const,
+    },
+    {
+      target: ".uwshuffle-calendar-section",
+      content:
+        "This is your Schedule view. Here you can see your actual schedule with the preview course highlighted. The calendar shows how your schedule would look with the swap.",
+      placement: "top" as const,
+    },
+    {
+      target: ".uwshuffle-schedule-controls-card",
+      content:
+        "Finally, let's go to Schedule Controls. Here you can add friend schedules, share your calendar, and export to Google Calendar.",
+      placement: "bottom" as const,
+    },
+    {
+      target: ".uwshuffle-input-group",
+      content:
+        "Want to see your friend's schedule on top of yours? Paste their quick link here and click the + button to add their schedule to your view.",
+      placement: "top" as const,
+    },
+    {
+      target: ".uwshuffle-share-button",
+      content:
+        "You can also share your calendar with friends by clicking this button. It will copy a quick link to your clipboard.",
+      placement: "left" as const,
+    },
+    {
+      target: ".uwshuffle-export-buttons",
+      content:
+        "Ready to export? Click 'Export Schedule' to download your current schedule, or 'Export w/ Swap' to download your schedule with the preview course included.",
+      placement: "top" as const,
     },
   ];
 
@@ -70,6 +123,23 @@ const Sidebar: React.FC = () => {
       }
     });
   }, []);
+
+  // Start tour when sidebar is first expanded
+  useEffect(() => {
+    if (!isMinimized) {
+      // Start tour after a short delay to ensure components are rendered
+      if (window.chrome && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.get(
+          ["uwshuffle_onboarding_completed"],
+          (result) => {
+            if (result.uwshuffle_onboarding_completed == true) {
+              startTour();
+            }
+          }
+        );
+      }
+    }
+  }, [isMinimized]);
 
   useEffect(() => {
     if (!window.chrome || !chrome.storage || !chrome.storage.local) {
@@ -189,6 +259,7 @@ const Sidebar: React.FC = () => {
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
+    startTour(); // Start the Joyride tour when help is clicked
   };
 
   const handleCloseModal = () => {
@@ -286,11 +357,18 @@ const Sidebar: React.FC = () => {
     }
   }
 
-  const handleJoyrideCallback = (data: any) => {
+  const handleJoyrideCallback = (data: CallBackProps) => {
     const { status, action } = data;
-    if (status === "finished" && action === "skip") {
+    if (status === "finished" || action === "skip") {
       setRun(false);
+      if (window.chrome && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.set({ uwshuffle_onboarding_completed: true });
+      }
     }
+  };
+
+  const startTour = () => {
+    setRun(true);
   };
 
   return (
@@ -312,14 +390,6 @@ const Sidebar: React.FC = () => {
           <>
             {/* Main Content Area */}
             <div className="uwshuffle-main-content">
-              <ActionBar
-                isDarkMode={isDarkMode}
-                onToggleDarkMode={handleToggleDarkMode}
-                onRateClick={handleRateClick}
-                onKofiClick={handleKofiClick}
-                onHelpClick={handleOpenModal}
-                onCloseSidebar={handleCloseSidebar}
-              />
               <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
@@ -335,6 +405,15 @@ const Sidebar: React.FC = () => {
                   items={sections}
                   strategy={verticalListSortingStrategy}
                 >
+                  {" "}
+                  <ActionBar
+                    isDarkMode={isDarkMode}
+                    onToggleDarkMode={handleToggleDarkMode}
+                    onRateClick={handleRateClick}
+                    onKofiClick={handleKofiClick}
+                    onHelpClick={handleOpenModal}
+                    onCloseSidebar={handleCloseSidebar}
+                  />
                   {sections.map((id: string) => (
                     <SortableSection key={id} id={id}>
                       {renderSection(id)}

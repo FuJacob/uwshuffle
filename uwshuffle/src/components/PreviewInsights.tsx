@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   FiHelpCircle,
   FiCheckCircle,
@@ -6,11 +6,7 @@ import {
   FiUsers,
   FiMapPin,
   FiClock,
-  FiStar,
   FiMessageSquare,
-  FiThumbsUp,
-  FiEye,
-  FiEyeOff,
   FiUser,
   FiBarChart2,
 } from "react-icons/fi";
