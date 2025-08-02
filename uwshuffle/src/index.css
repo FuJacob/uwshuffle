@@ -136,7 +136,7 @@ body {
 .uwshuffle-action-bar-logo {
   background-color: white;
   border-radius: var(--radius-md);
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
   color: #000000;
@@ -166,7 +166,7 @@ body {
 .uwshuffle-action-bar-author {
   background-color: white;
   border-radius: var(--radius-md);
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
@@ -248,7 +248,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   background-color: white;
   color: var(--color-text-primary);
   border: 1px solid var(--color-border);
@@ -272,8 +272,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  padding: var(--space-2) var(--space-2);
   background-color: white;
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);

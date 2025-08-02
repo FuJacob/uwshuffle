@@ -114,16 +114,21 @@ const Sidebar: React.FC = () => {
             <div className="uwshuffle-main-content">
               {/* Top Action Bar */}
               <div className="uwshuffle-action-bar">
-                <div className="uwshuffle-action-bar-logo">
+                <a
+                  href="https://uwshuffle.ca"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="uwshuffle-action-bar-logo"
+                >
                   <img src={logo} alt="UWShuffle" />
                   <span className="uwshuffle-action-bar-title">UWShuffle</span>
-                </div>
+                </a>
                 <button
                   onClick={handleRateClick}
                   className="uwshuffle-coffee-button"
                 >
                   <FiStar className="uwshuffle-icon-button" />
-                  Rate
+                  Rate us
                 </button>
                 <div className="uwshuffle-action-bar-buttons">
                   {/* Ko-fi Button */}
@@ -132,7 +137,7 @@ const Sidebar: React.FC = () => {
                     className="uwshuffle-coffee-button"
                   >
                     <FiHeart className="uwshuffle-icon-button" />
-                    Support
+                    Support us
                   </button>
 
                   {/* Close Button */}
