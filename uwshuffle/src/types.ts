@@ -45,3 +45,9 @@ export interface ProfQueryResponse {
     prof: Array<ProfInfo>;
   };
 }
+export interface FriendSchedule {
+  name: string;
+  visible: boolean;
+  color: string;
+  schedule: Course[];
+}

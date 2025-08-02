@@ -2,18 +2,20 @@ import React, { useMemo } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import type { View } from "react-big-calendar";
 import moment from "moment";
-import type { Course, ParsedScheduleEvent } from "../types";
+import type { Course, ParsedScheduleEvent, FriendSchedule } from "../types";
 
 const localizer = momentLocalizer(moment);
 
 interface CalendarViewProps {
   courses: Course[];
   previewCourse?: Course | null;
+  friendSchedules?: FriendSchedule[];
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({
   courses,
   previewCourse,
+  friendSchedules,
 }) => {
   // Convert courses to calendar events
   const events = useMemo(() => {
@@ -82,6 +84,17 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       allEvents.push(...convertCourseToEvents(course, false));
     });
 
+    // add friend schedules
+    if (friendSchedules) {
+      friendSchedules.forEach((friendSchedule) => {
+        if (friendSchedule.visible) {
+          friendSchedule.schedule.forEach((course) => {
+            allEvents.push(...convertCourseToEvents(course, false));
+          });
+        }
+      });
+    }
+
     // Add preview course
     if (previewCourse) {
       const previewEvents = convertCourseToEvents(previewCourse, true);
@@ -104,7 +117,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     }
 
     return allEvents;
-  }, [courses, previewCourse]);
+  }, [courses, previewCourse, friendSchedules]);
 
   // Custom event style getter
   const eventStyleGetter = (event: ParsedScheduleEvent) => {

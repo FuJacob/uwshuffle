@@ -241,6 +241,8 @@ body {
   font-weight: 600;
   color: var(--color-text-primary);
   white-space: nowrap;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .uwshuffle-action-bar-author-text {
@@ -682,6 +684,8 @@ body {
   font-weight: 600;
   color: var(--color-text-secondary);
   margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .uwshuffle-stats-content {
@@ -1135,6 +1139,8 @@ body {
   font-weight: 600;
   color: var(--color-text-primary);
   margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
 }
 
 /* Progress Bar */
@@ -1253,7 +1259,9 @@ body {
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
 }
 
 /* ===== BUTTON STYLES ===== */
@@ -1604,6 +1612,8 @@ body {
   font-weight: 600;
   color: var(--color-primary);
   margin-bottom: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .uwshuffle-preview-details {
@@ -1619,6 +1629,37 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  gap: var(--space-4);
+}
+
+/* ===== SCHEDULE CONTROLS CARD ===== */
+.uwshuffle-schedule-controls-card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.uwshuffle-schedule-controls-header {
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+}
+
+.uwshuffle-schedule-controls-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.uwshuffle-schedule-controls-content {
+  padding-bottom: var(--space-4);
+  padding-inline: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .uwshuffle-calendar-card {
@@ -1655,6 +1696,49 @@ body {
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-secondary);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Tag button styles - matching action button style */
+.uwshuffle-tag-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-2);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+  font-family: var(--font-family);
+  box-shadow: var(--shadow-sm);
+  margin-left: var(--space-2);
+}
+
+.uwshuffle-tag-button:hover,
+.uwshuffle-tag-button:focus {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.uwshuffle-tag-button-hidden {
+  background-color: var(--color-gray-200) !important;
+  color: var(--color-text-tertiary) !important;
+  opacity: 0.6;
+}
+
+.uwshuffle-tag-button-hidden:hover,
+.uwshuffle-tag-button-hidden:focus {
+  background-color: var(--color-gray-300) !important;
+  transform: none;
+  outline: none;
 }
 
 .uwshuffle-calendar-actions {
@@ -1673,6 +1757,7 @@ body {
   color: var(--color-text-primary);
   transition: border-color var(--transition-hover);
   min-width: 200px;
+  flex: 1;
 }
 
 .uwshuffle-input-field:focus {
@@ -1705,6 +1790,7 @@ body {
 /* Input actions container */
 .uwshuffle-input-actions {
   display: flex;
+  justify-content: space-between;
   gap: var(--space-2);
   align-items: center;
 }
@@ -1712,6 +1798,7 @@ body {
 /* Input wrapper styles */
 .uwshuffle-input-wrapper {
   position: relative;
+  flex: 1;
   display: flex;
   align-items: center;
 }
@@ -1720,7 +1807,17 @@ body {
 .uwshuffle-input-group {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+/* Input label styles */
+.uwshuffle-input-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
 }
 
 /* Plus button styles - small and inside input */
