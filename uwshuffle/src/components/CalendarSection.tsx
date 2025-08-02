@@ -40,7 +40,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
 }) => {
   const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
   const [addFriendLink, setAddFriendLink] = useState<string>("");
-  const handleAddFriendSchedule = (schedule: string) => {
+  const handleAddFriendSchedule = async (schedule: string) => {
     const friendSchedule = await readQuickLink(schedule);
     if (friendSchedule) {
       setFriendSchedules([
@@ -56,7 +56,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
     setAddFriendLink("");
   };
 
-  const handleShareSchedule = () => {
+  const handleShareSchedule = async () => {
     if (courses.length === 0) {
       alert("No courses to share. Please upload your schedule first.");
       return;
@@ -64,7 +64,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
     const schedule = courses.map((course) => ({
       ...course,
     }));
-    const quickLink = generateQuickLink(schedule);
+    const quickLink = await generateQuickLink(schedule);
     navigator.clipboard.writeText(quickLink);
   };
 
