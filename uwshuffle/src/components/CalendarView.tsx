@@ -10,12 +10,14 @@ interface CalendarViewProps {
   courses: Course[];
   previewCourse?: Course | null;
   friendSchedules?: FriendSchedule[];
+  selectedCourseToSwap?: Course | null;
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({
   courses,
   previewCourse,
   friendSchedules,
+  selectedCourseToSwap,
 }) => {
   // Convert courses to calendar events
   const events = useMemo(() => {
@@ -79,8 +81,16 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       return courseEvents;
     };
 
-    // Add regular courses
-    courses.forEach((course) => {
+    // Add regular courses, but filter out selected course if preview is active
+    const filteredCourses = courses.filter((course) => {
+      // If preview is active and this course is selected to swap, exclude it
+      if (previewCourse && selectedCourseToSwap && course.course === selectedCourseToSwap.course) {
+        return false;
+      }
+      return true;
+    });
+    
+    filteredCourses.forEach((course) => {
       allEvents.push(...convertCourseToEvents(course, false));
     });
 
@@ -117,7 +127,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     }
 
     return allEvents;
-  }, [courses, previewCourse, friendSchedules]);
+  }, [courses, previewCourse, friendSchedules, selectedCourseToSwap]);
 
   // Custom event style getter
   const eventStyleGetter = (event: ParsedScheduleEvent) => {

@@ -17,6 +17,7 @@ interface CalendarSectionProps {
   termDatesAvailable: boolean;
   onExportCurrentSchedule: () => void;
   onExportWithSwap: () => void;
+  selectedCourseToSwap?: Course | null;
 }
 
 function hashStringToHue(str: string) {
@@ -37,6 +38,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
   termDatesAvailable,
   onExportCurrentSchedule,
   onExportWithSwap,
+  selectedCourseToSwap,
 }) => {
   const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
   const [addFriendLink, setAddFriendLink] = useState<string>("");
@@ -237,6 +239,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
               courses={courses}
               previewCourse={previewCourse}
               friendSchedules={friendSchedules}
+              selectedCourseToSwap={selectedCourseToSwap}
             />
           </div>
         )}

@@ -113,6 +113,7 @@ const Sidebar: React.FC = () => {
   const [scheduleUploadError, setScheduleUploadError] = useState<string | null>(
     null
   );
+  const [selectedCourseToSwap, setSelectedCourseToSwap] = useState<Course | null>(null);
   const profInfo = useGetProfInfoFromUwFlow(previewCourse);
 
   // Check Chrome storage for minimized state on component mount
@@ -190,6 +191,11 @@ const Sidebar: React.FC = () => {
 
   const handleClearSchedule = () => {
     setCourses([]);
+    setSelectedCourseToSwap(null);
+  };
+
+  const handleCourseSelectedToSwap = (course: Course | null) => {
+    setSelectedCourseToSwap(course);
   };
 
   const handleKofiClick = () => {
@@ -315,6 +321,8 @@ const Sidebar: React.FC = () => {
                   onCoursesUploaded={handleCoursesUploaded}
                   onClearSchedule={handleClearSchedule}
                   courses={courses}
+                  onCourseSelectedToSwap={handleCourseSelectedToSwap}
+                  selectedCourseToSwap={selectedCourseToSwap}
                 />
               </div>
 
@@ -324,6 +332,7 @@ const Sidebar: React.FC = () => {
                 termDatesAvailable={termDatesAvailable}
                 onExportCurrentSchedule={handleExportCurrentSchedule}
                 onExportWithSwap={handleExportWithSwap}
+                selectedCourseToSwap={selectedCourseToSwap}
               />
 
               {/* Footer with modern styling */}

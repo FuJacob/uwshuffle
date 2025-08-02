@@ -8,6 +8,7 @@ import {
   FiCheck,
   FiPlus,
   FiMinus,
+  FiChevronDown,
 } from "react-icons/fi";
 import type { Course } from "../types";
 import "./ScheduleUpload.css";
@@ -17,6 +18,8 @@ interface ScheduleUploadProps {
   onCoursesUploaded: (courses: Course[]) => void;
   onClearSchedule: () => void;
   courses: Course[];
+  onCourseSelectedToSwap: (course: Course | null) => void;
+  selectedCourseToSwap: Course | null;
 }
 
 const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
@@ -24,6 +27,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   onCoursesUploaded,
   onClearSchedule,
   courses,
+  onCourseSelectedToSwap,
+  selectedCourseToSwap,
 }) => {
   const [scheduleText, setScheduleText] = useState("");
   const [isPasted, setIsPasted] = useState(false);
@@ -31,6 +36,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   const [showFindSuccess, setShowFindSuccess] = useState(false);
   const [showClearSuccess, setShowClearSuccess] = useState(false);
   const [isActionCenterCollapsed, setIsActionCenterCollapsed] = useState(false);
+  const [showCourseDropdown, setShowCourseDropdown] = useState(false);
 
   useEffect(() => {
     if (window.chrome && chrome.storage && chrome.storage.local) {
@@ -262,6 +268,14 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     setTimeout(() => setShowClearSuccess(false), 2000);
   };
 
+  const handleCourseSelect = (course: Course) => {
+    onCourseSelectedToSwap(course);
+    setShowCourseDropdown(false);
+  };
+
+  const uniqueCourses = Array.from(new Set(courses.map(c => c.course)))
+    .map(courseName => courses.find(c => c.course === courseName)!);
+
   return (
     <div className="schedule-upload-container">
       {/* Control Panel Title */}
@@ -313,6 +327,36 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
           )}
           Clear Schedule
         </button>
+        <div className="schedule-upload-course-dropdown-container">
+          <button
+            onClick={() => setShowCourseDropdown(!showCourseDropdown)}
+            className="schedule-upload-secondary"
+            disabled={courses.length === 0}
+            aria-disabled={courses.length === 0}
+            style={{
+              opacity: courses.length === 0 ? 0.5 : 1,
+              cursor: courses.length === 0 ? "not-allowed" : "pointer",
+            }}
+          >
+            <FiChevronDown className="schedule-upload-icon-button" />
+            {selectedCourseToSwap ? selectedCourseToSwap.course : "Select Course"}
+          </button>
+          {showCourseDropdown && courses.length > 0 && (
+            <div className="schedule-upload-dropdown">
+              {uniqueCourses.map((course) => (
+                <button
+                  key={course.course}
+                  onClick={() => handleCourseSelect(course)}
+                  className={`schedule-upload-dropdown-item ${
+                    selectedCourseToSwap?.course === course.course ? "selected" : ""
+                  }`}
+                >
+                  {course.course}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Large Paste Card */}
