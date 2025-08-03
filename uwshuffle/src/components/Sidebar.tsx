@@ -14,7 +14,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { arrayMove } from "@dnd-kit/sortable";
 import ScheduleUpload from "./ScheduleUpload";
-import InstructionsModal from "./InstructionsModal";
+
 import CalendarSection from "./CalendarSection";
 import PreviewInsights from "./PreviewInsights";
 import ActionBar from "./ActionBar";
@@ -35,9 +35,6 @@ const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [previewCourse, setPreviewCourse] = useState<Course | null>(null);
   const [isMinimized, setIsMinimized] = useState<boolean>(true);
-  const [currentInstructionStep, setCurrentInstructionStep] =
-    useState<number>(0);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [termDatesAvailable, setTermDatesAvailable] = useState<boolean>(false);
   const [scheduleUploadError, setScheduleUploadError] = useState<string | null>(
@@ -87,9 +84,9 @@ const Sidebar: React.FC = () => {
       .get("uwshuffle_onboarding_completed")
       .then((result) => {
         if (result.uwshuffle_onboarding_completed == true) {
-          setIsModalOpen(false);
+          setRun(false);
         } else {
-          setIsModalOpen(true);
+          setRun(true);
         }
       });
   }, []);
@@ -115,10 +112,6 @@ const Sidebar: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
-
-  const handleNextInstruction = () => {
-    setCurrentInstructionStep((prev) => (prev + 1) % 3);
-  };
 
   // Listen for messages from content script
   useEffect(() => {
@@ -195,18 +188,6 @@ const Sidebar: React.FC = () => {
     );
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-    startTour(); // Start the Joyride tour when help is clicked
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    if (window.chrome && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.set({ uwshuffle_onboarding_completed: true });
-    }
-  };
-
   const handleToggleDarkMode = () => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
@@ -278,7 +259,7 @@ const Sidebar: React.FC = () => {
             onToggleDarkMode={handleToggleDarkMode}
             onRateClick={handleRateClick}
             onKofiClick={handleKofiClick}
-            onHelpClick={handleOpenModal}
+            onHelpClick={startTour}
             onCloseSidebar={handleCloseSidebar}
           />
         );
@@ -500,13 +481,6 @@ const Sidebar: React.FC = () => {
           />
         </button>
       )}
-
-      <InstructionsModal
-        isOpen={isModalOpen}
-        currentInstructionStep={currentInstructionStep}
-        onClose={handleCloseModal}
-        onNextInstruction={handleNextInstruction}
-      />
     </>
   );
 };
