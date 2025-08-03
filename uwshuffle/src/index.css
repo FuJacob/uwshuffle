@@ -96,10 +96,10 @@
   --breakpoint-2xl: 1536px; /* Large desktop monitors */
 
   /* Responsive spacing */
-  --sidebar-width-sm: 450px;
-  --sidebar-width-md: 500px;
-  --sidebar-width-lg: 550px;
-  --sidebar-width-xl: 600px;
+  --sidebar-width-sm: 500px;
+  --sidebar-width-md: 550px;
+  --sidebar-width-lg: 600px;
+  --sidebar-width-xl: 650px;
 
   /* Responsive font sizes */
   --font-size-responsive-xs: clamp(0.7rem, 0.5vw + 0.6rem, 0.75rem);
@@ -2243,9 +2243,9 @@ body {
 /* Input wrapper styles */
 .uwshuffle-input-wrapper {
   position: relative;
-  flex: 1;
   display: flex;
   align-items: center;
+  flex: 1;
 }
 
 /* Input group styles */
@@ -2253,7 +2253,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--space-2);
   width: 100%;
 }
 
@@ -2567,6 +2567,11 @@ body {
   padding-right: var(--space-8) !important;
 }
 
+/* Add extra padding to 3:00 PM time slot */
+.rbc-time-gutter .rbc-time-slot:nth-child(15) {
+  padding-right: var(--space-8) !important;
+}
+
 /* Day columns */
 .rbc-day-slot {
   background-color: var(--color-surface) !important;
@@ -2743,7 +2748,8 @@ body {
 
   .rbc-time-gutter .rbc-time-slot {
     font-size: 10px !important;
-    padding-right: var(--space-1) !important;
+    padding-right: var(--space-2) !important;
+    width: 20px !important;
   }
 
   .rbc-event {

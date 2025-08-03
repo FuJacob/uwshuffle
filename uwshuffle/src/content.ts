@@ -4,7 +4,7 @@
 import QuestScraper from "./utils/questScraper";
 
 const SIDEBAR_ID = "uwshuffle-sidebar";
-const SIDEBAR_WIDTH = "20vw";
+const SIDEBAR_WIDTH = "25vw";
 
 function createSidebar() {
   // Check if sidebar already exists
@@ -83,7 +83,7 @@ if (document.readyState === "loading") {
 function startQuestScraper() {
   console.log("uwshuffle: startQuestScraper called in content script");
   console.log("uwshuffle: isQuestSite():", isQuestSite());
-  
+
   if (isQuestSite()) {
     console.log("uwshuffle: Getting QuestScraper instance");
     const scraper = QuestScraper.getInstance();
@@ -97,7 +97,10 @@ function startQuestScraper() {
 window.addEventListener("message", (event) => {
   // Only accept messages from our sidebar
   if (event.data && event.data.type === "uwshuffle_start_scraper") {
-    console.log("uwshuffle: Received uwshuffle_start_scraper message", event.data);
+    console.log(
+      "uwshuffle: Received uwshuffle_start_scraper message",
+      event.data
+    );
     startQuestScraper();
   }
 
