@@ -70,7 +70,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                 {/* Friend Schedule Tags */}
                 <div className="uwshuffle-friends-container">
                   <FiUsers className="uwshuffle-friends-icon" />
-                  <span className="uwshuffle-friends-label">Friends | </span>
+                  <span className="uwshuffle-friends-label">Friends</span>
                   {friendSchedules.map((friendSchedule) => (
                     <button
                       className={`uwshuffle-tag-button ${

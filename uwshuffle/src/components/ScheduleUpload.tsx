@@ -8,6 +8,7 @@ import {
   FiCheckCircle,
   FiChevronDown,
   FiChevronUp,
+  FiX,
 } from "react-icons/fi";
 import type { Course } from "../types";
 import { Tooltip } from "react-tooltip";
@@ -40,7 +41,9 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   const [isPasted, setIsPasted] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showFindSuccess, setShowFindSuccess] = useState(false);
+  const [showFindFailure, setShowFindFailure] = useState(false);
   const [showClearSuccess, setShowClearSuccess] = useState(false);
+  const [hasScrapedSwaps, setHasScrapedSwaps] = useState(false);
   const [isActionCenterCollapsed, setIsActionCenterCollapsed] = useState(false);
   const [showCourseDropdown, setShowCourseDropdown] = useState(false);
 
@@ -54,6 +57,21 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
       });
     }
     // eslint-disable-next-line
+  }, []);
+
+  // Listen for scraper result messages
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === "uwshuffle_scraper_result") {
+        if (event.data.success === false) {
+          setShowFindFailure(true);
+          setTimeout(() => setShowFindFailure(false), 2000);
+        }
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
   }, []);
 
   const handleUpload = (text?: string) => {
@@ -90,6 +108,11 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   };
 
   const handleRefresh = () => {
+    // Don't allow scraping if already scraped
+    if (hasScrapedSwaps) {
+      return;
+    }
+    
     // Start Quest scraper after schedule upload via postMessage to parent window
     try {
       window.parent.postMessage(
@@ -100,9 +123,12 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
         "*"
       );
       setShowFindSuccess(true);
+      setHasScrapedSwaps(true); // Mark as scraped after successful trigger
       setTimeout(() => setShowFindSuccess(false), 2000);
     } catch (error) {
       console.error("UWShuffle: Error sending scraper start message:", error);
+      setShowFindFailure(true);
+      setTimeout(() => setShowFindFailure(false), 2000);
     }
   };
 
@@ -110,8 +136,12 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     setIsPasted(false);
     setScheduleText("");
     setIsProcessing(false);
+    setHasScrapedSwaps(false); // Reset scraped state when clearing schedule
     onClearSchedule();
     setShowClearSuccess(true);
+    if (window.chrome && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.remove(["uwshuffle_courses"]);
+    }
     setTimeout(() => setShowClearSuccess(false), 2000);
   };
 
@@ -271,19 +301,19 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
               onClick={handleRefresh}
               className={`schedule-upload-primary ${
                 courses.length !== 0 && selectedCourseToSwap ? "active" : ""
-              }`}
-              disabled={courses.length === 0 || !selectedCourseToSwap}
-              aria-disabled={courses.length === 0 || !selectedCourseToSwap}
+              } ${showFindFailure ? "schedule-upload-primary-failure" : ""}`}
+              disabled={courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps}
+              aria-disabled={courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps}
               style={{
                 opacity:
-                  courses.length === 0 || !selectedCourseToSwap ? 0.5 : 1,
+                  courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps ? 0.5 : 1,
                 cursor:
-                  courses.length === 0 || !selectedCourseToSwap
+                  courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps
                     ? "not-allowed"
                     : "pointer",
               }}
               data-tooltip-id={
-                courses.length === 0 || !selectedCourseToSwap
+                courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps
                   ? "find-swap-disabled-tooltip"
                   : undefined
               }
@@ -292,10 +322,14 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
                   ? "Please upload your schedule first to find swap options"
                   : !selectedCourseToSwap
                   ? "Please select a course to swap first"
+                  : hasScrapedSwaps
+                  ? "Already scraped - clear your schedule to scrape again"
                   : undefined
               }
             >
-              {showFindSuccess ? (
+              {showFindFailure ? (
+                <FiX className="schedule-upload-icon-button" />
+              ) : showFindSuccess ? (
                 <FiCheck className="schedule-upload-icon-button" />
               ) : (
                 <FiEye className="schedule-upload-icon-button" />

@@ -169,7 +169,7 @@ body {
 
 /* ===== SIDEBAR LAYOUT ===== */
 .uwshuffle-sidebar {
-  width: min(100vw, var(--sidebar-width-md));
+  min-width: min(100vw, var(--sidebar-width-md));
   height: 100vh;
   position: fixed;
   bottom: 0;
@@ -181,6 +181,7 @@ body {
   animation: slideInFromRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   opacity: 0;
   transform: translateX(100%);
+  /* No max-width set here */
 }
 
 /* Sidebar slide-in animation */
@@ -1912,12 +1913,18 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-primary);
   margin-bottom: var(--space-2);
   padding-bottom: var(--space-2);
   border-bottom: 1px solid var(--color-border);
+}
+
+.uwshuffle-preview-title-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
 }
 
 .uwshuffle-preview-details {
@@ -2151,6 +2158,12 @@ body {
   flex-shrink: 0;
 }
 
+.uwshuffle-friends-label::after {
+  content: " | ";
+  color: var(--color-text-tertiary);
+  font-weight: 400;
+}
+
 .uwshuffle-calendar-actions {
   display: flex;
   gap: var(--space-2);
@@ -2267,8 +2280,8 @@ body {
 }
 
 .uwshuffle-plus-icon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 /* Share button styles - matching primary button design */
@@ -2524,14 +2537,14 @@ body {
   border: none !important;
 
   background: var(--color-surface) !important;
-  width: 60px !important;
+  width: 80px !important;
 }
 
 .rbc-time-gutter .rbc-time-slot {
   color: var(--color-text-tertiary) !important;
   font-size: var(--font-size-xs) !important;
   text-align: right !important;
-  padding-right: var(--space-2) !important;
+  padding-right: var(--space-4) !important;
 }
 
 /* Day columns */
@@ -2591,6 +2604,7 @@ body {
 @media (min-width: 640px) {
   .uwshuffle-sidebar {
     width: var(--sidebar-width-sm);
+    /* No max-width set here */
   }
 
   .uwshuffle-preview-containers {
@@ -2610,6 +2624,7 @@ body {
 @media (min-width: 768px) {
   .uwshuffle-sidebar {
     width: var(--sidebar-width-md);
+    /* No max-width set here */
   }
 
   .uwshuffle-main-content {
@@ -2625,6 +2640,7 @@ body {
 @media (min-width: 1024px) {
   .uwshuffle-sidebar {
     width: var(--sidebar-width-lg);
+    /* No max-width set here */
   }
 
   .uwshuffle-main-content {
@@ -2641,6 +2657,7 @@ body {
 @media (min-width: 1280px) {
   .uwshuffle-sidebar {
     width: var(--sidebar-width-xl);
+    /* No max-width set here */
   }
 
   .uwshuffle-calendar-card {
@@ -2652,6 +2669,7 @@ body {
 @media (max-width: 639px) {
   .uwshuffle-sidebar {
     width: 100vw;
+    /* No max-width set here */
   }
 
   .uwshuffle-action-bar-buttons {
@@ -2812,4 +2830,22 @@ body {
 
 .schedule-upload-primary.active .schedule-upload-icon-button {
   color: var(--color-surface);
+}
+
+.schedule-upload-primary-failure {
+  background-color: var(--color-error) !important;
+  border-color: var(--color-error) !important;
+  color: var(--color-surface) !important;
+}
+
+.schedule-upload-primary-failure:hover,
+.schedule-upload-primary-failure:focus {
+  background-color: var(--color-error-hover) !important;
+  border-color: var(--color-error-hover) !important;
+  color: var(--color-surface) !important;
+  transform: translateY(-1px);
+}
+
+.schedule-upload-primary-failure .schedule-upload-icon-button {
+  color: var(--color-surface) !important;
 }

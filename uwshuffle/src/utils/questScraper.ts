@@ -378,26 +378,48 @@ export class QuestScraper {
 
       const addButton = document.createElement("button");
       addButton.className = "uwshuffle-add-btn";
-      addButton.textContent = "Preview";
       addButton.style.cssText = `
         width: 100%;
         margin-top: 8px;
         margin-left: 0;
         padding: 8px 12px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 12px;
+        background-color: var(--color-surface, #ffffff);
+        color: var(--color-text-primary, #0f172a);
+        border: 1px solid var(--color-border, #e1e8ff);
+        border-radius: 8px;
+        font-size: 14px;
         font-weight: 600;
         cursor: pointer;
         z-index: 1000;
         position: relative;
         white-space: nowrap;
-        display: block;
-        font-family: inherit;
-        transition: background-color 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-family: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        transition: all 150ms ease;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
       `;
+
+      // Create logo image element
+      const logoImg = document.createElement("img");
+      logoImg.src = chrome.runtime.getURL("logo.svg");
+      logoImg.alt = "UWShuffle";
+      logoImg.style.cssText = `
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        object-fit: contain;
+      `;
+
+      // Create text span
+      const textSpan = document.createElement("span");
+      textSpan.textContent = "Preview";
+
+      // Append logo and text to button
+      addButton.appendChild(logoImg);
+      addButton.appendChild(textSpan);
 
       addButton.addEventListener("click", (e) => {
         e.preventDefault();
@@ -405,13 +427,19 @@ export class QuestScraper {
         this.notifySidebar("add_preview_course", course);
       });
 
-      // Add hover effects
+      // Add hover effects matching UWShuffle action buttons
       addButton.addEventListener("mouseenter", () => {
-        addButton.style.backgroundColor = "#0056b3";
+        addButton.style.backgroundColor = "var(--color-surface-hover, #f8faff)";
+        addButton.style.borderColor = "var(--color-border-focus, #c7d2fe)";
+        addButton.style.transform = "translateY(-1px)";
+        addButton.style.textDecoration = "underline";
       });
 
       addButton.addEventListener("mouseleave", () => {
-        addButton.style.backgroundColor = "#007bff";
+        addButton.style.backgroundColor = "var(--color-surface, #ffffff)";
+        addButton.style.borderColor = "var(--color-border, #e1e8ff)";
+        addButton.style.transform = "translateY(0)";
+        addButton.style.textDecoration = "none";
       });
 
       // Add button after the Select button
