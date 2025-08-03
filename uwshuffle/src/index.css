@@ -1384,7 +1384,7 @@ body {
   width: 12px;
   height: 12px;
   color: var(--color-text-tertiary);
-
+  margin-left: var(--space-1);
   cursor: help;
   transition: var(--transition-fast);
   flex-shrink: 0;
@@ -1395,7 +1395,6 @@ body {
 .uwshuffle-calendar-title-text {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
 }
 .uwshuffle-help-icon:hover {
   color: var(--color-primary);
