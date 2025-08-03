@@ -33,15 +33,7 @@ import { steps } from "../constants/steps";
 
 const Sidebar: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [previewCourse, setPreviewCourse] = useState<Course | null>({
-    course: "STAT 230",
-    section: "1",
-    days: ["Monday", "Wednesday", "Friday"],
-    start: "10:00 AM",
-    end: "11:00 AM",
-    location: "12345",
-    instructor: "John Doe",
-  });
+  const [previewCourse, setPreviewCourse] = useState<Course | null>(null);
   const [isMinimized, setIsMinimized] = useState<boolean>(true);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [termDatesAvailable, setTermDatesAvailable] = useState<boolean>(false);
