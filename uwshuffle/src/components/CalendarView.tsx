@@ -121,7 +121,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           },
         })}
         formats={{
-          timeGutterFormat: "h A",
+          timeGutterFormat: "h:mm A",
           dayFormat: "ddd",
           eventTimeRangeFormat: ({ start, end }: { start: Date; end: Date }) =>
             `${moment(start).format("h:mm")} – ${moment(end).format("h:mm A")}`,

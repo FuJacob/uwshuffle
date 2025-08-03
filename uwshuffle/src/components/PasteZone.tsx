@@ -15,8 +15,7 @@ const PasteZone: React.FC<PasteZoneProps> = ({ onPaste, isActive = false }) => {
     >
       <FiClipboard className="schedule-upload-paste-icon" />
       <div className="schedule-upload-paste-text">
-        Paste current schedule{" "}
-        <span className="keyboard-shortcut">(Click + ⌃ Ctrl+V / ⌘ Cmd+V)</span>
+        Paste current schedule (Click + ⌃ Ctrl+V / ⌘ Cmd+V)
       </div>
     </div>
   );

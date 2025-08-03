@@ -47,12 +47,14 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
           <div className="uwshuffle-calendar-header-top">
             <div className="uwshuffle-calendar-title">
               <div className="uwshuffle-calendar-title-content">
-                <span className="uwshuffle-calendar-title-text">Schedule</span>
-                <FiHelpCircle
-                  className="uwshuffle-help-icon"
-                  data-tooltip-id="calendar-tooltip"
-                  data-tooltip-content="View your current schedule and any friend schedules you've added. You can also export your schedule to Google Calendar."
-                />
+                <span className="uwshuffle-calendar-title-text">
+                  Schedule
+                  <FiHelpCircle
+                    className="uwshuffle-help-icon"
+                    data-tooltip-id="calendar-tooltip"
+                    data-tooltip-content="View your current schedule and any friend schedules you've added. You can also export your schedule to Google Calendar."
+                  />
+                </span>
               </div>
             </div>
             <button
