@@ -1924,7 +1924,6 @@ body {
 .uwshuffle-preview-title-content {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
 }
 
 .uwshuffle-preview-details {
