@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   DndContext,
   closestCenter,
@@ -46,13 +46,23 @@ const Sidebar: React.FC = () => {
   const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
   const [run, setRun] = useState(false);
 
+  // Add ref to track if component is mounted
+  const isMountedRef = useRef(true);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
   // Check Chrome storage for minimized state on component mount
   useEffect(() => {
     if (!window.chrome || !chrome.storage || !chrome.storage.local) {
       return;
     }
     chrome.storage.local.get(["uw_shuffle_minimized"], (result) => {
-      if (result.uw_shuffle_minimized !== undefined) {
+      if (isMountedRef.current && result.uw_shuffle_minimized !== undefined) {
         setIsMinimized(result.uw_shuffle_minimized);
       }
     });
@@ -61,13 +71,15 @@ const Sidebar: React.FC = () => {
   // Start tour when sidebar is first expanded
   useEffect(() => {
     if (!isMinimized) {
-      startTour();
       // Start tour after a short delay to ensure components are rendered
       if (window.chrome && chrome.storage && chrome.storage.local) {
         chrome.storage.local.get(
           ["uwshuffle_onboarding_completed"],
           (result) => {
-            if (result.uwshuffle_onboarding_completed == true) {
+            if (
+              isMountedRef.current &&
+              result.uwshuffle_onboarding_completed !== true
+            ) {
               startTour();
             }
           }
@@ -83,27 +95,33 @@ const Sidebar: React.FC = () => {
     chrome.storage.local
       .get("uwshuffle_onboarding_completed")
       .then((result) => {
-        if (result.uwshuffle_onboarding_completed == true) {
-          setRun(false);
-        } else {
-          setRun(true);
+        if (isMountedRef.current) {
+          if (result.uwshuffle_onboarding_completed == true) {
+            setRun(false);
+          } else {
+            setRun(true);
+          }
         }
       });
   }, []);
 
   useEffect(() => {
-    if (scheduleUploadError) {
+    if (scheduleUploadError && isMountedRef.current) {
       // Show error notification
       alert(`Error uploading schedule: ${scheduleUploadError}`);
       // Reset error after showing
-      setScheduleUploadError(null);
+      if (isMountedRef.current) {
+        setScheduleUploadError(null);
+      }
     }
   }, [scheduleUploadError]);
 
   // Monitor term dates availability
   useEffect(() => {
     const checkTermDates = () => {
-      setTermDatesAvailable(areTermDatesValid());
+      if (isMountedRef.current) {
+        setTermDatesAvailable(areTermDatesValid());
+      }
     };
 
     // Check immediately and then every 2 seconds
@@ -116,7 +134,7 @@ const Sidebar: React.FC = () => {
   // Listen for messages from content script
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.data?.type === "uwshuffle_action") {
+      if (event.data?.type === "uwshuffle_action" && isMountedRef.current) {
         switch (event.data.action) {
           case "add_preview_course":
             setPreviewCourse(event.data.data);

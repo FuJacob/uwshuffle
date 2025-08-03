@@ -47,8 +47,9 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   useEffect(() => {
     if (window.chrome && chrome.storage && chrome.storage.local) {
       chrome.storage.local.get(["uwshuffle_courses"], (result) => {
-        if (result.uwshuffle_courses) {
+        if (result.uwshuffle_courses && result.uwshuffle_courses.length > 0) {
           onCoursesUploaded(result.uwshuffle_courses);
+          setIsPasted(true); // Set isPasted to true when loading from storage
         }
       });
     }

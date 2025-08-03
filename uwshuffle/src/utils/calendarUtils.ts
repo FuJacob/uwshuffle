@@ -132,10 +132,10 @@ export function getEventStyle(event: ParsedScheduleEvent) {
   if (event.isPreview) {
     if (event.resource?.hasConflict) {
       backgroundColor = "var(--color-error)";
-      borderColor = "var(--color-error)";
+      borderColor = "var(--color-error-hover)"; // Use darker error color for border
     } else {
       backgroundColor = "var(--color-success)";
-      borderColor = "var(--color-success)";
+      borderColor = "var(--color-success-hover)"; // Use darker success color for border
     }
   }
 

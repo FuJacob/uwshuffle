@@ -41,34 +41,36 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
 
   if (!previewCourse) {
     return (
-      <div className="uwshuffle-stats-section">
-        <div className="uwshuffle-stats-container">
-          <div className="uwshuffle-stats-title">
-            Preview Insights
-            <FiHelpCircle
-              className="uwshuffle-help-icon"
-              data-tooltip-id="preview-insights-tooltip"
-              data-tooltip-content="View detailed information about the course you're considering swapping to, including professor ratings and course details."
-            />
-          </div>
-          {/* <button
-            onClick={() =>
-              setIsPreviewInsightsCollapsed(!isPreviewInsightsCollapsed)
-            }
-            className="uwshuffle-collapse-button"
-          >
-            {isPreviewInsightsCollapsed ? <FiPlus /> : <FiMinus />}
-          </button> */}
-        </div>
-        {/* {!isPreviewInsightsCollapsed && ( */}
-        <div className="uwshuffle-stats-content">
-          <div className="uwshuffle-no-preview">
-            <div className="uwshuffle-no-preview-text">
-              No course selected for preview
+      <div className="uwshuffle-preview-section">
+        <div className="uwshuffle-preview-card">
+          <div className="uwshuffle-preview-title">
+            <div className="uwshuffle-preview-title-content">
+              Preview Insights
+              <FiHelpCircle
+                className="uwshuffle-help-icon"
+                data-tooltip-id="preview-insights-tooltip"
+                data-tooltip-content="View detailed information about the course you're considering swapping to, including professor ratings and course details."
+              />
             </div>
+            <button
+              onClick={() =>
+                setIsPreviewInsightsCollapsed(!isPreviewInsightsCollapsed)
+              }
+              className="uwshuffle-collapse-button"
+            >
+              {isPreviewInsightsCollapsed ? <FiChevronUp /> : <FiChevronDown />}
+            </button>
           </div>
+          {!isPreviewInsightsCollapsed && (
+            <div className="uwshuffle-preview-details">
+              <div className="uwshuffle-no-preview">
+                <div className="uwshuffle-no-preview-text">
+                  No course selected for preview
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-        {/* )} */}
         <Tooltip
           id="preview-insights-tooltip"
           place="top"
@@ -83,8 +85,12 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
       <div className="uwshuffle-preview-card">
         <div className="uwshuffle-preview-title">
           <div className="uwshuffle-preview-title-content">
-            <FiBarChart2 className="uwshuffle-preview-icon" />
-            <span>Preview Insights</span>
+            Preview Insights
+            <FiHelpCircle
+              className="uwshuffle-help-icon"
+              data-tooltip-id="preview-insights-tooltip"
+              data-tooltip-content="View detailed information about the course you're considering swapping to, including professor ratings and course details."
+            />
           </div>
           <button
             onClick={() =>
@@ -156,9 +162,16 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                         <span className="uwshuffle-icon">
                           <FiMapPin />
                         </span>
-                        <span className="uwshuffle-value">
-                          {previewCourse.location}
-                        </span>
+                        <a
+                          href={`https://www.google.com/maps/search/${
+                            previewCourse.location?.replace(/\s+/g, "+") || ""
+                          }`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="uwshuffle-professor-link uwshuffle-uwflow-link"
+                        >
+                          {previewCourse.location || "TBA"}
+                        </a>
                       </div>
                     </div>
                   </div>

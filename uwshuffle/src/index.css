@@ -96,10 +96,10 @@
   --breakpoint-2xl: 1536px; /* Large desktop monitors */
 
   /* Responsive spacing */
-  --sidebar-width-sm: 460px;
-  --sidebar-width-md: 500px;
-  --sidebar-width-lg: 540px;
-  --sidebar-width-xl: 580px;
+  --sidebar-width-sm: 510px;
+  --sidebar-width-md: 560px;
+  --sidebar-width-lg: 610px;
+  --sidebar-width-xl: 660px;
 
   /* Responsive font sizes */
   --font-size-responsive-xs: clamp(0.7rem, 0.5vw + 0.6rem, 0.75rem);
@@ -1897,7 +1897,6 @@ body {
 
 /* ===== PREVIEW SECTION ===== */
 .uwshuffle-preview-section {
-  padding: 0 var(--space-3) var(--space-3) var(--space-3);
   background-color: var(--color-background);
 }
 
@@ -1911,6 +1910,7 @@ body {
 .uwshuffle-preview-title {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-2);
   font-size: var(--font-size-base);
   font-weight: 600;

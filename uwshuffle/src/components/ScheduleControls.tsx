@@ -77,7 +77,36 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
       ...course,
     }));
     const quickLink = await generateQuickLink(schedule);
-    navigator.clipboard.writeText(quickLink);
+    
+    try {
+      // Try modern clipboard API first
+      await navigator.clipboard.writeText(quickLink);
+    } catch (err) {
+      // Fallback for Chrome extension permission issues
+      try {
+        // Create a temporary textarea element
+        const textArea = document.createElement('textarea');
+        textArea.value = quickLink;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        // Execute copy command
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        if (!successful) {
+          throw new Error('execCommand failed');
+        }
+      } catch (fallbackErr) {
+        // If all else fails, show the link in a prompt
+        prompt('Copy this link to share your schedule:', quickLink);
+        return;
+      }
+    }
 
     // Show success state
     setShowShareSuccess(true);
