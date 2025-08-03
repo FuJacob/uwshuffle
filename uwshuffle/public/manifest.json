@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "UWShuffle - UWaterloo Course Swapper",
+  "name": "UW Shuffle — making Quest easier to use",
   "short_name": "UWShuffle",
   "version": "1.0.0",
-  "description": "Streamline University of Waterloo course swapping with an intelligent sidebar featuring calendar visualization, conflict detection, and ICS export for Quest.",
+  "description": "Be able to preview your schedule while you swap and pick courses on Quest.",
   "author": "Jacob Fu",
   "homepage_url": "https://uwshuffle.com",
 
