@@ -33,7 +33,7 @@ export const readQuickLink = async (url: string) => {
   }
   const { data, error } = await supabase
     .from("shared_schedules")
-    .select("schedule")
+    .select("schedule, user_name")
     .eq("id", id)
     .single();
   if (error) {
@@ -43,6 +43,9 @@ export const readQuickLink = async (url: string) => {
   if (!json) {
     return null;
   } else {
-    return JSON.parse(json);
+    return {
+      courses: JSON.parse(json),
+      userName: data.user_name || null
+    };
   }
 };

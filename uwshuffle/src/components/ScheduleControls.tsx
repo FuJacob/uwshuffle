@@ -38,6 +38,8 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
   const [isScheduleControlsCollapsed, setIsScheduleControlsCollapsed] =
     useState<boolean>(false);
   const [showShareSuccess, setShowShareSuccess] = useState<boolean>(false);
+  const [showNameModal, setShowNameModal] = useState<boolean>(false);
+  const [userName, setUserName] = useState<string>("");
 
   const handleAddFriendSchedule = async (quickLink: string) => {
     if (!quickLink.trim()) {
@@ -45,14 +47,14 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
     }
 
     try {
-      const friendCourses = await readQuickLink(quickLink);
-      if (friendCourses) {
-        const friendName = `Friend ${friendSchedules.length + 1}`;
+      const result = await readQuickLink(quickLink);
+      if (result && result.courses) {
+        const friendName = result.userName || `Friend ${friendSchedules.length + 1}`;
         const newFriendSchedule = {
           name: friendName,
           visible: true,
           color: getColorFromName(friendName),
-          schedule: friendCourses,
+          schedule: result.courses,
         };
         onFriendSchedulesChange([...friendSchedules, newFriendSchedule]);
         setAddFriendLink("");
@@ -73,10 +75,20 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
       alert("No courses to share. Please upload your schedule first.");
       return;
     }
+    // Show modal to get user's name first
+    setShowNameModal(true);
+  };
+
+  const handleConfirmShare = async () => {
+    if (!userName.trim()) {
+      alert("Please enter your first name to continue.");
+      return;
+    }
+
     const schedule = courses.map((course) => ({
       ...course,
     }));
-    const quickLink = await generateQuickLink(schedule);
+    const quickLink = await generateQuickLink(schedule, userName.trim());
     
     try {
       // Try modern clipboard API first
@@ -104,15 +116,22 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
       } catch (fallbackErr) {
         // If all else fails, show the link in a prompt
         prompt('Copy this link to share your schedule:', quickLink);
+        setShowNameModal(false);
         return;
       }
     }
 
-    // Show success state
+    // Close modal and show success state
+    setShowNameModal(false);
     setShowShareSuccess(true);
     setTimeout(() => {
       setShowShareSuccess(false);
     }, 2000);
+  };
+
+  const handleCancelShare = () => {
+    setShowNameModal(false);
+    setUserName("");
   };
 
   return (
@@ -280,6 +299,51 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
           </div>
         )}
       </div>
+
+      {/* Name Input Modal */}
+      {showNameModal && (
+        <div className="uwshuffle-modal-overlay">
+          <div className="uwshuffle-modal">
+            <div className="uwshuffle-modal-header">
+              <h3>Share Your Calendar</h3>
+            </div>
+            <div className="uwshuffle-modal-content">
+              <label className="uwshuffle-input-label">
+                Enter your first name to include in the shared link:
+              </label>
+              <input
+                type="text"
+                placeholder="Your first name..."
+                className="uwshuffle-input-field"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleConfirmShare();
+                  }
+                }}
+                autoFocus
+              />
+            </div>
+            <div className="uwshuffle-modal-footer">
+              <button
+                onClick={handleCancelShare}
+                className="uwshuffle-modal-button uwshuffle-modal-button-secondary"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmShare}
+                className="uwshuffle-modal-button uwshuffle-modal-button-primary"
+                disabled={!userName.trim()}
+              >
+                Share Calendar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Tooltip
         id="schedule-controls-tooltip"
         place="top"
