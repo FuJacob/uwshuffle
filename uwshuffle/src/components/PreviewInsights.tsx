@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import {
   FiHelpCircle,
-  FiCheckCircle,
   FiBook,
   FiUsers,
-  FiMapPin,
   FiClock,
   FiMessageSquare,
   FiUser,
@@ -105,26 +103,65 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
           <div className="uwshuffle-preview-details">
             <div className="uwshuffle-preview-containers">
               <div className="uwshuffle-course-container">
-                <div className="uwshuffle-course-info-container">
-                  <div className="uwshuffle-course-info-title">
-                    <span className="uwshuffle-icon">
-                      <FiCheckCircle />
-                    </span>
-                    Course Info:
-                  </div>
-                  <div className="uwshuffle-course-details">
-                    <div className="uwshuffle-course-line">
-                      <div className="uwshuffle-course-item">
+                <div className="uwshuffle-uwflow-header">
+                  <div className="uwshuffle-uwflow-title">
+                    <div className="uwshuffle-uwflow-left">
+                      <div className="uwshuffle-course-line">
                         <span className="uwshuffle-icon">
                           <FiBook />
                         </span>
                         <span className="uwshuffle-value">
-                          {previewCourse.course}
+                          {previewCourse.course} - {previewCourse.section}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="uwshuffle-uwflow-right">
+                      <a
+                        href={`https://uwflow.com/course/${previewCourse.course
+                          .toLowerCase()
+                          .replace(/\s+/g, "_")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="uwshuffle-professor-link uwshuffle-uwflow-link"
+                      >
+                        Go to{" "}
+                        <img
+                          src="/uwflow.png"
+                          alt="UW Flow"
+                          className="uwshuffle-uwflow-icon"
+                        />
+                        UW Flow
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="uwshuffle-uwflow-content">
+                  <div className="uwshuffle-course-details">
+                    <div className="uwshuffle-course-line">
+                      <div className="uwshuffle-course-item">
+                        <span className="uwshuffle-icon">
+                          <FiUsers />
+                        </span>
+                        <span className="uwshuffle-value">
+                          {previewCourse.days
+                            ?.map((day) => {
+                              const dayMap: { [key: string]: string } = {
+                                Monday: "Mo",
+                                Tuesday: "Tu",
+                                Wednesday: "We",
+                                Thursday: "Th",
+                                Friday: "Fr",
+                                Saturday: "Sa",
+                                Sunday: "Su",
+                              };
+                              return dayMap[day] || day;
+                            })
+                            .join(", ")}
                         </span>
                       </div>
                       <div className="uwshuffle-course-item">
                         <span className="uwshuffle-icon">
-                          <FiUsers />
+                          <FiBook />
                         </span>
                         <span className="uwshuffle-value">
                           {previewCourse.section}
@@ -136,32 +173,11 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                         <span className="uwshuffle-icon">
                           <FiClock />
                         </span>
-                        <div className="uwshuffle-course-time-info">
-                          <div className="uwshuffle-course-days">
-                            {previewCourse.days
-                              ?.map((day) => {
-                                const dayMap: { [key: string]: string } = {
-                                  Monday: "Mo",
-                                  Tuesday: "Tu",
-                                  Wednesday: "We",
-                                  Thursday: "Th",
-                                  Friday: "Fr",
-                                  Saturday: "Sa",
-                                  Sunday: "Su",
-                                };
-                                return dayMap[day] || day;
-                              })
-                              .join(", ")}
-                          </div>
-                          <div className="uwshuffle-course-time">
-                            {previewCourse.start} - {previewCourse.end}
-                          </div>
-                        </div>
+                        <span className="uwshuffle-value">
+                          {previewCourse.start} - {previewCourse.end}
+                        </span>
                       </div>
                       <div className="uwshuffle-course-item">
-                        <span className="uwshuffle-icon">
-                          <FiMapPin />
-                        </span>
                         <a
                           href={`https://www.google.com/maps/search/${
                             previewCourse.location?.replace(/\s+/g, "+") || ""
@@ -170,6 +186,16 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                           rel="noopener noreferrer"
                           className="uwshuffle-professor-link uwshuffle-uwflow-link"
                         >
+                          <img
+                            src="/googlemaps.png"
+                            alt="Google Maps"
+                            className="uwshuffle-googlemaps-icon"
+                            style={{
+                              marginRight: "2px",
+                              width: "8px",
+                              height: "auto",
+                            }}
+                          />
                           {previewCourse.location || "TBA"}
                         </a>
                       </div>
