@@ -9,8 +9,8 @@ export const steps = [
           style={{ width: "100%", marginBottom: 8, borderRadius: 8 }}
         />
         <p>
-          Start by pasting your <strong>current schedule</strong> in the Action Center. Watch
-          the GIF above for help.
+          Start by pasting your <strong>current schedule</strong> in the Action
+          Center. Watch the GIF above for help.
         </p>
       </div>
     ),
@@ -30,8 +30,8 @@ export const steps = [
     target: ".schedule-upload-primary",
     content: (
       <p>
-        Click <strong>Scrape Swaps</strong> to preview alternatives from{" "}
-        <strong>Quest</strong>.
+        Click <strong>Scrape Available Swaps</strong> to preview alternatives
+        from <strong>Quest</strong>.
       </p>
     ),
     placement: "top" as const,

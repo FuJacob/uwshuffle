@@ -35,6 +35,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
   onFriendSchedulesChange,
   friendSchedules,
 }) => {
+  console.log("uwshuffle: ScheduleControls received termDatesAvailable:", termDatesAvailable);
   const [addFriendLink, setAddFriendLink] = useState<string>("");
   const [isScheduleControlsCollapsed, setIsScheduleControlsCollapsed] =
     useState<boolean>(false);
@@ -112,6 +113,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
         throw new Error("execCommand failed");
       }
     } catch (err) {
+      console.error("Error copying to clipboard:", err);
       // If all else fails, show the link in a prompt
       prompt("Copy this link to share your schedule:", quickLink);
       setShowNameInput(false);

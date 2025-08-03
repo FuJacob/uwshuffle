@@ -357,8 +357,9 @@ export class QuestScraper {
     if (courseElements.length > 0) {
       const termDates = this.extractTermDatesFromElement(courseElements[0]);
       if (termDates) {
-        localStorage.setItem("uwshuffle-term-start", termDates.startDate);
-        localStorage.setItem("uwshuffle-term-end", termDates.endDate);
+        // Send term dates to sidebar via postMessage
+        this.notifySidebar("term_dates_extracted", termDates);
+        console.log("uwshuffle: Extracted and sent term dates:", termDates);
       }
     }
 

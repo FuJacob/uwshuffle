@@ -52,7 +52,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                   <FiHelpCircle
                     className="uwshuffle-help-icon"
                     data-tooltip-id="calendar-tooltip"
-                    data-tooltip-content="View your current schedule and any friend schedules you've added. Toggle friend schedules on/off and export to Google Calendar."
+                    data-tooltip-content="View your current schedule and any friend schedules you've added. Toggle friend schedules on/off."
                   />
                 </span>
               </div>
@@ -111,7 +111,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
         </div>
       </div>
       <Tooltip
-        id="schedule-tooltip"
+        id="calendar-tooltip"
         place="top"
         className="uwshuffle-tooltip"
       />

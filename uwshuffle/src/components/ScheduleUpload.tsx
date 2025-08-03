@@ -293,7 +293,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
                       : "var(--color-text-tertiary)",
                 }}
               >
-                3/3: Click Scrape Swaps to get your swap options!
+                3/3: Click Scrape Available Swaps to get your class options!
               </span>
             </div>
           </label>
@@ -345,7 +345,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
               ) : (
                 <FiEye className="schedule-upload-icon-button" />
               )}
-              Scrape Swaps
+              Scrape Available Swaps
             </button>
           </div>
         </>

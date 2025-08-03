@@ -1,11 +1,7 @@
 import type { Course } from "../types";
 import moment from "moment";
 
-// University of Waterloo academic calendar dates - dynamically extracted from Quest
-// No default dates - must be extracted from Quest before export is enabled
-let TERM_START_DATE: moment.Moment | null = null;
-let TERM_END_DATE: moment.Moment | null = null;
-let TERM_DATES_VALID = false;
+// University of Waterloo academic calendar dates - passed directly via postMessage
 
 interface ICSEvent {
   summary: string;
@@ -20,7 +16,7 @@ interface ICSEvent {
 /**
  * Converts courses to ICS format events
  */
-function coursesToICSEvents(courses: Course[]): ICSEvent[] {
+function coursesToICSEvents(courses: Course[], termStartDate: string, termEndDate: string): ICSEvent[] {
   const events: ICSEvent[] = [];
 
   courses.forEach((course, courseIndex) => {
@@ -28,11 +24,11 @@ function coursesToICSEvents(courses: Course[]): ICSEvent[] {
       // Map day names to day numbers (0 = Sunday, 1 = Monday, etc.)
       const dayMap: { [key: string]: number } = {
         Sun: 0,
-        Mon: 1,
-        Tue: 2,
-        Wed: 3,
-        Thu: 4,
-        Fri: 5,
+        Mo: 1,
+        Tu: 2,
+        We: 3,
+        Th: 4,
+        Fr: 5,
         Sat: 6,
       };
 
@@ -40,10 +36,8 @@ function coursesToICSEvents(courses: Course[]): ICSEvent[] {
       if (dayNumber === undefined) return;
 
       // Find the first occurrence of this day on or after term start
-      if (!TERM_START_DATE) {
-        throw new Error("Term start date not available");
-      }
-      const firstOccurrence = TERM_START_DATE.clone();
+      const termStart = moment(termStartDate);
+      const firstOccurrence = termStart.clone();
       const daysToAdd = (dayNumber - firstOccurrence.day() + 7) % 7;
       firstOccurrence.add(daysToAdd, "days");
 
@@ -68,10 +62,8 @@ function coursesToICSEvents(courses: Course[]): ICSEvent[] {
       const dtend = eventEnd.utc().format("YYYYMMDD[T]HHmmss[Z]");
 
       // Create recurrence rule (weekly until term end)
-      if (!TERM_END_DATE) {
-        throw new Error("Term end date not available");
-      }
-      const until = TERM_END_DATE.clone().utc().format("YYYYMMDD[T]HHmmss[Z]");
+      const termEnd = moment(termEndDate);
+      const until = termEnd.clone().utc().format("YYYYMMDD[T]HHmmss[Z]");
       const rrule = `FREQ=WEEKLY;UNTIL=${until}`;
 
       // Create event summary and description
@@ -136,7 +128,7 @@ function generateICSContent(events: ICSEvent[], calendarName: string): string {
 
   lines.push("END:VCALENDAR");
 
-  return lines.filter(Boolean).join("\\r\\n");
+  return lines.filter(Boolean).join("\r\n");
 }
 
 /**
@@ -162,18 +154,13 @@ function downloadICSFile(content: string, filename: string): void {
 /**
  * Exports current schedule as ICS file
  */
-export function exportCurrentSchedule(courses: Course[]): void {
+export function exportCurrentSchedule(courses: Course[], termStartDate: string, termEndDate: string): void {
   if (courses.length === 0) {
     alert("No courses to export. Please upload your schedule first.");
     return;
   }
 
-  if (!areTermDatesValid()) {
-    alert("Term dates not available. Please browse Quest course search results first to enable calendar export.");
-    return;
-  }
-
-  const events = coursesToICSEvents(courses);
+  const events = coursesToICSEvents(courses, termStartDate, termEndDate);
   const content = generateICSContent(events, "UW Current Schedule");
   const filename = `uw-schedule-current-${moment().format("YYYY-MM-DD")}.ics`;
   
@@ -185,7 +172,9 @@ export function exportCurrentSchedule(courses: Course[]): void {
  */
 export function exportScheduleWithSwap(
   courses: Course[],
-  previewCourse: Course
+  previewCourse: Course,
+  termStartDate: string,
+  termEndDate: string
 ): void {
   if (courses.length === 0) {
     alert("No courses to export. Please upload your schedule first.");
@@ -197,15 +186,10 @@ export function exportScheduleWithSwap(
     return;
   }
 
-  if (!areTermDatesValid()) {
-    alert("Term dates not available. Please browse Quest course search results first to enable calendar export.");
-    return;
-  }
-
   // Create a new schedule with the preview course added
   const swappedSchedule = [...courses, previewCourse];
   
-  const events = coursesToICSEvents(swappedSchedule);
+  const events = coursesToICSEvents(swappedSchedule, termStartDate, termEndDate);
   const content = generateICSContent(
     events,
     `UW Schedule with ${previewCourse.course}`
@@ -215,18 +199,3 @@ export function exportScheduleWithSwap(
   downloadICSFile(content, filename);
 }
 
-/**
- * Update term dates extracted from Quest Meeting Dates
- */
-export function updateTermDates(startDate: string, endDate: string): void {
-  TERM_START_DATE = moment(startDate);
-  TERM_END_DATE = moment(endDate);
-  TERM_DATES_VALID = true;
-}
-
-/**
- * Check if valid term dates have been extracted from Quest
- */
-export function areTermDatesValid(): boolean {
-  return TERM_DATES_VALID && TERM_START_DATE !== null && TERM_END_DATE !== null;
-}

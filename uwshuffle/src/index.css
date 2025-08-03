@@ -1758,30 +1758,25 @@ body {
 }
 
 .schedule-upload-paste-zone.active {
-  background-color: var(--color-primary);
-  border: 2px dashed var(--color-primary);
-  color: var(--color-surface);
+  background-color: var(--color-primary-light) !important;
+  border: 2px dashed var(--color-primary) !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--color-primary) !important;
+  box-shadow: var(--shadow-md) !important;
 }
 
 .schedule-upload-paste-zone.active .schedule-upload-paste-icon,
 .schedule-upload-paste-zone.active .schedule-upload-paste-text {
-  color: var(--color-surface);
+  color: var(--color-primary);
 }
 
 .schedule-upload-paste-zone.active:hover,
 .schedule-upload-paste-zone.active:focus {
-  background-color: var(--color-primary) !important;
-  border-color: var(--color-primary) !important;
-  color: var(--color-surface) !important;
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
-.schedule-upload-paste-zone.active:hover .schedule-upload-paste-icon,
-.schedule-upload-paste-zone.active:focus .schedule-upload-paste-icon,
-.schedule-upload-paste-zone.active:hover .schedule-upload-paste-text,
-.schedule-upload-paste-zone.active:focus .schedule-upload-paste-text {
-  color: var(--color-surface) !important;
+  background-color: var(--color-primary-light) !important;
+  border: 2px dashed var(--color-primary) !important;
+  color: var(--color-primary) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: var(--shadow-md) !important;
 }
 
 .schedule-upload-paste-zone:hover,
@@ -1795,11 +1790,6 @@ body {
 .schedule-upload-paste-zone:hover .schedule-upload-paste-icon,
 .schedule-upload-paste-zone:focus .schedule-upload-paste-icon {
   color: var(--color-primary);
-}
-
-.schedule-upload-paste-zone:hover .schedule-upload-paste-text,
-.schedule-upload-paste-zone:focus .schedule-upload-paste-text {
-  color: var(--color-text-primary);
 }
 
 .schedule-upload-paste-icon {
@@ -2377,7 +2367,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-3) var(--space-4);
   background-color: var(--color-surface);
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
@@ -2762,8 +2752,8 @@ body {
   }
 
   .uwshuffle-export-button {
-    font-size: var(--font-size-xs);
-    padding: var(--space-1) var(--space-2);
+    font-size: var(--font-size-sm);
+    padding: var(--space-2) var(--space-3);
   }
 
   /* Progress bar on narrow screens - show only current step */

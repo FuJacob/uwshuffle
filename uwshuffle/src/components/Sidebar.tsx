@@ -25,7 +25,6 @@ import Joyride, { type CallBackProps } from "react-joyride";
 import {
   exportCurrentSchedule,
   exportScheduleWithSwap,
-  areTermDatesValid,
 } from "../utils/icsExport";
 import { useGetProfInfoFromUwFlow } from "../hooks/useGetProfInfoFromUwFlow";
 import ScheduleControls from "./ScheduleControls";
@@ -37,6 +36,7 @@ const Sidebar: React.FC = () => {
   const [isMinimized, setIsMinimized] = useState<boolean>(true);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [termDatesAvailable, setTermDatesAvailable] = useState<boolean>(false);
+  const [termDates, setTermDates] = useState<{startDate: string; endDate: string} | null>(null);
   const [scheduleUploadError, setScheduleUploadError] = useState<string | null>(
     null
   );
@@ -116,20 +116,7 @@ const Sidebar: React.FC = () => {
     }
   }, [scheduleUploadError]);
 
-  // Monitor term dates availability
-  useEffect(() => {
-    const checkTermDates = () => {
-      if (isMountedRef.current) {
-        setTermDatesAvailable(areTermDatesValid());
-      }
-    };
-
-    // Check immediately and then every 2 seconds
-    checkTermDates();
-    const interval = setInterval(checkTermDates, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
+  // No longer need to monitor localStorage - term dates come via postMessage
 
   // Listen for messages from content script
   useEffect(() => {
@@ -138,6 +125,11 @@ const Sidebar: React.FC = () => {
         switch (event.data.action) {
           case "add_preview_course":
             setPreviewCourse(event.data.data);
+            break;
+          case "term_dates_extracted":
+            console.log("uwshuffle: Received term dates:", event.data.data);
+            setTermDates(event.data.data);
+            setTermDatesAvailable(true);
             break;
         }
       }
@@ -219,12 +211,14 @@ const Sidebar: React.FC = () => {
   };
 
   const handleExportCurrentSchedule = () => {
-    exportCurrentSchedule(courses);
+    if (termDates) {
+      exportCurrentSchedule(courses, termDates.startDate, termDates.endDate);
+    }
   };
 
   const handleExportWithSwap = () => {
-    if (previewCourse) {
-      exportScheduleWithSwap(courses, previewCourse);
+    if (previewCourse && termDates) {
+      exportScheduleWithSwap(courses, previewCourse, termDates.startDate, termDates.endDate);
     }
   };
 

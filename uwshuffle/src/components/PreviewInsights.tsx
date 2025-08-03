@@ -123,7 +123,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                       <a
                         href={`https://uwflow.com/course/${previewCourse.course
                           .toLowerCase()
-                          .replace(/\s+/g, "_")}`}
+                          .replace(/\s+/g, "")}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="uwshuffle-professor-link uwshuffle-uwflow-link"
@@ -184,7 +184,8 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                       <div className="uwshuffle-course-item">
                         <a
                           href={`https://www.google.com/maps/search/${
-                            previewCourse.location?.replace(/\s+/g, "+") || ""
+                            previewCourse.location?.replace(/\s+/g, "+") +
+                              "+UWATERLOO" || "UWATERLOO"
                           }`}
                           target="_blank"
                           rel="noopener noreferrer"
