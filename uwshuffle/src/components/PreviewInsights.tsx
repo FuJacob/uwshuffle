@@ -7,6 +7,7 @@ import {
   FiMessageSquare,
   FiUser,
   FiBarChart2,
+  FiHash,
   FiChevronDown,
   FiChevronUp,
 } from "react-icons/fi";
@@ -110,8 +111,11 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                         <span className="uwshuffle-icon">
                           <FiBook />
                         </span>
-                        <span className="uwshuffle-value">
-                          {previewCourse.course} - {previewCourse.section}
+                        <span
+                          className="uwshuffle-value"
+                          style={{ fontWeight: "bold" }}
+                        >
+                          {previewCourse.course}
                         </span>
                       </div>
                     </div>
@@ -161,7 +165,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                       </div>
                       <div className="uwshuffle-course-item">
                         <span className="uwshuffle-icon">
-                          <FiBook />
+                          <FiHash />
                         </span>
                         <span className="uwshuffle-value">
                           {previewCourse.section}
@@ -211,7 +215,10 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                         <span className="uwshuffle-icon">
                           <FiUser />
                         </span>
-                        <span className="uwshuffle-value">
+                        <span
+                          className="uwshuffle-value"
+                          style={{ fontWeight: "bold" }}
+                        >
                           {profInfo?.name ? profInfo.name : "~"}
                         </span>
                       </div>
