@@ -2562,6 +2562,11 @@ body {
   padding-right: var(--space-4) !important;
 }
 
+/* Add extra padding to 9:30 AM time slot */
+.rbc-time-gutter .rbc-time-slot:nth-child(4) {
+  padding-right: var(--space-8) !important;
+}
+
 /* Day columns */
 .rbc-day-slot {
   background-color: var(--color-surface) !important;
