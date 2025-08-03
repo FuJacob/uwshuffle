@@ -1,6 +1,6 @@
 export const steps = [
   {
-    target: ".schedule-upload-paste-zone",
+    target: ".schedule-upload-container",
     content: (
       <div>
         <img
@@ -9,7 +9,7 @@ export const steps = [
           style={{ width: "100%", marginBottom: 8, borderRadius: 8 }}
         />
         <p>
-          Start by pasting your <strong>current schedule</strong> here. Watch
+          Start by pasting your <strong>current schedule</strong> in the Action Center. Watch
           the GIF above for help.
         </p>
       </div>
