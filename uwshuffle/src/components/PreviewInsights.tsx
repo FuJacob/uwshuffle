@@ -13,7 +13,7 @@ import {
   FiMinus,
 } from "react-icons/fi";
 import type { Course } from "../types";
-import uwflowIcon from "../assets/uwflow.png";
+
 import { Tooltip } from "react-tooltip";
 
 interface ProfInfo {
@@ -202,7 +202,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                       >
                         Go to{" "}
                         <img
-                          src={uwflowIcon}
+                          src="/uwflow.png"
                           alt="UW Flow"
                           className="uwshuffle-uwflow-icon"
                         />

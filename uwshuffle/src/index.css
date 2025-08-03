@@ -2631,12 +2631,6 @@ body {
   .uwshuffle-calendar-card {
     min-height: 500px;
   }
-
-  .uwshuffle-stats-section,
-  .uwshuffle-current-step-section,
-  .uwshuffle-upload-section {
-    padding: var(--space-5);
-  }
 }
 
 /* Extra large screens (1280px and up) - Desktop monitors */

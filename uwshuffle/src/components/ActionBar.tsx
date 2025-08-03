@@ -7,7 +7,6 @@ import {
   FiSun,
   FiX,
 } from "react-icons/fi";
-import logo from "../assets/logo.svg";
 
 interface ActionBarProps {
   isDarkMode: boolean;
@@ -31,7 +30,7 @@ const ActionBar: React.FC<ActionBarProps> = ({
       <div className="uwshuffle-action-bar-logo-container">
         <div className="uwshuffle-logo-section">
           <button onClick={onKofiClick} className="uwshuffle-coffee-button">
-            <img src={logo} alt="UWShuffle" className="uwshuffle-logo" />
+            <img src="/logo.svg" alt="UWShuffle" className="uwshuffle-logo" />
             <div className="uwshuffle-logo-content">
               <div>UWShuffle</div>
               {/* <div className="uwshuffle-action-bar-author-text">
