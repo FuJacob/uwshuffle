@@ -26,8 +26,8 @@ interface ScheduleUploadProps {
   onCoursesUploaded: (courses: Course[]) => void;
   onClearSchedule: () => void;
   courses: Course[];
-  onCourseSelectedToSwap: (course: Course | null) => void;
-  selectedCourseToSwap: Course | null;
+  onCourseSelectedToSwap: (course: Course | null | "None") => void;
+  selectedCourseToSwap: Course | null | "None";
 }
 
 const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
@@ -74,6 +74,24 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, []);
+
+  // Check if preview buttons still exist on the page to reset scrape state
+  useEffect(() => {
+    const checkPreviewButtons = () => {
+      // Check if there are any UWShuffle preview buttons on the page
+      const previewButtons = document.querySelectorAll('.uwshuffle-add-btn');
+      if (hasScrapedSwaps && previewButtons.length === 0) {
+        // If we've scraped swaps but no preview buttons exist, reset the state
+        setHasScrapedSwaps(false);
+      }
+    };
+
+    // Check immediately and set up periodic checks
+    checkPreviewButtons();
+    const intervalId = setInterval(checkPreviewButtons, 2000);
+
+    return () => clearInterval(intervalId);
+  }, [hasScrapedSwaps]);
 
   const handleUpload = (text?: string) => {
     const textToProcess = text || scheduleText;
@@ -146,7 +164,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     setTimeout(() => setShowClearSuccess(false), 3000);
   };
 
-  const handleCourseSelect = (course: Course) => {
+  const handleCourseSelect = (course: Course | "None") => {
     onCourseSelectedToSwap(course);
     setShowCourseDropdown(false);
   };

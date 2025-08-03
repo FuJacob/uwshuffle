@@ -36,12 +36,16 @@ const Sidebar: React.FC = () => {
   const [isMinimized, setIsMinimized] = useState<boolean>(true);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [termDatesAvailable, setTermDatesAvailable] = useState<boolean>(false);
-  const [termDates, setTermDates] = useState<{startDate: string; endDate: string} | null>(null);
+  const [termDates, setTermDates] = useState<{
+    startDate: string;
+    endDate: string;
+  } | null>(null);
   const [scheduleUploadError, setScheduleUploadError] = useState<string | null>(
     null
   );
-  const [selectedCourseToSwap, setSelectedCourseToSwap] =
-    useState<Course | null>(null);
+  const [selectedCourseToSwap, setSelectedCourseToSwap] = useState<
+    Course | null | "None"
+  >(null);
   const profInfo = useGetProfInfoFromUwFlow(previewCourse);
   const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
   const [run, setRun] = useState(false);
@@ -148,7 +152,7 @@ const Sidebar: React.FC = () => {
     setSelectedCourseToSwap(null);
   };
 
-  const handleCourseSelectedToSwap = (course: Course | null) => {
+  const handleCourseSelectedToSwap = (course: Course | null | "None") => {
     setSelectedCourseToSwap(course);
   };
 
@@ -218,7 +222,12 @@ const Sidebar: React.FC = () => {
 
   const handleExportWithSwap = () => {
     if (previewCourse && termDates) {
-      exportScheduleWithSwap(courses, previewCourse, termDates.startDate, termDates.endDate);
+      exportScheduleWithSwap(
+        courses,
+        previewCourse,
+        termDates.startDate,
+        termDates.endDate
+      );
     }
   };
 
@@ -251,6 +260,8 @@ const Sidebar: React.FC = () => {
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 15,
+        delay: 100,
+        tolerance: 5,
       },
     })
   );
@@ -509,11 +520,29 @@ function SortableSection({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    cursor: "grab",
   };
   return (
-    <div ref={setNodeRef} {...attributes} {...listeners} style={style}>
-      {children}
+    <div ref={setNodeRef} style={style}>
+      <div 
+        {...attributes} 
+        {...listeners} 
+        style={{ 
+          cursor: "grab", 
+          padding: "2px 0",
+          borderTop: "1px solid transparent",
+          borderBottom: "1px solid transparent"
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderTop = "1px solid var(--color-border)";
+          e.currentTarget.style.borderBottom = "1px solid var(--color-border)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderTop = "1px solid transparent";
+          e.currentTarget.style.borderBottom = "1px solid transparent";
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

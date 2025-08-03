@@ -4,8 +4,8 @@ import type { Course } from "../types";
 
 interface CourseDropdownProps {
   courses: Course[];
-  selectedCourse: Course | null;
-  onCourseSelect: (course: Course) => void;
+  selectedCourse: Course | null | "None";
+  onCourseSelect: (course: Course | "None") => void;
   showDropdown: boolean;
   onToggleDropdown: () => void;
   disabled?: boolean;
@@ -44,7 +44,7 @@ const CourseDropdown: React.FC<CourseDropdownProps> = ({
         data-tooltip-content={disabled ? tooltipContent : undefined}
       >
         <FiChevronDown className="schedule-upload-icon-button" />
-        {selectedCourse
+        {selectedCourse && selectedCourse !== "None"
           ? selectedCourse.course
           : "Now, pick the course you want to swap"}
       </button>
@@ -55,7 +55,10 @@ const CourseDropdown: React.FC<CourseDropdownProps> = ({
               key={course.course}
               onClick={() => onCourseSelect(course)}
               className={`schedule-upload-dropdown-item ${
-                selectedCourse?.course === course.course ? "selected" : ""
+                selectedCourse !== "None" &&
+                selectedCourse?.course === course.course
+                  ? "selected"
+                  : ""
               }`}
             >
               {course.course}

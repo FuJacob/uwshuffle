@@ -173,7 +173,7 @@ body {
   height: 100vh;
   position: fixed;
   bottom: 0;
-  left: 0;
+  right: 0;
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -623,7 +623,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-1);
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 0;
@@ -1462,7 +1462,7 @@ body {
   right: 0;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-md);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   z-index: 100;
   max-height: 200px;
@@ -2179,6 +2179,14 @@ body {
   font-weight: 400;
 }
 
+.uwshuffle-friends-placeholder {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  font-style: italic;
+  flex: 1;
+  text-align: left;
+}
+
 .uwshuffle-calendar-actions {
   display: flex;
   gap: var(--space-2);
@@ -2550,9 +2558,9 @@ body {
 /* Time column (8am-8pm) */
 .rbc-time-gutter {
   border: none !important;
-
   background: var(--color-surface) !important;
-  width: 80px !important;
+  width: 85px !important;
+  min-width: 85px !important;
 }
 
 .rbc-time-gutter .rbc-time-slot {
@@ -2560,6 +2568,8 @@ body {
   font-size: var(--font-size-xs) !important;
   text-align: right !important;
   padding-right: var(--space-4) !important;
+  padding-left: var(--space-2) !important;
+  min-width: 60px !important;
 }
 
 /* Add extra padding to 9:30 AM time slot */
@@ -2670,7 +2680,7 @@ body {
 
   .uwshuffle-main-content {
     padding: var(--space-6);
-    gap: var(--space-5);
+    gap: var(--space-1);
   }
 
   .uwshuffle-calendar-card {
@@ -2713,7 +2723,7 @@ body {
 
   .uwshuffle-main-content {
     padding: var(--space-3);
-    gap: var(--space-3);
+    gap: var(--space-1);
   }
 
   .uwshuffle-preview-containers {
@@ -2743,13 +2753,15 @@ body {
   }
 
   .rbc-time-gutter {
-    width: 40px !important;
+    width: 50px !important;
+    min-width: 50px !important;
   }
 
   .rbc-time-gutter .rbc-time-slot {
     font-size: 10px !important;
-    padding-right: var(--space-2) !important;
-    width: 20px !important;
+    padding-right: var(--space-3) !important;
+    padding-left: var(--space-1) !important;
+    min-width: 45px !important;
   }
 
   .rbc-event {

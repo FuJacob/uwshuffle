@@ -11,7 +11,7 @@ interface CalendarViewProps {
   courses: Course[];
   previewCourse?: Course | null;
   friendSchedules?: FriendSchedule[];
-  selectedCourseToSwap?: Course | null;
+  selectedCourseToSwap?: Course | null | "None";
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({
@@ -30,6 +30,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       if (
         previewCourse &&
         selectedCourseToSwap &&
+        selectedCourseToSwap !== "None" &&
         course.course === selectedCourseToSwap.course
       ) {
         return false;

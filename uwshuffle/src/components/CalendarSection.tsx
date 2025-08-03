@@ -16,7 +16,7 @@ import { Tooltip } from "react-tooltip";
 interface CalendarSectionProps {
   courses: Course[];
   previewCourse: Course | null;
-  selectedCourseToSwap?: Course | null;
+  selectedCourseToSwap?: Course | null | "None";
   friendSchedules: FriendSchedule[];
   setFriendSchedules: React.Dispatch<React.SetStateAction<FriendSchedule[]>>;
 }
@@ -73,29 +73,36 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                   <span className="uwshuffle-friends-label">
                     Friends' Schedules
                   </span>
-                  {friendSchedules.map((friendSchedule) => (
-                    <button
-                      className={`uwshuffle-tag-button ${
-                        !friendSchedule.visible
-                          ? "uwshuffle-tag-button-hidden"
-                          : ""
-                      }`}
-                      style={{
-                        backgroundColor: friendSchedule.color,
-                      }}
-                      key={friendSchedule.name}
-                      onClick={() =>
-                        handleToggleFriendSchedule(friendSchedule.name)
-                      }
-                    >
-                      {friendSchedule.visible ? (
-                        <FiEye className="uwshuffle-tag-icon" />
-                      ) : (
-                        <FiEyeOff className="uwshuffle-tag-icon" />
-                      )}
-                      {friendSchedule.name}
-                    </button>
-                  ))}
+                  {friendSchedules.length > 0 ? (
+                    friendSchedules.map((friendSchedule) => (
+                      <button
+                        className={`uwshuffle-tag-button ${
+                          !friendSchedule.visible
+                            ? "uwshuffle-tag-button-hidden"
+                            : ""
+                        }`}
+                        style={{
+                          backgroundColor: friendSchedule.color,
+                        }}
+                        key={friendSchedule.name}
+                        onClick={() =>
+                          handleToggleFriendSchedule(friendSchedule.name)
+                        }
+                      >
+                        {friendSchedule.visible ? (
+                          <FiEye className="uwshuffle-tag-icon" />
+                        ) : (
+                          <FiEyeOff className="uwshuffle-tag-icon" />
+                        )}
+                        {friendSchedule.name}
+                      </button>
+                    ))
+                  ) : (
+                    <span className="uwshuffle-friends-placeholder">
+                      Enter your friends' quick links to see their schedules
+                      here
+                    </span>
+                  )}
                 </div>
               </div>
             </>
