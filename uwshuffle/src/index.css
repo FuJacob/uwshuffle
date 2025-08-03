@@ -1747,9 +1747,9 @@ body {
   justify-content: center;
   gap: var(--space-3);
   padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--color-border);
+  border: 2px dashed var(--color-border);
   border-radius: var(--radius-md);
-  background-color: var(--color-surface);
+  background-color: var(--color-gray-50);
   cursor: pointer;
   transition: var(--transition-fast);
   min-height: 44px;
@@ -1759,7 +1759,7 @@ body {
 
 .schedule-upload-paste-zone.active {
   background-color: var(--color-primary);
-  border-color: var(--color-primary);
+  border: 2px dashed var(--color-primary);
   color: var(--color-surface);
 }
 

@@ -632,13 +632,26 @@ export class QuestScraper {
     const hasSelectButtons =
       this.iframeDoc?.querySelectorAll('input[value="Select"]').length || 0;
 
-    return isOnSchedulePage || (hasCourseElements > 0 && hasSelectButtons > 0);
+    console.log("uwshuffle: Page detection results:");
+    console.log("  URL contains ADMN_CLASS_SCHEDULE:", isOnSchedulePage);
+    console.log("  iframe document found:", !!this.iframeDoc);
+    console.log("  Course elements found:", hasCourseElements);
+    console.log("  Select buttons found:", hasSelectButtons);
+
+    const result = isOnSchedulePage || (hasCourseElements > 0 && hasSelectButtons > 0);
+    console.log("  Final result:", result);
+    
+    return result;
   }
 
   // Start Quest scraper after schedule upload (called manually)
   startAfterScheduleUpload() {
+    console.log("uwshuffle: startAfterScheduleUpload called");
+    console.log("uwshuffle: Current URL:", window.location.href);
+    
     // Check if we're on the right page and start scraping
     if (this.isOnCourseSearchPage()) {
+      console.log("uwshuffle: On course search page, starting scraping");
       this.startScraping();
     } else {
       console.log("uwshuffle: Not on course search page, no action taken");
@@ -651,10 +664,16 @@ export class QuestScraper {
   }
 
   private startScraping() {
+    console.log("uwshuffle: Starting scraping...");
     // Add buttons immediately if elements exist
     const elementsFound = this.findCourseElements().length;
+    console.log("uwshuffle: Course elements found for button injection:", elementsFound);
+    
     if (elementsFound > 0) {
+      console.log("uwshuffle: Adding interaction buttons");
       this.addInteractionButtons();
+    } else {
+      console.log("uwshuffle: No course elements found, not adding buttons");
     }
   }
 }

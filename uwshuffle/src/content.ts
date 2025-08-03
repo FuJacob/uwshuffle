@@ -81,9 +81,15 @@ if (document.readyState === "loading") {
 
 // Function to start Quest scraper after schedule upload
 function startQuestScraper() {
+  console.log("uwshuffle: startQuestScraper called in content script");
+  console.log("uwshuffle: isQuestSite():", isQuestSite());
+  
   if (isQuestSite()) {
+    console.log("uwshuffle: Getting QuestScraper instance");
     const scraper = QuestScraper.getInstance();
     scraper.startAfterScheduleUpload();
+  } else {
+    console.log("uwshuffle: Not on Quest site, not starting scraper");
   }
 }
 
@@ -91,6 +97,7 @@ function startQuestScraper() {
 window.addEventListener("message", (event) => {
   // Only accept messages from our sidebar
   if (event.data && event.data.type === "uwshuffle_start_scraper") {
+    console.log("uwshuffle: Received uwshuffle_start_scraper message", event.data);
     startQuestScraper();
   }
 
