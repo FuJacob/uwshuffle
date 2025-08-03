@@ -6,8 +6,8 @@ import {
   FiBook,
   FiRefreshCcw,
   FiCheckCircle,
-  FiPlus,
-  FiMinus,
+  FiChevronDown,
+  FiChevronUp,
 } from "react-icons/fi";
 import type { Course } from "../types";
 import { Tooltip } from "react-tooltip";
@@ -91,9 +91,6 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   const handleRefresh = () => {
     // Start Quest scraper after schedule upload via postMessage to parent window
     try {
-      console.log(
-        "UWShuffle: Sending message to start Quest scraper after schedule upload"
-      );
       window.parent.postMessage(
         {
           type: "uwshuffle_start_scraper",
@@ -138,7 +135,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
           onClick={() => setIsActionCenterCollapsed(!isActionCenterCollapsed)}
           className="uwshuffle-collapse-button"
         >
-          {isActionCenterCollapsed ? <FiPlus /> : <FiMinus />}
+          {isActionCenterCollapsed ? <FiChevronUp /> : <FiChevronDown />}
         </button>
       </div>
       <Tooltip

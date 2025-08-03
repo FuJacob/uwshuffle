@@ -259,7 +259,6 @@ export class QuestScraper {
       }
 
       const datesText = meetingDatesSpan.textContent || "";
-      console.log("uwshuffle: Found Meeting Dates text:", datesText);
 
       // Quest meeting dates format is typically "MM/DD/YYYY - MM/DD/YYYY"
       // Examples: "09/09/2024 - 12/09/2024" or "01/08/2025 - 04/09/2025"
@@ -268,10 +267,6 @@ export class QuestScraper {
       );
 
       if (!dateRangeMatch) {
-        console.log(
-          "uwshuffle: Could not parse meeting dates format:",
-          datesText
-        );
         return null;
       }
 
@@ -290,13 +285,8 @@ export class QuestScraper {
         "0"
       )}-${endParts[1].padStart(2, "0")}`;
 
-      console.log(
-        `uwshuffle: Extracted term dates - Start: ${startDate}, End: ${endDate}`
-      );
-
       return { startDate, endDate };
-    } catch (error) {
-      console.error("uwshuffle: Error extracting term dates:", error);
+    } catch {
       return null;
     }
   }
@@ -360,33 +350,22 @@ export class QuestScraper {
 
   // Add "Add to Schedule" buttons to course elements on the page
   addInteractionButtons() {
-    console.log("uwshuffle: Adding interaction buttons...");
-
     // Find Quest course table rows
     const courseElements = this.findCourseElements();
-    console.log("uwshuffle: Found", courseElements.length, "course elements");
 
     // Extract term dates from the first course element (all courses in the same term will have the same dates)
     if (courseElements.length > 0) {
       const termDates = this.extractTermDatesFromElement(courseElements[0]);
       if (termDates) {
-        console.log("uwshuffle: Saving term dates to localStorage");
         localStorage.setItem("uwshuffle-term-start", termDates.startDate);
         localStorage.setItem("uwshuffle-term-end", termDates.endDate);
-      } else {
-        console.log(
-          "uwshuffle: Could not extract term dates from Quest - export buttons will remain disabled"
-        );
       }
     }
 
-    courseElements.forEach((element, index) => {
+    courseElements.forEach((element) => {
       const course = this.scrapeCourseFromElement(element);
 
       if (!course) {
-        console.log(
-          `uwshuffle: No course data found for element ${index + 1}, skipping`
-        );
         return;
       }
 
@@ -394,11 +373,6 @@ export class QuestScraper {
       const selectButtonCell = element.querySelector("td:last-child");
 
       if (!selectButtonCell) {
-        console.log(
-          `uwshuffle: No select button cell found for element ${
-            index + 1
-          }, skipping`
-        );
         return;
       }
 
@@ -428,7 +402,6 @@ export class QuestScraper {
       addButton.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log("uwshuffle: Preview button clicked for course:", course);
         this.notifySidebar("add_preview_course", course);
       });
 
@@ -444,80 +417,17 @@ export class QuestScraper {
       // Add button after the Select button
       selectButtonCell.appendChild(addButton);
     });
-
-    console.log(`uwshuffle: Added ${courseElements.length} preview buttons`);
   }
 
   private findCourseElements(): Element[] {
-    console.log("uwshuffle: Finding course elements...");
-
     // First try to use the cached iframe document if available
     if (this.iframeDoc) {
-      console.log("uwshuffle: Using cached iframe document");
       return this.findCourseElementsInDocument(this.iframeDoc);
     }
 
-    // Add comprehensive DOM debugging
-    console.log("uwshuffle: DOM Debug Info:");
-    console.log("uwshuffle: - Document ready state:", document.readyState);
-    console.log("uwshuffle: - Document URL:", document.URL);
-    console.log(
-      "uwshuffle: - Total elements in document:",
-      document.querySelectorAll("*").length
-    );
-    console.log(
-      "uwshuffle: - Total table rows:",
-      document.querySelectorAll("tr").length
-    );
-    console.log(
-      "uwshuffle: - Total tables:",
-      document.querySelectorAll("table").length
-    );
-    console.log(
-      "uwshuffle: - Total inputs:",
-      document.querySelectorAll("input").length
-    );
-    console.log(
-      "uwshuffle: - Total buttons:",
-      document.querySelectorAll("button").length
-    );
-    console.log(
-      "uwshuffle: - Total spans:",
-      document.querySelectorAll("span").length
-    );
-
-    // Check for common Quest elements in main document
-    console.log("uwshuffle: Quest-specific elements in main document:");
-    console.log(
-      'uwshuffle: - Elements with "SSR":',
-      document.querySelectorAll('[id*="SSR"]').length
-    );
-    console.log(
-      'uwshuffle: - Elements with "MTG":',
-      document.querySelectorAll('[id*="MTG"]').length
-    );
-    console.log(
-      'uwshuffle: - Elements with "CLSRCH":',
-      document.querySelectorAll('[id*="CLSRCH"]').length
-    );
-    console.log(
-      'uwshuffle: - Inputs with "SELECT":',
-      document.querySelectorAll('input[name*="SELECT"]').length
-    );
-    console.log(
-      'uwshuffle: - Elements with "Select" value:',
-      document.querySelectorAll('input[value="Select"]').length
-    );
-
     // Check for iframes and try to search within them
     const iframes = document.querySelectorAll("iframe");
-    console.log("uwshuffle: - Total iframes:", iframes.length);
     if (iframes.length > 0) {
-      console.log(
-        "uwshuffle: - Iframe sources/titles:",
-        Array.from(iframes).map((f) => ({ src: f.src, title: f.title }))
-      );
-
       // Try to search in iframes, prioritizing "Main Content" iframe
       const mainContentIframe = Array.from(iframes).find(
         (f) => f.title === "Main Content"
@@ -535,80 +445,27 @@ export class QuestScraper {
           const iframeDoc =
             iframe.contentDocument || iframe.contentWindow?.document;
           if (iframeDoc) {
-            console.log(
-              "uwshuffle: - Searching in iframe:",
-              iframe.title || iframe.src || "no-title-no-src"
-            );
-            console.log(
-              "uwshuffle: - Iframe elements:",
-              iframeDoc.querySelectorAll("*").length
-            );
-            console.log(
-              "uwshuffle: - Iframe table rows:",
-              iframeDoc.querySelectorAll("tr").length
-            );
-            console.log(
-              "uwshuffle: - Iframe SSR elements:",
-              iframeDoc.querySelectorAll('[id*="SSR"]').length
-            );
-            console.log(
-              "uwshuffle: - Iframe MTG elements:",
-              iframeDoc.querySelectorAll('[id*="MTG"]').length
-            );
-
             // If iframe has the elements we need, use that document instead
             const iframeSelectButtons = iframeDoc.querySelectorAll(
               'input[value="Select"]'
             );
             if (iframeSelectButtons.length > 0) {
-              console.log(
-                "uwshuffle: - Found Select buttons in iframe! Using iframe document."
-              );
-
               // Cache the iframe document for future use
               this.iframeDoc = iframeDoc;
 
               return this.findCourseElementsInDocument(iframeDoc);
             }
-          } else {
-            console.log(
-              "uwshuffle: - Cannot access iframe document (cross-origin?)"
-            );
           }
         } catch (error) {
-          console.log("uwshuffle: - Error accessing iframe:", error);
+          console.log("uwshuffle: Error accessing iframe:", error);
         }
       }
     }
 
-    // Check if we can find the course title in main document
-    const titleElements = document.querySelectorAll("*");
-    const titleFound = Array.from(titleElements).find(
-      (el) =>
-        el.textContent &&
-        el.textContent.includes("STAT") &&
-        el.textContent.includes("230")
-    );
-    console.log("uwshuffle: - Found STAT 230 title element:", !!titleFound);
-    if (titleFound) {
-      console.log(
-        "uwshuffle: - Title element:",
-        titleFound.tagName,
-        titleFound.id,
-        titleFound.className
-      );
-    }
-
-    // Fallback to main document search
-    console.log(
-      "uwshuffle: No iframe content found, falling back to main document"
-    );
     return this.findCourseElementsInDocument(document);
   }
 
   private findCourseElementsInDocument(doc: Document): Element[] {
-    console.log("uwshuffle: Searching in document:", doc.URL || "unknown-url");
-
     // First, try to expand any collapsed course sections
     this.expandCollapsedSections(doc);
 
@@ -616,31 +473,6 @@ export class QuestScraper {
     const elements: Element[] = [];
 
     // Enhanced debugging - check what elements exist
-    console.log("uwshuffle: Enhanced debugging:");
-    console.log(
-      "uwshuffle: - Total elements:",
-      doc.querySelectorAll("*").length
-    );
-    console.log(
-      "uwshuffle: - Elements with SSR:",
-      doc.querySelectorAll('[id*="SSR"]').length
-    );
-    console.log(
-      "uwshuffle: - Elements with MTG:",
-      doc.querySelectorAll('[id*="MTG"]').length
-    );
-    console.log(
-      "uwshuffle: - Elements with CLSRCH:",
-      doc.querySelectorAll('[id*="CLSRCH"]').length
-    );
-    console.log(
-      "uwshuffle: - Select inputs:",
-      doc.querySelectorAll('input[value="Select"]').length
-    );
-    console.log(
-      "uwshuffle: - All inputs:",
-      doc.querySelectorAll("input").length
-    );
 
     // Check for the specific elements we saw in the HTML
     const specificElements = [
@@ -654,12 +486,9 @@ export class QuestScraper {
 
     for (const selector of specificElements) {
       const found = doc.querySelectorAll(selector);
-      console.log(`uwshuffle: - ${selector}: ${found.length} elements`);
       if (found.length > 0 && found.length < 5) {
         Array.from(found).forEach((el, i) => {
-          console.log(
-            `uwshuffle:   [${i}] id="${el.id}" class="${el.className}"`
-          );
+          console.log(`uwshuffle:   [${i}] id="${el.id}"`);
         });
       }
     }
@@ -676,26 +505,16 @@ export class QuestScraper {
     // Try each selector until we find rows
     for (const selector of questRowSelectors) {
       questRows = doc.querySelectorAll(selector);
-      console.log(
-        `uwshuffle: Found ${questRows.length} rows with selector: ${selector}`
-      );
       if (questRows.length > 0) break;
     }
 
     // If still no rows found, try a broader search for table rows containing course data
     if (questRows.length === 0) {
-      console.log(
-        "uwshuffle: No rows found with specific selectors, trying broader search..."
-      );
       const allRows = doc.querySelectorAll("tr");
-      console.log(
-        "uwshuffle: Total table rows for broader search:",
-        allRows.length
-      );
 
       const courseRows: Element[] = [];
 
-      allRows.forEach((row, index) => {
+      allRows.forEach((row) => {
         const hasSelectButton = row.querySelector(
           'input[name*="SSR_PB_SELECT"], input[value="Select"]'
         );
@@ -704,33 +523,15 @@ export class QuestScraper {
         );
         const hasDayTime = row.querySelector('span[id*="MTG_DAYTIME"]');
 
-        if (index < 10) {
-          // Debug first 10 rows instead of 5
-          console.log(`uwshuffle: Debug row ${index}:`, {
-            id: row.id,
-            className: row.className,
-            hasSelectButton: !!hasSelectButton,
-            hasClassNumber: !!hasClassNumber,
-            hasDayTime: !!hasDayTime,
-            textContent: row.textContent?.substring(0, 100),
-            innerHTML: row.innerHTML.substring(0, 200),
-          });
-        }
-
         if (hasSelectButton && (hasClassNumber || hasDayTime)) {
           courseRows.push(row);
         }
       });
 
       questRows = courseRows as unknown as NodeListOf<Element>;
-      console.log(
-        `uwshuffle: Found ${questRows.length} rows with broader search`
-      );
     }
 
-    questRows.forEach((row, index) => {
-      console.log(`uwshuffle: Checking row ${index + 1}:`, row.id || "no-id");
-
+    questRows.forEach((row) => {
       // Check if this row contains actual course data (not headers)
       const hasSelectButton = row.querySelector(
         'input[name*="SSR_PB_SELECT"], input[value="Select"]'
@@ -740,50 +541,28 @@ export class QuestScraper {
         'span[id*="MTG_CLASS_NBR"], a[id*="MTG_CLASS_NBR"]'
       );
 
-      console.log("uwshuffle: Has select button:", !!hasSelectButton);
-      console.log("uwshuffle: Has day/time:", !!hasDayTime);
-      console.log("uwshuffle: Has class number:", !!hasClassNumber);
-
       // Row is valid if it has a select button and either day/time or class number
       if (hasSelectButton && (hasDayTime || hasClassNumber)) {
-        console.log("uwshuffle: Valid course row found");
         elements.push(row);
-      } else {
-        console.log("uwshuffle: Row rejected - missing required elements");
       }
     });
 
-    console.log(
-      "uwshuffle: Total valid course elements found:",
-      elements.length
-    );
     return elements;
   }
 
   private expandCollapsedSections(doc: Document): void {
-    console.log("uwshuffle: Attempting to expand collapsed sections...");
-
     // Look for collapse/expand buttons and click them to expand sections
     const collapseButtons = doc.querySelectorAll(
       'a[class*="PTCOLLAPSE_ARROW"], a[title*="Collapse section"], a[id*="GROUPBOX2"]'
     );
 
-    console.log(
-      `uwshuffle: Found ${collapseButtons.length} potential collapse buttons`
-    );
-
-    collapseButtons.forEach((button, index) => {
+    collapseButtons.forEach((button) => {
       try {
         const isExpanded = button.getAttribute("aria-expanded");
         const title = button.getAttribute("title") || "";
 
-        console.log(
-          `uwshuffle: Button ${index}: title="${title}" aria-expanded="${isExpanded}"`
-        );
-
         // If it's collapsed, try to expand it
         if (isExpanded === "false" || title.includes("Expand")) {
-          console.log("uwshuffle: Attempting to expand collapsed section");
           (button as HTMLElement).click();
         }
       } catch (error) {
@@ -792,9 +571,7 @@ export class QuestScraper {
     });
 
     // Wait a moment for any dynamic content to load
-    setTimeout(() => {
-      console.log("uwshuffle: Finished expanding sections");
-    }, 100);
+    setTimeout(() => {}, 100);
   }
 
   private notifySidebar(action: string, data: unknown) {
@@ -818,10 +595,6 @@ export class QuestScraper {
   private isOnCourseSearchPage(): boolean {
     // Check URL patterns for course search pages
     const url = window.location.href;
-    const iframeUrl = this.iframeDoc?.URL || "";
-
-    console.log("uwshuffle: Current URL:", url);
-    console.log("uwshuffle: Iframe URL:", iframeUrl);
 
     // Quest course search URLs typically contain these patterns
     const coursePageScname = "ADMN_CLASS_SCHEDULE";
@@ -833,46 +606,30 @@ export class QuestScraper {
     const hasSelectButtons =
       this.iframeDoc?.querySelectorAll('input[value="Select"]').length || 0;
 
-    console.log("uwshuffle: Course elements found:", hasCourseElements);
-    console.log("uwshuffle: Select buttons found:", hasSelectButtons);
-
     return isOnSchedulePage || (hasCourseElements > 0 && hasSelectButtons > 0);
   }
 
   // Start Quest scraper after schedule upload (called manually)
   startAfterScheduleUpload() {
-    console.log("uwshuffle: Starting Quest scraper after schedule upload...");
-
     // Check if we're on the right page and start scraping
     if (this.isOnCourseSearchPage()) {
-      console.log("uwshuffle: On course search page, starting scraper");
       this.startScraping();
     } else {
-      console.log("uwshuffle: Not on a course search page, no action taken");
+      console.log("uwshuffle: Not on course search page, no action taken");
     }
   }
 
   // Legacy init method (now does nothing - scraper only starts after schedule upload)
   init() {
-    console.log(
-      "uwshuffle: Quest scraper init called, but waiting for schedule upload to activate"
-    );
     // Do nothing - scraper will only start when startAfterScheduleUpload() is called
   }
 
   private startScraping() {
-    console.log("uwshuffle: Starting simple scraping without polling...");
-
     // Add buttons immediately if elements exist
     const elementsFound = this.findCourseElements().length;
     if (elementsFound > 0) {
-      console.log(`uwshuffle: Found ${elementsFound} elements, adding buttons`);
       this.addInteractionButtons();
-    } else {
-      console.log("uwshuffle: No course elements found");
     }
-
-    console.log("uwshuffle: Quest scraper initialized successfully");
   }
 }
 

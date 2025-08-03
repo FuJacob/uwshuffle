@@ -9,8 +9,8 @@ import {
   FiMessageSquare,
   FiUser,
   FiBarChart2,
-  FiPlus,
-  FiMinus,
+  FiChevronDown,
+  FiChevronUp,
 } from "react-icons/fi";
 import type { Course } from "../types";
 
@@ -92,7 +92,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
             }
             className="uwshuffle-collapse-button"
           >
-            {isPreviewInsightsCollapsed ? <FiPlus /> : <FiMinus />}
+            {isPreviewInsightsCollapsed ? <FiChevronUp /> : <FiChevronDown />}
           </button>
         </div>
         {!isPreviewInsightsCollapsed && (

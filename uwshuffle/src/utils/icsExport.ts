@@ -219,7 +219,6 @@ export function exportScheduleWithSwap(
  * Update term dates extracted from Quest Meeting Dates
  */
 export function updateTermDates(startDate: string, endDate: string): void {
-  console.log(`uwshuffle: Updating term dates - Start: ${startDate}, End: ${endDate}`);
   TERM_START_DATE = moment(startDate);
   TERM_END_DATE = moment(endDate);
   TERM_DATES_VALID = true;

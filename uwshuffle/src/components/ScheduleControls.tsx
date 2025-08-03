@@ -6,8 +6,8 @@ import {
   FiHelpCircle,
   FiCheck,
   FiUserPlus,
-  FiPlus,
-  FiMinus,
+  FiChevronDown,
+  FiChevronUp,
 } from "react-icons/fi";
 import type { Course, FriendSchedule } from "../types";
 import { readQuickLink } from "../utils/readQuickLink";
@@ -47,7 +47,6 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
     try {
       const friendCourses = await readQuickLink(quickLink);
       if (friendCourses) {
-        console.log("Successfully loaded friend schedule:", friendCourses);
         const friendName = `Friend ${friendSchedules.length + 1}`;
         const newFriendSchedule = {
           name: friendName,
@@ -105,7 +104,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
             }
             className="uwshuffle-collapse-button"
           >
-            {isScheduleControlsCollapsed ? <FiMinus /> : <FiPlus />}
+            {isScheduleControlsCollapsed ? <FiChevronUp /> : <FiChevronDown />}
           </button>
         </div>
         {!isScheduleControlsCollapsed && (

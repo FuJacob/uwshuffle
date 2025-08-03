@@ -211,9 +211,6 @@ const Sidebar: React.FC = () => {
   };
 
   // addPreviewCourse is handled via message listener
-  useEffect(() => {
-    console.log(profInfo);
-  }, [profInfo]);
   const defaultSections = [
     "action-bar",
     "controls",

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import {
-  FiPlus,
-  FiMinus,
+  FiChevronDown,
+  FiChevronUp,
   FiUsers,
   FiEye,
   FiEyeOff,
@@ -59,7 +59,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
               onClick={() => setIsCalendarCollapsed(!isCalendarCollapsed)}
               className="uwshuffle-collapse-button"
             >
-              {isCalendarCollapsed ? <FiPlus /> : <FiMinus />}
+              {isCalendarCollapsed ? <FiChevronUp /> : <FiChevronDown />}
             </button>
           </div>
           {!isCalendarCollapsed && (

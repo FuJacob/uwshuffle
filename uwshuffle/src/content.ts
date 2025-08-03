@@ -33,18 +33,6 @@ function createSidebar() {
 `;
   // Add sidebar to page
   document.body.appendChild(sidebar);
-
-  // Adjust main content to accommodate sidebar
-  // adjustMainContent();
-}
-
-function adjustMainContent(isMinimized = false) {
-  // Find the main content area and adjust its width
-  const body = document.body;
-  if (body) {
-    body.style.marginRight = isMinimized ? "0" : SIDEBAR_WIDTH;
-    body.style.transition = "margin-right 0.3s ease";
-  }
 }
 
 function removeSidebar() {
@@ -63,26 +51,16 @@ function isQuestSite(): boolean {
 
 // Initialize sidebar when DOM is ready
 function init() {
-  console.log("uwshuffle: Content script initializing...");
-  console.log("uwshuffle: Current URL:", window.location.href);
-  console.log("uwshuffle: Is Quest site?", isQuestSite());
-
   if (isQuestSite()) {
-    console.log("uwshuffle: Creating sidebar...");
     createSidebar();
 
     // Quest scraper will only be initialized after schedule upload
-    console.log(
-      "uwshuffle: Quest scraper available but waiting for schedule upload to activate"
-    );
-
     // Listen for page navigation changes (for SPAs)
     let lastUrl = location.href;
     new MutationObserver(() => {
       const url = location.href;
       if (url !== lastUrl) {
         lastUrl = url;
-        console.log("uwshuffle: URL changed to:", url);
         // Recreate sidebar if needed after navigation
         setTimeout(() => {
           if (!document.getElementById(SIDEBAR_ID)) {
@@ -104,11 +82,8 @@ if (document.readyState === "loading") {
 // Function to start Quest scraper after schedule upload
 function startQuestScraper() {
   if (isQuestSite()) {
-    console.log("uwshuffle: Starting Quest scraper after schedule upload...");
     const scraper = QuestScraper.getInstance();
     scraper.startAfterScheduleUpload();
-  } else {
-    console.log("uwshuffle: Not on Quest site, scraper not started");
   }
 }
 
@@ -116,20 +91,12 @@ function startQuestScraper() {
 window.addEventListener("message", (event) => {
   // Only accept messages from our sidebar
   if (event.data && event.data.type === "uwshuffle_start_scraper") {
-    console.log(
-      "uwshuffle: Received message to start Quest scraper:",
-      event.data
-    );
     startQuestScraper();
   }
 
   // Handle sidebar minimize/expand events
   if (event.data && event.data.type === "uwshuffle_sidebar_state") {
-    console.log(
-      "uwshuffle: Received sidebar state change:",
-      event.data.isMinimized
-    );
-    adjustMainContent(event.data.isMinimized);
+    // Sidebar state change handled
   }
 });
 
