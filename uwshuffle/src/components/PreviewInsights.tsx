@@ -47,7 +47,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
               <FiHelpCircle
                 className="uwshuffle-help-icon"
                 data-tooltip-id="preview-insights-tooltip"
-                data-tooltip-content="View detailed information about the course you're considering swapping to, including professor ratings and course details."
+                data-tooltip-content="View detailed information about the course you're considering swapping to, including professor ratings from UW Flow and course details."
               />
             </div>
             <button

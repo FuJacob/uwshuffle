@@ -52,7 +52,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                   <FiHelpCircle
                     className="uwshuffle-help-icon"
                     data-tooltip-id="calendar-tooltip"
-                    data-tooltip-content="View your current schedule and any friend schedules you've added. You can also export your schedule to Google Calendar."
+                    data-tooltip-content="View your current schedule and any friend schedules you've added. Toggle friend schedules on/off and export to Google Calendar."
                   />
                 </span>
               </div>
@@ -70,7 +70,9 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                 {/* Friend Schedule Tags */}
                 <div className="uwshuffle-friends-container">
                   <FiUsers className="uwshuffle-friends-icon" />
-                  <span className="uwshuffle-friends-label">Friends</span>
+                  <span className="uwshuffle-friends-label">
+                    Friends' Schedules
+                  </span>
                   {friendSchedules.map((friendSchedule) => (
                     <button
                       className={`uwshuffle-tag-button ${

@@ -5,6 +5,7 @@ import {
   FiLink,
   FiHelpCircle,
   FiCheck,
+  FiSend,
   FiUserPlus,
   FiChevronDown,
   FiChevronUp,
@@ -38,7 +39,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
   const [isScheduleControlsCollapsed, setIsScheduleControlsCollapsed] =
     useState<boolean>(false);
   const [showShareSuccess, setShowShareSuccess] = useState<boolean>(false);
-  const [showNameModal, setShowNameModal] = useState<boolean>(false);
+  const [showNameInput, setShowNameInput] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
 
   const handleAddFriendSchedule = async (quickLink: string) => {
@@ -49,7 +50,8 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
     try {
       const result = await readQuickLink(quickLink);
       if (result && result.courses) {
-        const friendName = result.userName || `Friend ${friendSchedules.length + 1}`;
+        const friendName =
+          result.userName || `Friend ${friendSchedules.length + 1}`;
         const newFriendSchedule = {
           name: friendName,
           visible: true,
@@ -75,8 +77,8 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
       alert("No courses to share. Please upload your schedule first.");
       return;
     }
-    // Show modal to get user's name first
-    setShowNameModal(true);
+    // Show inline input to get user's name first
+    setShowNameInput(true);
   };
 
   const handleConfirmShare = async () => {
@@ -89,49 +91,40 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
       ...course,
     }));
     const quickLink = await generateQuickLink(schedule, userName.trim());
-    
+
+    // Use execCommand for Chrome extension compatibility
     try {
-      // Try modern clipboard API first
-      await navigator.clipboard.writeText(quickLink);
-    } catch (err) {
-      // Fallback for Chrome extension permission issues
-      try {
-        // Create a temporary textarea element
-        const textArea = document.createElement('textarea');
-        textArea.value = quickLink;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-999999px';
-        textArea.style.top = '-999999px';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        
-        // Execute copy command
-        const successful = document.execCommand('copy');
-        document.body.removeChild(textArea);
-        
-        if (!successful) {
-          throw new Error('execCommand failed');
-        }
-      } catch (fallbackErr) {
-        // If all else fails, show the link in a prompt
-        prompt('Copy this link to share your schedule:', quickLink);
-        setShowNameModal(false);
-        return;
+      // Create a temporary textarea element
+      const textArea = document.createElement("textarea");
+      textArea.value = quickLink;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      // Execute copy command
+      const successful = document.execCommand("copy");
+      document.body.removeChild(textArea);
+
+      if (!successful) {
+        throw new Error("execCommand failed");
       }
+    } catch (err) {
+      // If all else fails, show the link in a prompt
+      prompt("Copy this link to share your schedule:", quickLink);
+      setShowNameInput(false);
+      return;
     }
 
-    // Close modal and show success state
-    setShowNameModal(false);
+    // Hide input and show success state
+    setShowNameInput(false);
+    setUserName("");
     setShowShareSuccess(true);
     setTimeout(() => {
       setShowShareSuccess(false);
-    }, 2000);
-  };
-
-  const handleCancelShare = () => {
-    setShowNameModal(false);
-    setUserName("");
+    }, 3000);
   };
 
   return (
@@ -143,7 +136,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
             <FiHelpCircle
               className="uwshuffle-help-icon"
               data-tooltip-id="schedule-controls-tooltip"
-              data-tooltip-content="Share your schedule with friends and export your calendar to Google Calendar with or without your swap preview."
+              data-tooltip-content="Share your schedule with friends using quick links and export to Google Calendar with or without your swap preview."
             />
           </div>
           <button
@@ -195,8 +188,8 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                   }
                   data-tooltip-content={
                     courses.length === 0
-                      ? "Upload your schedule first to share it with friends"
-                      : "Share your schedule with others"
+                      ? "Upload your schedule first to generate a shareable link"
+                      : "Generate a quick link to share your schedule with friends"
                   }
                 >
                   {showShareSuccess ? (
@@ -212,6 +205,32 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                   )}
                 </button>
               </div>
+              {showNameInput && (
+                <div className="uwshuffle-name-input-container">
+                  <div className="uwshuffle-input-wrapper">
+                    <input
+                      type="text"
+                      placeholder="Enter your name..."
+                      className="uwshuffle-input-field"
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleConfirmShare();
+                        }
+                      }}
+                      autoFocus
+                    />
+                    <button
+                      onClick={handleConfirmShare}
+                      className="uwshuffle-send-button"
+                      disabled={!userName.trim()}
+                    >
+                      <FiSend className="uwshuffle-send-icon" />
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="uwshuffle-export-actions">
               <label className="uwshuffle-input-label">
@@ -299,50 +318,6 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
           </div>
         )}
       </div>
-
-      {/* Name Input Modal */}
-      {showNameModal && (
-        <div className="uwshuffle-modal-overlay">
-          <div className="uwshuffle-modal">
-            <div className="uwshuffle-modal-header">
-              <h3>Share Your Calendar</h3>
-            </div>
-            <div className="uwshuffle-modal-content">
-              <label className="uwshuffle-input-label">
-                Enter your first name to include in the shared link:
-              </label>
-              <input
-                type="text"
-                placeholder="Your first name..."
-                className="uwshuffle-input-field"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    handleConfirmShare();
-                  }
-                }}
-                autoFocus
-              />
-            </div>
-            <div className="uwshuffle-modal-footer">
-              <button
-                onClick={handleCancelShare}
-                className="uwshuffle-modal-button uwshuffle-modal-button-secondary"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleConfirmShare}
-                className="uwshuffle-modal-button uwshuffle-modal-button-primary"
-                disabled={!userName.trim()}
-              >
-                Share Calendar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <Tooltip
         id="schedule-controls-tooltip"

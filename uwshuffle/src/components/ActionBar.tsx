@@ -46,7 +46,7 @@ const ActionBar: React.FC<ActionBarProps> = ({
           onClick={onRateClick}
           className="uwshuffle-coffee-button"
           data-tooltip-id="rate-button-tooltip"
-          data-tooltip-content="Rate UWShuffle on the Chrome Web Store"
+          data-tooltip-content="Rate UWShuffle on the Chrome Web Store to help other students discover this tool!"
         >
           <FiStar className="uwshuffle-icon-button" />
           Rate
@@ -59,7 +59,7 @@ const ActionBar: React.FC<ActionBarProps> = ({
           onClick={onHelpClick}
           className="uwshuffle-help-button"
           data-tooltip-id="help-button-tooltip"
-          data-tooltip-content="Start the guided tour to learn how to use UWShuffle"
+          data-tooltip-content="Take a quick tour to learn how to use UWShuffle step by step"
         >
           <FiHelpCircle className="uwshuffle-icon-button" />
         </button>

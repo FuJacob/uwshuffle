@@ -4,6 +4,7 @@ import {
   FiHelpCircle,
   FiEye,
   FiBook,
+  FiUser,
   FiRefreshCcw,
   FiCheckCircle,
   FiChevronDown,
@@ -112,7 +113,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     if (hasScrapedSwaps) {
       return;
     }
-    
+
     // Start Quest scraper after schedule upload via postMessage to parent window
     try {
       window.parent.postMessage(
@@ -124,11 +125,11 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
       );
       setShowFindSuccess(true);
       setHasScrapedSwaps(true); // Mark as scraped after successful trigger
-      setTimeout(() => setShowFindSuccess(false), 2000);
+      setTimeout(() => setShowFindSuccess(false), 3000);
     } catch (error) {
       console.error("UWShuffle: Error sending scraper start message:", error);
       setShowFindFailure(true);
-      setTimeout(() => setShowFindFailure(false), 2000);
+      setTimeout(() => setShowFindFailure(false), 3000);
     }
   };
 
@@ -142,7 +143,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     if (window.chrome && chrome.storage && chrome.storage.local) {
       chrome.storage.local.remove(["uwshuffle_courses"]);
     }
-    setTimeout(() => setShowClearSuccess(false), 2000);
+    setTimeout(() => setShowClearSuccess(false), 3000);
   };
 
   const handleCourseSelect = (course: Course) => {
@@ -159,7 +160,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
           <FiHelpCircle
             className="uwshuffle-help-icon"
             data-tooltip-id="action-center-tooltip"
-            data-tooltip-content="Upload your schedule, find swap options, and clear your schedule. The central hub for all schedule management actions."
+            data-tooltip-content="Upload your schedule, find swap options, and clear your schedule. This is your main workspace for managing your courses."
           />
         </div>
         <button
@@ -242,7 +243,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
               {selectedCourseToSwap ? (
                 <FiCheckCircle style={{ color: "var(--color-primary)" }} />
               ) : (
-                <FiBook
+                <FiUser
                   style={{ color: "var(--color-primary)", opacity: 0.7 }}
                 />
               )}
@@ -266,7 +267,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
             onToggleDropdown={() => setShowCourseDropdown(!showCourseDropdown)}
             disabled={courses.length === 0}
             tooltipId="select-course-disabled-tooltip"
-            tooltipContent="Upload your schedule first to select a course to swap"
+            tooltipContent="Upload your schedule first to select which course you want to swap"
             isActive={courses.length !== 0 && !selectedCourseToSwap}
           />
           <label className="uwshuffle-input-label">
@@ -302,13 +303,23 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
               className={`schedule-upload-primary ${
                 courses.length !== 0 && selectedCourseToSwap ? "active" : ""
               } ${showFindFailure ? "schedule-upload-primary-failure" : ""}`}
-              disabled={courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps}
-              aria-disabled={courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps}
+              disabled={
+                courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps
+              }
+              aria-disabled={
+                courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps
+              }
               style={{
                 opacity:
-                  courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps ? 0.5 : 1,
+                  courses.length === 0 ||
+                  !selectedCourseToSwap ||
+                  hasScrapedSwaps
+                    ? 0.5
+                    : 1,
                 cursor:
-                  courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps
+                  courses.length === 0 ||
+                  !selectedCourseToSwap ||
+                  hasScrapedSwaps
                     ? "not-allowed"
                     : "pointer",
               }}
@@ -319,11 +330,11 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
               }
               data-tooltip-content={
                 courses.length === 0
-                  ? "Please upload your schedule first to find swap options"
+                  ? "Upload your schedule first to find swap options from Quest"
                   : !selectedCourseToSwap
-                  ? "Please select a course to swap first"
+                  ? "Select a course to swap first"
                   : hasScrapedSwaps
-                  ? "Already scraped - clear your schedule to scrape again"
+                  ? "Already found swap options - clear your schedule to search again"
                   : undefined
               }
             >

@@ -38,7 +38,7 @@ const UploadSuccessCard: React.FC<UploadSuccessCardProps> = ({
         }
         data-tooltip-content={
           courses.length === 0
-            ? "No schedule to clear - please upload your courses first"
+            ? "Upload your schedule first to clear it"
             : undefined
         }
       >

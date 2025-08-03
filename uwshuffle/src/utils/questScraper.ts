@@ -402,24 +402,22 @@ export class QuestScraper {
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
       `;
 
-      // Create logo image element
-      const logoImg = document.createElement("img");
-      logoImg.src = chrome.runtime.getURL("logo.svg");
-      logoImg.alt = "UWShuffle";
-      logoImg.style.cssText = `
-        width: 16px;
-        height: 16px;
-        flex-shrink: 0;
-        object-fit: contain;
-      `;
-
       // Create text span
       const textSpan = document.createElement("span");
       textSpan.textContent = "Preview";
 
-      // Append logo and text to button
-      addButton.appendChild(logoImg);
+      // Create arrow symbol
+      const arrowSpan = document.createElement("span");
+      arrowSpan.textContent = "↗";
+      arrowSpan.style.cssText = `
+        font-size: 16px;
+        flex-shrink: 0;
+        line-height: 1;
+      `;
+
+      // Append text and arrow to button (arrow on the right)
       addButton.appendChild(textSpan);
+      addButton.appendChild(arrowSpan);
 
       addButton.addEventListener("click", (e) => {
         e.preventDefault();

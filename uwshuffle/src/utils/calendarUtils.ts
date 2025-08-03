@@ -84,8 +84,8 @@ export function convertCourseToEvents(
         isPreview ? "preview" : "regular"
       }`,
       title: `${course.course}\n${
-        course.location ? ` • ${course.location}` : ""
-      }${course.instructor ? ` • ${course.instructor}` : ""}`,
+        course.location ? ` — ${course.location}` : ""
+      }${course.instructor ? ` — ${course.instructor}` : ""}`,
       start: startTime,
       end: endTime,
       resource: {

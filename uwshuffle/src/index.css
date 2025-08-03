@@ -1609,6 +1609,19 @@ body {
   color: var(--color-surface);
 }
 
+.schedule-upload-secondary-full.active:hover:not(:disabled) {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-surface) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.schedule-upload-secondary-full.active:hover:not(:disabled)
+  .schedule-upload-icon-button {
+  color: var(--color-surface) !important;
+}
+
 .schedule-upload-icon-button {
   font-size: var(--font-size-sm);
   flex-shrink: 0;
@@ -1753,6 +1766,22 @@ body {
 .schedule-upload-paste-zone.active .schedule-upload-paste-icon,
 .schedule-upload-paste-zone.active .schedule-upload-paste-text {
   color: var(--color-surface);
+}
+
+.schedule-upload-paste-zone.active:hover,
+.schedule-upload-paste-zone.active:focus {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-surface) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.schedule-upload-paste-zone.active:hover .schedule-upload-paste-icon,
+.schedule-upload-paste-zone.active:focus .schedule-upload-paste-icon,
+.schedule-upload-paste-zone.active:hover .schedule-upload-paste-text,
+.schedule-upload-paste-zone.active:focus .schedule-upload-paste-text {
+  color: var(--color-surface) !important;
 }
 
 .schedule-upload-paste-zone:hover,
@@ -2564,7 +2593,7 @@ body {
   font-weight: 600;
   padding: 2px 4px !important;
   white-space: pre-line;
-  text-align: center;
+  text-align: left;
   line-height: 1.2;
 }
 
@@ -2828,6 +2857,19 @@ body {
   color: var(--color-surface);
 }
 
+.schedule-upload-primary.active:hover:not(:disabled) {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-surface) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.schedule-upload-primary.active:hover:not(:disabled)
+  .schedule-upload-icon-button {
+  color: var(--color-surface) !important;
+}
+
 .schedule-upload-primary-failure {
   background-color: var(--color-error) !important;
   border-color: var(--color-error) !important;
@@ -2952,4 +2994,62 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-1px);
+}
+
+/* Name Input Inline Styles */
+.uwshuffle-name-input-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-2);
+  animation: uwshuffle-slide-down 0.2s ease-out;
+}
+
+@keyframes uwshuffle-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.uwshuffle-name-input-container .uwshuffle-input-wrapper {
+  max-width: 250px;
+  width: 100%;
+}
+
+.uwshuffle-send-button {
+  position: absolute;
+  right: var(--space-2);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: none;
+  color: var(--color-primary);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  z-index: 1;
+}
+
+.uwshuffle-send-button:hover:not(:disabled) {
+  color: var(--color-primary-hover);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.uwshuffle-send-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  color: var(--color-text-tertiary);
+}
+
+.uwshuffle-send-icon {
+  width: 16px;
+  height: 16px;
 }
