@@ -6,12 +6,14 @@ import { useState, useEffect } from 'react';
 export const useScraperState = () => {
   const [showFindSuccess, setShowFindSuccess] = useState(false);
   const [showFindFailure, setShowFindFailure] = useState(false);
+  const [isScrapingLoading, setIsScrapingLoading] = useState(false);
   const [hasScrapedSwaps, setHasScrapedSwaps] = useState(false);
 
   // Listen for scraper result messages
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.type === 'uwshuffle_scraper_result') {
+        setIsScrapingLoading(false);
         if (event.data.success === true) {
           setShowFindSuccess(true);
           setTimeout(() => setShowFindSuccess(false), 3000);
@@ -43,12 +45,13 @@ export const useScraperState = () => {
   }, [hasScrapedSwaps]);
 
   const handleRefresh = () => {
-    // Don't allow scraping if already scraped
-    if (hasScrapedSwaps) {
+    // Don't allow scraping if already scraped or loading
+    if (hasScrapedSwaps || isScrapingLoading) {
       return;
     }
 
     try {
+      setIsScrapingLoading(true);
       window.parent.postMessage(
         {
           type: 'uwshuffle_start_scraper',
@@ -59,6 +62,7 @@ export const useScraperState = () => {
       setHasScrapedSwaps(true);
     } catch (error) {
       console.error('UWShuffle: Error sending scraper start message:', error);
+      setIsScrapingLoading(false);
       setShowFindFailure(true);
       setTimeout(() => setShowFindFailure(false), 3000);
     }
@@ -66,11 +70,15 @@ export const useScraperState = () => {
 
   const resetScraperState = () => {
     setHasScrapedSwaps(false);
+    setIsScrapingLoading(false);
+    setShowFindSuccess(false);
+    setShowFindFailure(false);
   };
 
   return {
     showFindSuccess,
     showFindFailure,
+    isScrapingLoading,
     hasScrapedSwaps,
     handleRefresh,
     resetScraperState,

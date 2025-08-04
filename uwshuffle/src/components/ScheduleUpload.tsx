@@ -10,6 +10,7 @@ import {
   FiChevronDown,
   FiChevronUp,
   FiX,
+  FiLoader,
 } from "react-icons/fi";
 import { Tooltip } from "react-tooltip";
 
@@ -49,6 +50,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   const {
     showFindSuccess,
     showFindFailure,
+    isScrapingLoading,
     hasScrapedSwaps,
     handleRefresh,
     resetScraperState,
@@ -233,27 +235,29 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
                   : ""
               }`}
               disabled={
-                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure)
+                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure) || isScrapingLoading
               }
               aria-disabled={
-                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure)
+                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure) || isScrapingLoading
               }
               style={{
                 opacity:
                   courses.length === 0 ||
                   !selectedCourseToSwap ||
-                  (hasScrapedSwaps && !showFindFailure)
+                  (hasScrapedSwaps && !showFindFailure) ||
+                  isScrapingLoading
                     ? 0.5
                     : 1,
                 cursor:
                   courses.length === 0 ||
                   !selectedCourseToSwap ||
-                  (hasScrapedSwaps && !showFindFailure)
+                  (hasScrapedSwaps && !showFindFailure) ||
+                  isScrapingLoading
                     ? "not-allowed"
                     : "pointer",
               }}
               data-tooltip-id={
-                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure)
+                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure) || isScrapingLoading
                   ? "find-swap-disabled-tooltip"
                   : undefined
               }
@@ -262,6 +266,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
                   ? "Upload your schedule first to find swap options from Quest"
                   : !selectedCourseToSwap
                   ? "Select a course to swap first"
+                  : isScrapingLoading
+                  ? "Scraping in progress..."
                   : (hasScrapedSwaps && !showFindFailure)
                   ? "Already found swap options - clear your schedule to search again"
                   : undefined
@@ -271,6 +277,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
                 <FiX className="schedule-upload-icon-button" />
               ) : showFindSuccess ? (
                 <FiCheck className="schedule-upload-icon-button" />
+              ) : isScrapingLoading ? (
+                <FiLoader className="schedule-upload-icon-button uwshuffle-spin" />
               ) : (
                 <FiEye className="schedule-upload-icon-button" />
               )}
@@ -278,6 +286,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
                 ? "Failed - Try Again"
                 : showFindSuccess
                 ? "Found Swap Options!"
+                : isScrapingLoading
+                ? "Scraping..."
                 : "Scrape Available Swaps"}
             </button>
           </div>

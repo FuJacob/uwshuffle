@@ -1973,6 +1973,11 @@ body {
   animation: spin 1s linear infinite;
 }
 
+/* General spinning animation utility class */
+.uwshuffle-spin {
+  animation: spin 1s linear infinite;
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
