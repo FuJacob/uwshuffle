@@ -656,6 +656,8 @@ export class QuestScraper {
       this.startScraping();
     } else {
       console.log("uwshuffle: Not on course search page, no action taken");
+      // Send failure message when not on course page
+      this.notifyScraperResult(false, "Please navigate to Quest course search results first");
     }
   }
 
@@ -673,8 +675,29 @@ export class QuestScraper {
     if (elementsFound > 0) {
       console.log("uwshuffle: Adding interaction buttons");
       this.addInteractionButtons();
+      // Send success message
+      this.notifyScraperResult(true, `Found ${elementsFound} course options`);
     } else {
       console.log("uwshuffle: No course elements found, not adding buttons");
+      // Send failure message
+      this.notifyScraperResult(false, "No course options found on this page");
+    }
+  }
+
+  private notifyScraperResult(success: boolean, message: string) {
+    // Send result message to the sidebar iframe
+    const sidebar = document.getElementById(
+      "uwshuffle-sidebar"
+    ) as HTMLIFrameElement;
+    if (sidebar && sidebar.contentWindow) {
+      sidebar.contentWindow.postMessage(
+        {
+          type: "uwshuffle_scraper_result",
+          success,
+          message,
+        },
+        "*"
+      );
     }
   }
 }

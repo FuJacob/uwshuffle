@@ -44,12 +44,23 @@ const CourseDropdown: React.FC<CourseDropdownProps> = ({
         data-tooltip-content={disabled ? tooltipContent : undefined}
       >
         <FiChevronDown className="schedule-upload-icon-button" />
-        {selectedCourse && selectedCourse !== "None"
+        {selectedCourse === "None"
+          ? "None (show all courses)"
+          : selectedCourse
           ? selectedCourse.course
           : "Now, pick the course you want to swap"}
       </button>
       {showDropdown && courses.length > 0 && (
         <div className="schedule-upload-dropdown">
+          <button
+            key="none-option"
+            onClick={() => onCourseSelect("None")}
+            className={`schedule-upload-dropdown-item ${
+              selectedCourse === "None" ? "selected" : ""
+            }`}
+          >
+            None (show all courses)
+          </button>
           {uniqueCourses.map((course) => (
             <button
               key={course.course}

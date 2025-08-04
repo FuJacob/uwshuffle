@@ -2307,6 +2307,19 @@ body {
   height: 16px;
 }
 
+.uwshuffle-plus-button-error {
+  background-color: var(--color-error) !important;
+  border-color: var(--color-error) !important;
+  color: var(--color-surface) !important;
+}
+
+.uwshuffle-plus-button-error:hover,
+.uwshuffle-plus-button-error:focus {
+  background-color: var(--color-error-hover) !important;
+  border-color: var(--color-error-hover) !important;
+  color: var(--color-surface) !important;
+}
+
 /* Share button styles - matching primary button design */
 .uwshuffle-share-button {
   display: flex;
@@ -2413,6 +2426,20 @@ body {
   border-color: var(--color-border);
   transform: none;
   outline: none;
+}
+
+.uwshuffle-export-button-success {
+  background-color: var(--color-success) !important;
+  border-color: var(--color-success) !important;
+  color: var(--color-surface) !important;
+}
+
+.uwshuffle-export-button-success:hover,
+.uwshuffle-export-button-success:focus {
+  background-color: var(--color-success-hover) !important;
+  border-color: var(--color-success-hover) !important;
+  color: var(--color-surface) !important;
+  transform: translateY(-1px);
 }
 
 /* Collapse button styles */
@@ -2898,6 +2925,24 @@ body {
 }
 
 .schedule-upload-primary-failure .schedule-upload-icon-button {
+  color: var(--color-surface) !important;
+}
+
+.schedule-upload-primary-success {
+  background-color: var(--color-success) !important;
+  border-color: var(--color-success) !important;
+  color: var(--color-surface) !important;
+}
+
+.schedule-upload-primary-success:hover,
+.schedule-upload-primary-success:focus {
+  background-color: var(--color-success-hover) !important;
+  border-color: var(--color-success-hover) !important;
+  color: var(--color-surface) !important;
+  transform: translateY(-1px);
+}
+
+.schedule-upload-primary-success .schedule-upload-icon-button {
   color: var(--color-surface) !important;
 }
 

@@ -64,9 +64,14 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.type === "uwshuffle_scraper_result") {
-        if (event.data.success === false) {
+        if (event.data.success === true) {
+          setShowFindSuccess(true);
+          setTimeout(() => setShowFindSuccess(false), 3000);
+        } else if (event.data.success === false) {
           setShowFindFailure(true);
-          setTimeout(() => setShowFindFailure(false), 2000);
+          setTimeout(() => setShowFindFailure(false), 3000);
+          // Reset scraped state on failure so user can try again
+          setHasScrapedSwaps(false);
         }
       }
     };
@@ -141,9 +146,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
         },
         "*"
       );
-      setShowFindSuccess(true);
+      // Don't show success immediately - wait for the scraper result
       setHasScrapedSwaps(true); // Mark as scraped after successful trigger
-      setTimeout(() => setShowFindSuccess(false), 3000);
     } catch (error) {
       console.error("UWShuffle: Error sending scraper start message:", error);
       setShowFindFailure(true);
@@ -320,29 +324,35 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
               onClick={handleRefresh}
               className={`schedule-upload-primary ${
                 courses.length !== 0 && selectedCourseToSwap ? "active" : ""
-              } ${showFindFailure ? "schedule-upload-primary-failure" : ""}`}
+              } ${
+                showFindFailure 
+                  ? "schedule-upload-primary-failure" 
+                  : showFindSuccess 
+                  ? "schedule-upload-primary-success" 
+                  : ""
+              }`}
               disabled={
-                courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps
+                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure)
               }
               aria-disabled={
-                courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps
+                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure)
               }
               style={{
                 opacity:
                   courses.length === 0 ||
                   !selectedCourseToSwap ||
-                  hasScrapedSwaps
+                  (hasScrapedSwaps && !showFindFailure)
                     ? 0.5
                     : 1,
                 cursor:
                   courses.length === 0 ||
                   !selectedCourseToSwap ||
-                  hasScrapedSwaps
+                  (hasScrapedSwaps && !showFindFailure)
                     ? "not-allowed"
                     : "pointer",
               }}
               data-tooltip-id={
-                courses.length === 0 || !selectedCourseToSwap || hasScrapedSwaps
+                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure)
                   ? "find-swap-disabled-tooltip"
                   : undefined
               }
@@ -351,7 +361,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
                   ? "Upload your schedule first to find swap options from Quest"
                   : !selectedCourseToSwap
                   ? "Select a course to swap first"
-                  : hasScrapedSwaps
+                  : (hasScrapedSwaps && !showFindFailure)
                   ? "Already found swap options - clear your schedule to search again"
                   : undefined
               }
@@ -363,7 +373,11 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
               ) : (
                 <FiEye className="schedule-upload-icon-button" />
               )}
-              Scrape Available Swaps
+              {showFindFailure
+                ? "Failed - Try Again"
+                : showFindSuccess
+                ? "Found Swap Options!"
+                : "Scrape Available Swaps"}
             </button>
           </div>
         </>

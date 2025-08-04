@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  FiDownload,
+  FiDownload,  
   FiRefreshCcw,
   FiLink,
   FiHelpCircle,
@@ -9,6 +9,7 @@ import {
   FiUserPlus,
   FiChevronDown,
   FiChevronUp,
+  FiX,
 } from "react-icons/fi";
 import type { Course, FriendSchedule } from "../types";
 import { readQuickLink } from "../utils/readQuickLink";
@@ -42,6 +43,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
   const [showShareSuccess, setShowShareSuccess] = useState<boolean>(false);
   const [showNameInput, setShowNameInput] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
+  const [showAddFriendError, setShowAddFriendError] = useState<boolean>(false);
 
   const handleAddFriendSchedule = async (quickLink: string) => {
     if (!quickLink.trim()) {
@@ -65,11 +67,15 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
         console.error(
           "Failed to load friend schedule - invalid link or schedule not found"
         );
-        alert("Failed to load schedule. Please check the link and try again.");
+        setShowAddFriendError(true);
+        setAddFriendLink("");
+        setTimeout(() => setShowAddFriendError(false), 3000);
       }
     } catch (error) {
       console.error("Error adding friend schedule:", error);
-      alert("An error occurred while loading the schedule. Please try again.");
+      setShowAddFriendError(true);
+      setAddFriendLink("");
+      setTimeout(() => setShowAddFriendError(false), 3000);
     }
   };
 
@@ -169,9 +175,15 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                   />
                   <button
                     onClick={() => handleAddFriendSchedule(addFriendLink)}
-                    className="uwshuffle-plus-button"
+                    className={`uwshuffle-plus-button ${
+                      showAddFriendError ? "uwshuffle-plus-button-error" : ""
+                    }`}
                   >
-                    <FiUserPlus className="uwshuffle-plus-icon" />
+                    {showAddFriendError ? (
+                      <FiX className="uwshuffle-plus-icon" />
+                    ) : (
+                      <FiUserPlus className="uwshuffle-plus-icon" />
+                    )}
                   </button>
                 </div>
                 <button
