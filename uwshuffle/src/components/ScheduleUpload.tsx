@@ -47,6 +47,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   const [hasScrapedSwaps, setHasScrapedSwaps] = useState(false);
   const [isActionCenterCollapsed, setIsActionCenterCollapsed] = useState(false);
   const [showCourseDropdown, setShowCourseDropdown] = useState(false);
+  const [showPasteError, setShowPasteError] = useState(false);
 
   useEffect(() => {
     if (window.chrome && chrome.storage && chrome.storage.local) {
@@ -105,6 +106,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
       try {
         const parsedCourses = parseScheduleText(textToProcess);
         if (parsedCourses.length === 0) {
+          setShowPasteError(true);
+          setTimeout(() => setShowPasteError(false), 3000);
           setScheduleUploadError("Invalid schedule format");
           return;
         }
@@ -116,6 +119,8 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
         setIsPasted(true);
       } catch (error) {
         console.error("Error parsing schedule:", error);
+        setShowPasteError(true);
+        setTimeout(() => setShowPasteError(false), 3000);
       } finally {
         setIsProcessing(false);
       }
@@ -251,7 +256,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
           ) : isProcessing ? (
             <ProcessingCard />
           ) : (
-            <PasteZone onPaste={handlePaste} isActive={courses.length === 0} />
+            <PasteZone onPaste={handlePaste} isActive={courses.length === 0} isError={showPasteError} />
           )}
 
           <label className="uwshuffle-input-label">

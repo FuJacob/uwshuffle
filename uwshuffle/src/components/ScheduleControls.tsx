@@ -167,7 +167,9 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                   <input
                     type="text"
                     placeholder="Paste their quick link here..."
-                    className="uwshuffle-input-field"
+                    className={`uwshuffle-input-field ${
+                      showAddFriendError ? "uwshuffle-input-field-error" : ""
+                    }`}
                     value={addFriendLink}
                     onChange={(e) => {
                       setAddFriendLink(e.target.value);

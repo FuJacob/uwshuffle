@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Lexend:wght@100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap');
 
 /* ===== DESIGN SYSTEM VARIABLES ===== */
 :root {
@@ -1173,7 +1173,7 @@ body {
 
 .uwshuffle-no-preview-text {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-primary);
   text-align: center;
   font-weight: 500;
 }
@@ -1806,6 +1806,29 @@ body {
   text-align: center;
 }
 
+.schedule-upload-paste-zone.error {
+  background-color: var(--color-error-light) !important;
+  border: 2px dashed var(--color-error) !important;
+  color: var(--color-error) !important;
+}
+
+.schedule-upload-paste-zone.error .schedule-upload-paste-icon,
+.schedule-upload-paste-zone.error .schedule-upload-paste-text {
+  color: var(--color-error) !important;
+}
+
+.schedule-upload-paste-zone.error:hover,
+.schedule-upload-paste-zone.error:focus {
+  background-color: var(--color-error-light) !important;
+  border: 2px dashed var(--color-error-hover) !important;
+  color: var(--color-error-hover) !important;
+}
+
+.schedule-upload-paste-zone.error:hover .schedule-upload-paste-icon,
+.schedule-upload-paste-zone.error:hover .schedule-upload-paste-text {
+  color: var(--color-error-hover) !important;
+}
+
 .schedule-upload-paste-hint {
   font-size: var(--font-size-sm);
   color: var(--color-text-tertiary);
@@ -2219,6 +2242,18 @@ body {
   box-shadow: var(--shadow-md);
 }
 
+.uwshuffle-input-field-error {
+  border-color: var(--color-error) !important;
+  background-color: var(--color-error-light) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.uwshuffle-input-field-error:focus {
+  border-color: var(--color-error-hover) !important;
+  background-color: var(--color-error-light) !important;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.1) !important;
+}
+
 /* Checkbox styles */
 .uwshuffle-checkbox-label {
   display: flex;
@@ -2300,6 +2335,14 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-50%) translateY(-1px);
+  outline: none;
+}
+
+.uwshuffle-plus-button:focus:not(:focus-visible) {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text-secondary);
+  transform: translateY(-50%);
 }
 
 .uwshuffle-plus-icon {
@@ -2308,16 +2351,18 @@ body {
 }
 
 .uwshuffle-plus-button-error {
-  background-color: var(--color-error) !important;
-  border-color: var(--color-error) !important;
-  color: var(--color-surface) !important;
+  color: var(--color-error) !important;
 }
 
 .uwshuffle-plus-button-error:hover,
 .uwshuffle-plus-button-error:focus {
-  background-color: var(--color-error-hover) !important;
-  border-color: var(--color-error-hover) !important;
-  color: var(--color-surface) !important;
+  color: var(--color-error-hover) !important;
+  outline: none !important;
+}
+
+.uwshuffle-plus-button-error:focus:not(:focus-visible) {
+  color: var(--color-error) !important;
+  transform: translateY(-50%) !important;
 }
 
 /* Share button styles - matching primary button design */
