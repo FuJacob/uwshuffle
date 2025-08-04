@@ -1,6 +1,6 @@
 import moment from "moment";
-import type { Course, ParsedScheduleEvent } from "../types";
-import { pastelColors } from "../constants/courseColors";
+import type { Course, ParsedScheduleEvent } from "../../types";
+import { pastelColors } from "../../constants/courseColors";
 
 /**
  * Generates a consistent color for a given name using pastel colors
@@ -50,7 +50,7 @@ export function convertCourseToEvents(
   // Get current week's Monday
   const startOfWeek = moment().startOf("week").add(1, "day"); // Monday
 
-  course.days.forEach((day) => {
+  course.days.forEach((day: string) => {
     const dayMap: { [key: string]: number } = {
       Mo: 0,
       Tu: 1,

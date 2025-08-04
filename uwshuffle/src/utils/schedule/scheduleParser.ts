@@ -1,5 +1,5 @@
-import type { Course } from "../types";
-import { courseCodes } from "../constants/courseCodes";
+import type { Course } from "../../types";
+import { courseCodes } from "../../constants/courseCodes";
 
 export const parseScheduleText = (text: string): Course[] => {
   const lines = text

@@ -1,5 +1,5 @@
 import { decompressFromEncodedURIComponent } from "lz-string";
-import { supabase } from "../clients/supabase";
+import { supabase } from "../../clients/supabase";
 
 export const readQuickLink = async (url: string) => {
   let id: string | null = null;

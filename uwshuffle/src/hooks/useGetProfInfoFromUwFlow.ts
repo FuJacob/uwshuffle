@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { fetchProfInfoFromUwFlow } from "../utils/fetchProfInfoFromUwFlow";
+import { fetchProfInfoFromUwFlow } from "../utils/external";
 import type { Course, ProfInfo } from "../types";
 
 export const useGetProfInfoFromUwFlow = (

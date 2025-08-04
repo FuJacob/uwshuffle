@@ -1,7 +1,7 @@
 import { compressToEncodedURIComponent } from "lz-string";
-import type { Course } from "../types";
+import type { Course } from "../../types";
 import { nanoid } from "nanoid";
-import { supabase } from "../clients/supabase";
+import { supabase } from "../../clients/supabase";
 
 const BASE_URL = "https://uwshuffle.com";
 

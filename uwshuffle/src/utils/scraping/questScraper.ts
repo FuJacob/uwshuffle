@@ -1,4 +1,4 @@
-import type { Course } from "../types";
+import type { Course } from "../../types";
 
 export class QuestScraper {
   private static instance: QuestScraper;

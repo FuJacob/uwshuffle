@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   FiCheck,
   FiHelpCircle,
@@ -11,15 +11,20 @@ import {
   FiChevronUp,
   FiX,
 } from "react-icons/fi";
-import type { Course } from "../types";
 import { Tooltip } from "react-tooltip";
-import "./ScheduleUpload.css";
 
-import UploadSuccessCard from "./UploadSuccessCard";
-import ProcessingCard from "./ProcessingCard";
-import PasteZone from "./PasteZone";
+// Components
 import CourseDropdown from "./CourseDropdown";
-import { parseScheduleText } from "../utils/scheduleParser";
+import PasteZone from "./PasteZone";
+import ProcessingCard from "./ProcessingCard";
+import UploadSuccessCard from "./UploadSuccessCard";
+
+// Hooks
+import { useScheduleUpload } from "../hooks/useScheduleUpload";
+import { useScraperState } from "../hooks/useScraperState";
+
+// Types
+import type { Course } from "../types";
 
 interface ScheduleUploadProps {
   onCoursesUploaded: (courses: Course[]) => void;
@@ -36,139 +41,33 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
   onCourseSelectedToSwap,
   selectedCourseToSwap,
 }) => {
-  const [scheduleText, setScheduleText] = useState("");
-  const [isPasted, setIsPasted] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [showFindSuccess, setShowFindSuccess] = useState(false);
-  const [showFindFailure, setShowFindFailure] = useState(false);
-  const [showClearSuccess, setShowClearSuccess] = useState(false);
-  const [hasScrapedSwaps, setHasScrapedSwaps] = useState(false);
+  // UI state
   const [isActionCenterCollapsed, setIsActionCenterCollapsed] = useState(false);
   const [showCourseDropdown, setShowCourseDropdown] = useState(false);
-  const [showPasteError, setShowPasteError] = useState(false);
 
-  useEffect(() => {
-    if (window.chrome && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.get(["uwshuffle_courses"], (result) => {
-        if (result.uwshuffle_courses && result.uwshuffle_courses.length > 0) {
-          onCoursesUploaded(result.uwshuffle_courses);
-          setIsPasted(true); // Set isPasted to true when loading from storage
-        }
-      });
-    }
-    // eslint-disable-next-line
-  }, []);
+  // Custom hooks
+  const {
+    showFindSuccess,
+    showFindFailure,
+    hasScrapedSwaps,
+    handleRefresh,
+    resetScraperState,
+  } = useScraperState();
 
-  // Listen for scraper result messages
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (event.data?.type === "uwshuffle_scraper_result") {
-        if (event.data.success === true) {
-          setShowFindSuccess(true);
-          setTimeout(() => setShowFindSuccess(false), 3000);
-        } else if (event.data.success === false) {
-          setShowFindFailure(true);
-          setTimeout(() => setShowFindFailure(false), 3000);
-          // Reset scraped state on failure so user can try again
-          setHasScrapedSwaps(false);
-        }
-      }
-    };
+  const {
+    isPasted,
+    isProcessing,
+    showClearSuccess,
+    showPasteError,
+    handlePaste,
+    handleReset,
+  } = useScheduleUpload({
+    onCoursesUploaded,
+    onClearSchedule,
+    resetScraperState,
+  });
 
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, []);
 
-  // Check if preview buttons still exist on the page to reset scrape state
-  useEffect(() => {
-    const checkPreviewButtons = () => {
-      // Check if there are any UWShuffle preview buttons on the page
-      const previewButtons = document.querySelectorAll('.uwshuffle-add-btn');
-      if (hasScrapedSwaps && previewButtons.length === 0) {
-        // If we've scraped swaps but no preview buttons exist, reset the state
-        setHasScrapedSwaps(false);
-      }
-    };
-
-    // Check immediately and set up periodic checks
-    checkPreviewButtons();
-    const intervalId = setInterval(checkPreviewButtons, 2000);
-
-    return () => clearInterval(intervalId);
-  }, [hasScrapedSwaps]);
-
-  const handleUpload = (text?: string) => {
-    const textToProcess = text || scheduleText;
-    if (textToProcess.trim()) {
-      setIsProcessing(true);
-      try {
-        const parsedCourses = parseScheduleText(textToProcess);
-        if (parsedCourses.length === 0) {
-          setShowPasteError(true);
-          setTimeout(() => setShowPasteError(false), 3000);
-          return;
-        }
-        onCoursesUploaded(parsedCourses);
-        if (window.chrome && chrome.storage && chrome.storage.local) {
-          chrome.storage.local.set({ uwshuffle_courses: parsedCourses });
-        }
-        setScheduleText("");
-        setIsPasted(true);
-      } catch (error) {
-        console.error("Error parsing schedule:", error);
-        setShowPasteError(true);
-        setTimeout(() => setShowPasteError(false), 3000);
-      } finally {
-        setIsProcessing(false);
-      }
-    }
-  };
-
-  const handlePaste = (e: React.ClipboardEvent) => {
-    e.preventDefault();
-    const pastedText = e.clipboardData.getData("text");
-    if (pastedText.trim()) {
-      setScheduleText(pastedText);
-      handleUpload(pastedText);
-    }
-  };
-
-  const handleRefresh = () => {
-    // Don't allow scraping if already scraped
-    if (hasScrapedSwaps) {
-      return;
-    }
-
-    // Start Quest scraper after schedule upload via postMessage to parent window
-    try {
-      window.parent.postMessage(
-        {
-          type: "uwshuffle_start_scraper",
-          payload: { trigger: "schedule_upload" },
-        },
-        "*"
-      );
-      // Don't show success immediately - wait for the scraper result
-      setHasScrapedSwaps(true); // Mark as scraped after successful trigger
-    } catch (error) {
-      console.error("UWShuffle: Error sending scraper start message:", error);
-      setShowFindFailure(true);
-      setTimeout(() => setShowFindFailure(false), 3000);
-    }
-  };
-
-  const handleReset = () => {
-    setIsPasted(false);
-    setScheduleText("");
-    setIsProcessing(false);
-    setHasScrapedSwaps(false); // Reset scraped state when clearing schedule
-    onClearSchedule();
-    setShowClearSuccess(true);
-    if (window.chrome && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.remove(["uwshuffle_courses"]);
-    }
-    setTimeout(() => setShowClearSuccess(false), 3000);
-  };
 
   const handleCourseSelect = (course: Course | "None") => {
     onCourseSelectedToSwap(course);

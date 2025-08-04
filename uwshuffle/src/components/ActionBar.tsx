@@ -1,7 +1,6 @@
 import React from "react";
 import {
   FiStar,
-  // FiHeart,
   FiHelpCircle,
   FiMoon,
   FiSun,
@@ -33,9 +32,6 @@ const ActionBar: React.FC<ActionBarProps> = ({
             <img src="/logo.svg" alt="UWShuffle" className="uwshuffle-logo" />
             <div className="uwshuffle-logo-content">
               <div>UWShuffle</div>
-              {/* <div className="uwshuffle-action-bar-author-text">
-                By @fujacob
-              </div> */}
             </div>
           </button>
         </div>
@@ -45,10 +41,6 @@ const ActionBar: React.FC<ActionBarProps> = ({
           <FiStar className="uwshuffle-icon-button" />
           Rate
         </button>
-        {/* <button onClick={onKofiClick} className="uwshuffle-coffee-button">
-          <FiHeart className="uwshuffle-icon-button" />
-          Support
-        </button> */}
         <button onClick={onHelpClick} className="uwshuffle-help-button">
           <FiHelpCircle className="uwshuffle-icon-button" />
         </button>

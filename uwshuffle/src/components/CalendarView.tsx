@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import type { View } from "react-big-calendar";
 import moment from "moment";
 import type { Course, ParsedScheduleEvent, FriendSchedule } from "../types";
-import { convertCourseToEvents, getEventStyle } from "../utils/calendarUtils";
+import { convertCourseToEvents, getEventStyle } from "../utils/schedule";
 
 const localizer = momentLocalizer(moment);
 

@@ -13,27 +13,36 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { arrayMove } from "@dnd-kit/sortable";
-import ScheduleUpload from "./ScheduleUpload";
+import Joyride from "react-joyride";
 
+// Components
+import ActionBar from "./ActionBar";
 import CalendarSection from "./CalendarSection";
 import PreviewInsights from "./PreviewInsights";
-import ActionBar from "./ActionBar";
+import ScheduleControls from "./ScheduleControls";
+import ScheduleUpload from "./ScheduleUpload";
+
+// Hooks
+import { useGetProfInfoFromUwFlow } from "../hooks/useGetProfInfoFromUwFlow";
+import { useSidebarState } from "../hooks/useSidebarState";
+import { useOnboardingTour } from "../hooks/useOnboardingTour";
+
+// Types
 import type { Course, FriendSchedule } from "../types";
 
-import Joyride, { type CallBackProps } from "react-joyride";
-
+// Utils
 import {
   exportCurrentSchedule,
   exportScheduleWithSwap,
-} from "../utils/icsExport";
-import { useGetProfInfoFromUwFlow } from "../hooks/useGetProfInfoFromUwFlow";
-import ScheduleControls from "./ScheduleControls";
+} from "../utils/schedule";
+
+// Constants
 import { steps } from "../constants/steps";
 
 const Sidebar: React.FC = () => {
+  // Core state
   const [courses, setCourses] = useState<Course[]>([]);
   const [previewCourse, setPreviewCourse] = useState<Course | null>(null);
-  const [isMinimized, setIsMinimized] = useState<boolean>(true);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [termDatesAvailable, setTermDatesAvailable] = useState<boolean>(false);
   const [termDates, setTermDates] = useState<{
@@ -43,11 +52,14 @@ const Sidebar: React.FC = () => {
   const [selectedCourseToSwap, setSelectedCourseToSwap] = useState<
     Course | null | "None"
   >(null);
-  const profInfo = useGetProfInfoFromUwFlow(previewCourse);
   const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
-  const [run, setRun] = useState(false);
 
-  // Add ref to track if component is mounted
+  // Custom hooks
+  const { isMinimized, handleCloseSidebar, handleExpandSidebar } = useSidebarState();
+  const { run, handleJoyrideCallback, startTour } = useOnboardingTour(isMinimized);
+  const profInfo = useGetProfInfoFromUwFlow(previewCourse);
+
+  // Ref to track if component is mounted
   const isMountedRef = useRef(true);
 
   // Cleanup on unmount
@@ -57,57 +69,7 @@ const Sidebar: React.FC = () => {
     };
   }, []);
 
-  // Check Chrome storage for minimized state on component mount
-  useEffect(() => {
-    if (!window.chrome || !chrome.storage || !chrome.storage.local) {
-      return;
-    }
-    chrome.storage.local.get(["uw_shuffle_minimized"], (result) => {
-      if (isMountedRef.current && result.uw_shuffle_minimized !== undefined) {
-        setIsMinimized(result.uw_shuffle_minimized);
-      }
-    });
-  }, []);
 
-  // Start tour when sidebar is first expanded
-  useEffect(() => {
-    if (!isMinimized) {
-      // Start tour after a short delay to ensure components are rendered
-      if (window.chrome && chrome.storage && chrome.storage.local) {
-        chrome.storage.local.get(
-          ["uwshuffle_onboarding_completed"],
-          (result) => {
-            if (
-              isMountedRef.current &&
-              result.uwshuffle_onboarding_completed !== true
-            ) {
-              startTour();
-            }
-          }
-        );
-      }
-    }
-  }, [isMinimized]);
-
-  useEffect(() => {
-    if (!window.chrome || !chrome.storage || !chrome.storage.local) {
-      return;
-    }
-    chrome.storage.local
-      .get("uwshuffle_onboarding_completed")
-      .then((result) => {
-        if (isMountedRef.current) {
-          if (result.uwshuffle_onboarding_completed == true) {
-            setRun(false);
-          } else {
-            setRun(true);
-          }
-        }
-      });
-  }, []);
-
-
-  // No longer need to monitor localStorage - term dates come via postMessage
 
   // Listen for messages from content script
   useEffect(() => {
@@ -157,37 +119,6 @@ const Sidebar: React.FC = () => {
     );
   };
 
-  const handleCloseSidebar = () => {
-    setIsMinimized(true);
-    // Save to Chrome storage
-    if (window.chrome && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.set({ uw_shuffle_minimized: true });
-    }
-    // Notify parent window about sidebar state change
-    window.parent.postMessage(
-      {
-        type: "uwshuffle_sidebar_state",
-        isMinimized: true,
-      },
-      "*"
-    );
-  };
-
-  const handleExpandSidebar = () => {
-    setIsMinimized(false);
-    // Save to Chrome storage
-    if (window.chrome && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.set({ uw_shuffle_minimized: false });
-    }
-    // Notify parent window about sidebar state change
-    window.parent.postMessage(
-      {
-        type: "uwshuffle_sidebar_state",
-        isMinimized: false,
-      },
-      "*"
-    );
-  };
 
   const handleToggleDarkMode = () => {
     const newDarkMode = !isDarkMode;
@@ -224,20 +155,25 @@ const Sidebar: React.FC = () => {
     return { success: false, error: "Preview course or term dates not available" };
   };
 
-  // addPreviewCourse is handled via message listener
+  // Sidebar section configuration
   const defaultSections = [
     "controls",
     "preview", 
     "schedule-controls",
     "calendar",
   ];
-  // Drag-and-drop sidebar section order state & logic
+  
+  // Drag-and-drop sidebar section order state
   const [sections, setSections] = useState(() => {
     const saved = localStorage.getItem("uwshuffle-sidebar-order");
     if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed.length === defaultSections.length) {
-        return parsed;
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length === defaultSections.length) {
+          return parsed;
+        }
+      } catch (error) {
+        console.warn("Failed to parse saved sidebar order:", error);
       }
     }
     return defaultSections;
@@ -314,19 +250,6 @@ const Sidebar: React.FC = () => {
     }
   }
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status, action } = data;
-    if (status === "finished" || action === "skip") {
-      setRun(false);
-      if (window.chrome && chrome.storage && chrome.storage.local) {
-        chrome.storage.local.set({ uwshuffle_onboarding_completed: true });
-      }
-    }
-  };
-
-  const startTour = () => {
-    setRun(true);
-  };
 
   return (
     <>

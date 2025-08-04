@@ -1,3 +1,18 @@
+/**
+ * UWShuffle Stylesheet
+ * 
+ * File Organization:
+ * 1. Design System Variables (CSS Custom Properties)
+ * 2. Base Styles & Resets
+ * 3. Sidebar Layout & Structure
+ * 4. Component Styles (Action Bar, Form Elements, etc.)
+ * 5. Calendar Styling (React Big Calendar overrides)
+ * 6. Responsive Media Queries
+ * 7. Third-party Library Overrides (Joyride)
+ * 
+ * Note: This file is intentionally consolidated for performance in Chrome extension context
+ */
+
 @import url("https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap");
 
 /* ===== DESIGN SYSTEM VARIABLES ===== */
@@ -53,18 +68,12 @@
   --font-family: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI",
     system-ui, sans-serif;
 
-  --font-size-xs: 0.8125rem; /* was 0.75rem */
-  --font-size-sm: 0.9375rem; /* was 0.875rem */
-  --font-size-base: 1.0625rem; /* was 1rem */
-  --font-size-lg: 1.25rem; /* was 1.125rem */
-  --font-size-xl: 1.375rem; /* was 1.25rem */
-  --font-size-2xl: 1.625rem; /* was 1.5rem */
-  /* --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem; */
+  --font-size-xs: 0.8125rem;
+  --font-size-sm: 0.9375rem;
+  --font-size-base: 1.0625rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.375rem;
+  --font-size-2xl: 1.625rem;
 
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);

@@ -1,4 +1,4 @@
-import type { Course } from "../types";
+import type { Course } from "../../types";
 import moment from "moment";
 
 // University of Waterloo academic calendar dates - passed directly via postMessage
@@ -20,7 +20,7 @@ function coursesToICSEvents(courses: Course[], termStartDate: string, termEndDat
   const events: ICSEvent[] = [];
 
   courses.forEach((course, courseIndex) => {
-    course.days.forEach((day, dayIndex) => {
+    course.days.forEach((day: string, dayIndex: number) => {
       // Map day names to day numbers (0 = Sunday, 1 = Monday, etc.)
       const dayMap: { [key: string]: number } = {
         Sun: 0,

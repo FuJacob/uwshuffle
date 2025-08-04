@@ -12,9 +12,8 @@ import {
   FiX,
 } from "react-icons/fi";
 import type { Course, FriendSchedule } from "../types";
-import { readQuickLink } from "../utils/readQuickLink";
-import { generateQuickLink } from "../utils/generateQuickLink";
-import { getColorFromName } from "../utils/calendarUtils";
+import { readQuickLink, generateQuickLink } from "../utils/external";
+import { getColorFromName } from "../utils/schedule";
 import { Tooltip } from "react-tooltip";
 
 interface ScheduleControlsProps {

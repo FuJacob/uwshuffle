@@ -1,7 +1,7 @@
 // Content script that runs on quest.pecs.uwaterloo.ca
 // Detects the site and injects the sidebar iframe
 
-import QuestScraper from "./utils/questScraper";
+import { QuestScraper } from "./utils/scraping";
 
 const SIDEBAR_ID = "uwshuffle-sidebar";
 const SIDEBAR_WIDTH = "25vw";

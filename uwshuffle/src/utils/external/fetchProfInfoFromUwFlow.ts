@@ -1,4 +1,4 @@
-import type { ProfInfo } from "../types";
+import type { ProfInfo } from "../../types";
 const UWFLOW_GRAPHQL_URL = "https://uwflow.com/graphql";
 export const fetchProfInfoFromUwFlow = async (
   profName: string

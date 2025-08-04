@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import {
   FiChevronDown,
   FiChevronUp,
@@ -9,9 +7,14 @@ import {
   FiEyeOff,
   FiHelpCircle,
 } from "react-icons/fi";
-import type { Course, FriendSchedule } from "../types";
-import CalendarView from "./CalendarView";
 import { Tooltip } from "react-tooltip";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+
+// Components
+import CalendarView from "./CalendarView";
+
+// Types
+import type { Course, FriendSchedule } from "../types";
 
 interface CalendarSectionProps {
   courses: Course[];
@@ -99,7 +102,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                     ))
                   ) : (
                     <span className="uwshuffle-friends-placeholder">
-                      You can see your friends' schedules here
+                      Enter your friends' quick links in Schedule Controls to see their schedules here
                     </span>
                   )}
                 </div>

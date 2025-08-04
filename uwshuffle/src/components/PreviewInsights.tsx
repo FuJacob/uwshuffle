@@ -11,20 +11,10 @@ import {
   FiChevronDown,
   FiChevronUp,
 } from "react-icons/fi";
-import type { Course } from "../types";
-
 import { Tooltip } from "react-tooltip";
 
-interface ProfInfo {
-  name: string;
-  rating: {
-    liked: number;
-    engaging: number;
-    clear: number;
-    comment_count: number;
-    filled_count: number;
-  };
-}
+// Types
+import type { Course, ProfInfo } from "../types";
 
 interface PreviewInsightsProps {
   previewCourse: Course | null;
