@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap");
 
 /* ===== DESIGN SYSTEM VARIABLES ===== */
 :root {
@@ -52,12 +52,19 @@
   /* Typography */
   --font-family: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI",
     system-ui, sans-serif;
-  --font-size-xs: 0.75rem;
+
+  --font-size-xs: 0.8125rem; /* was 0.75rem */
+  --font-size-sm: 0.9375rem; /* was 0.875rem */
+  --font-size-base: 1.0625rem; /* was 1rem */
+  --font-size-lg: 1.25rem; /* was 1.125rem */
+  --font-size-xl: 1.375rem; /* was 1.25rem */
+  --font-size-2xl: 1.625rem; /* was 1.5rem */
+  /* --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem;
+  --font-size-2xl: 1.5rem; */
 
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
