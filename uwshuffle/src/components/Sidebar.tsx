@@ -226,9 +226,8 @@ const Sidebar: React.FC = () => {
 
   // addPreviewCourse is handled via message listener
   const defaultSections = [
-    "action-bar",
     "controls",
-    "preview",
+    "preview", 
     "schedule-controls",
     "calendar",
   ];
@@ -452,6 +451,12 @@ const Sidebar: React.FC = () => {
           <>
             {/* Main Content Area */}
             <div className="uwshuffle-main-content">
+              {/* Action Bar - Always at top, not draggable */}
+              <div className="uwshuffle-section-container" data-animation-delay="0">
+                {renderSection("action-bar")}
+              </div>
+              
+              {/* Draggable Sections */}
               <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
@@ -468,7 +473,7 @@ const Sidebar: React.FC = () => {
                   strategy={verticalListSortingStrategy}
                 >
                   {sections.map((id: string, index: number) => (
-                    <SortableSection key={id} id={id} animationDelay={index * 0.1}>
+                    <SortableSection key={id} id={id} animationDelay={(index + 1) * 0.1}>
                       {renderSection(id)}
                     </SortableSection>
                   ))}
