@@ -108,7 +108,6 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
         if (parsedCourses.length === 0) {
           setShowPasteError(true);
           setTimeout(() => setShowPasteError(false), 3000);
-          setScheduleUploadError("Invalid schedule format");
           return;
         }
         onCoursesUploaded(parsedCourses);

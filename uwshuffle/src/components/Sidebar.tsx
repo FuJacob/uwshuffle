@@ -111,9 +111,7 @@ const Sidebar: React.FC = () => {
 
   useEffect(() => {
     if (scheduleUploadError && isMountedRef.current) {
-      // Show error notification
-      alert(`Error uploading schedule: ${scheduleUploadError}`);
-      // Reset error after showing
+      // Reset error after showing (no more alert needed - using visual error state)
       if (isMountedRef.current) {
         setScheduleUploadError(null);
       }
