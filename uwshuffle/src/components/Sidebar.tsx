@@ -467,8 +467,8 @@ const Sidebar: React.FC = () => {
                   items={sections}
                   strategy={verticalListSortingStrategy}
                 >
-                  {sections.map((id: string) => (
-                    <SortableSection key={id} id={id}>
+                  {sections.map((id: string, index: number) => (
+                    <SortableSection key={id} id={id} animationDelay={index * 0.1}>
                       {renderSection(id)}
                     </SortableSection>
                   ))}
@@ -503,9 +503,11 @@ export default Sidebar;
 function SortableSection({
   id,
   children,
+  animationDelay,
 }: {
   id: string;
   children: React.ReactNode;
+  animationDelay: number;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -514,7 +516,12 @@ function SortableSection({
     transition,
   };
   return (
-    <div ref={setNodeRef} style={style}>
+    <div 
+      ref={setNodeRef} 
+      style={style}
+      className="uwshuffle-section-container"
+      data-animation-delay={animationDelay}
+    >
       <div 
         {...attributes} 
         {...listeners} 
