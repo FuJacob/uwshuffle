@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  FiDownload,  
+  FiDownload,
   FiRefreshCcw,
   FiLink,
   FiHelpCircle,
@@ -36,8 +36,6 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
   onFriendSchedulesChange,
   friendSchedules,
 }) => {
-  console.log("uwshuffle: ScheduleControls received termDatesAvailable:", termDatesAvailable);
-  
   const [addFriendLink, setAddFriendLink] = useState<string>("");
   const [isScheduleControlsCollapsed, setIsScheduleControlsCollapsed] =
     useState<boolean>(false);
@@ -47,10 +45,12 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
   const [showAddFriendError, setShowAddFriendError] = useState<boolean>(false);
   const [showShareError, setShowShareError] = useState<boolean>(false);
   const [showNameError, setShowNameError] = useState<boolean>(false);
-  
+
   // Export button states
-  const [exportCurrentLoading, setExportCurrentLoading] = useState<boolean>(false);
-  const [exportCurrentSuccess, setExportCurrentSuccess] = useState<boolean>(false);
+  const [exportCurrentLoading, setExportCurrentLoading] =
+    useState<boolean>(false);
+  const [exportCurrentSuccess, setExportCurrentSuccess] =
+    useState<boolean>(false);
   const [exportCurrentError, setExportCurrentError] = useState<boolean>(false);
   const [exportSwapLoading, setExportSwapLoading] = useState<boolean>(false);
   const [exportSwapSuccess, setExportSwapSuccess] = useState<boolean>(false);
@@ -60,7 +60,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
     setExportCurrentLoading(true);
     setExportCurrentError(false);
     setExportCurrentSuccess(false);
-    
+
     try {
       const result = onExportCurrentSchedule();
       if (result.success) {
@@ -82,11 +82,11 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
     setExportSwapLoading(true);
     setExportSwapError(false);
     setExportSwapSuccess(false);
-    
+
     try {
       const result = onExportWithSwap();
       if (result.success) {
-        setExportSwapSuccess(true);  
+        setExportSwapSuccess(true);
         setTimeout(() => setExportSwapSuccess(false), 3000);
       } else {
         setExportSwapError(true);
@@ -247,10 +247,10 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                 </div>
                 <button
                   className={`uwshuffle-share-button ${
-                    showShareSuccess 
-                      ? "uwshuffle-share-button-success" 
-                      : showShareError 
-                      ? "uwshuffle-share-button-error" 
+                    showShareSuccess
+                      ? "uwshuffle-share-button-success"
+                      : showShareError
+                      ? "uwshuffle-share-button-error"
                       : ""
                   }`}
                   disabled={courses.length === 0 && !showShareError}
@@ -329,25 +329,41 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
               <div className="uwshuffle-export-buttons">
                 <button
                   className={`uwshuffle-export-button ${
-                    exportCurrentSuccess 
-                      ? "uwshuffle-export-button-success" 
-                      : exportCurrentError 
-                      ? "uwshuffle-export-button-error" 
+                    exportCurrentSuccess
+                      ? "uwshuffle-export-button-success"
+                      : exportCurrentError
+                      ? "uwshuffle-export-button-error"
                       : ""
                   }`}
-                  disabled={courses.length === 0 || !termDatesAvailable || exportCurrentLoading}
-                  aria-disabled={courses.length === 0 || !termDatesAvailable || exportCurrentLoading}
+                  disabled={
+                    courses.length === 0 ||
+                    !termDatesAvailable ||
+                    exportCurrentLoading
+                  }
+                  aria-disabled={
+                    courses.length === 0 ||
+                    !termDatesAvailable ||
+                    exportCurrentLoading
+                  }
                   onClick={handleExportCurrent}
                   style={{
                     opacity:
-                      courses.length === 0 || !termDatesAvailable || exportCurrentLoading ? 0.5 : 1,
+                      courses.length === 0 ||
+                      !termDatesAvailable ||
+                      exportCurrentLoading
+                        ? 0.5
+                        : 1,
                     cursor:
-                      courses.length === 0 || !termDatesAvailable || exportCurrentLoading
+                      courses.length === 0 ||
+                      !termDatesAvailable ||
+                      exportCurrentLoading
                         ? "not-allowed"
                         : "pointer",
                   }}
                   data-tooltip-id={
-                    courses.length === 0 || !termDatesAvailable || exportCurrentLoading
+                    courses.length === 0 ||
+                    !termDatesAvailable ||
+                    exportCurrentLoading
                       ? "export-schedule-disabled-tooltip"
                       : undefined
                   }
@@ -380,10 +396,10 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                 </button>
                 <button
                   className={`uwshuffle-export-button ${
-                    exportSwapSuccess 
-                      ? "uwshuffle-export-button-success" 
-                      : exportSwapError 
-                      ? "uwshuffle-export-button-error" 
+                    exportSwapSuccess
+                      ? "uwshuffle-export-button-success"
+                      : exportSwapError
+                      ? "uwshuffle-export-button-error"
                       : ""
                   }`}
                   disabled={

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import type { Course } from "../types";
 
@@ -25,8 +25,10 @@ const CourseDropdown: React.FC<CourseDropdownProps> = ({
   tooltipContent,
   isActive = false,
 }) => {
-  const uniqueCourses = Array.from(new Set(courses.map((c) => c.course))).map(
-    (courseName) => courses.find((c) => c.course === courseName)!
+  const uniqueCourses = useMemo(() => 
+    Array.from(new Set(courses.map((c) => c.course))).map(
+      (courseName) => courses.find((c) => c.course === courseName)!
+    ), [courses]
   );
 
   return (

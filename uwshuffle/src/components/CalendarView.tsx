@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import type { View } from "react-big-calendar";
 import moment from "moment";
@@ -93,9 +93,9 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   }, [courses, previewCourse, friendSchedules, selectedCourseToSwap]);
 
   // Custom event style getter
-  const eventStyleGetter = (event: ParsedScheduleEvent) => {
+  const eventStyleGetter = useCallback((event: ParsedScheduleEvent) => {
     return getEventStyle(event);
-  };
+  }, []);
 
   // Always show calendar, even when empty
 

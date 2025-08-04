@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { FiCheck, FiTrash2 } from "react-icons/fi";
 import type { Course } from "../types";
 
@@ -13,7 +13,9 @@ const UploadSuccessCard: React.FC<UploadSuccessCardProps> = ({
   onReset,
   showClearSuccess,
 }) => {
-  const uniqueCourseCount = new Set(courses.map((c) => c.course)).size;
+  const uniqueCourseCount = useMemo(() => 
+    new Set(courses.map((c) => c.course)).size, [courses]
+  );
 
   return (
     <div className="schedule-upload-success-container">

@@ -1,28 +1,29 @@
 import { useState, useEffect } from 'react';
-import { useChromeStorage } from './useChromeStorage';
 
 /**
- * Custom hook to manage sidebar minimized state with Chrome storage persistence
+ * Custom hook to manage sidebar minimized state with localStorage persistence
  */
 export const useSidebarState = () => {
-  const [isMinimized, setIsMinimized] = useState<boolean>(true);
-  const { getStorageItem, setStorageItem, isMounted } = useChromeStorage();
-
-  // Load initial state from Chrome storage
-  useEffect(() => {
-    const loadInitialState = async () => {
-      const saved = await getStorageItem<boolean>('uw_shuffle_minimized');
-      if (isMounted() && saved !== null) {
-        setIsMinimized(saved);
+  // Load initial state from localStorage
+  const [isMinimized, setIsMinimized] = useState<boolean>(() => {
+    const saved = localStorage.getItem('uwshuffle-sidebar-minimized');
+    if (saved !== null) {
+      try {
+        return JSON.parse(saved);
+      } catch (error) {
+        console.warn('Failed to parse saved sidebar minimized state:', error);
       }
-    };
+    }
+    return true; // Default to minimized
+  });
 
-    loadInitialState();
-  }, [getStorageItem, isMounted]);
+  // Save to localStorage whenever state changes
+  useEffect(() => {
+    localStorage.setItem('uwshuffle-sidebar-minimized', JSON.stringify(isMinimized));
+  }, [isMinimized]);
 
-  const handleCloseSidebar = async () => {
+  const handleCloseSidebar = () => {
     setIsMinimized(true);
-    await setStorageItem('uw_shuffle_minimized', true);
     
     // Notify parent window about sidebar state change
     window.parent.postMessage(
@@ -34,9 +35,8 @@ export const useSidebarState = () => {
     );
   };
 
-  const handleExpandSidebar = async () => {
+  const handleExpandSidebar = () => {
     setIsMinimized(false);
-    await setStorageItem('uw_shuffle_minimized', false);
     
     // Notify parent window about sidebar state change
     window.parent.postMessage(

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   DndContext,
   closestCenter,
@@ -49,9 +49,21 @@ const Sidebar: React.FC = () => {
     startDate: string;
     endDate: string;
   } | null>(null);
+  // Load selected course from localStorage
   const [selectedCourseToSwap, setSelectedCourseToSwap] = useState<
     Course | null | "None"
-  >(null);
+  >(() => {
+    const saved = localStorage.getItem('uwshuffle-selected-course-to-swap');
+    if (saved && saved !== 'null') {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed;
+      } catch (error) {
+        console.warn('Failed to parse saved selected course:', error);
+      }
+    }
+    return null;
+  });
   const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
 
   // Custom hooks
@@ -92,35 +104,41 @@ const Sidebar: React.FC = () => {
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
-  const handleCoursesUploaded = (newCourses: Course[]) => {
+  const handleCoursesUploaded = useCallback((newCourses: Course[]) => {
     setCourses(newCourses);
-  };
+  }, []);
 
-  const handleClearSchedule = () => {
+  const handleClearSchedule = useCallback(() => {
     setCourses([]);
     setSelectedCourseToSwap(null);
-  };
+    // Clear from localStorage as well (this will be saved by the useEffect)
+  }, []);
 
-  const handleCourseSelectedToSwap = (course: Course | null | "None") => {
+  const handleCourseSelectedToSwap = useCallback((course: Course | null | "None") => {
     setSelectedCourseToSwap(course);
-  };
+  }, []);
 
-  const handleKofiClick = () => {
+  // Save selected course to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('uwshuffle-selected-course-to-swap', JSON.stringify(selectedCourseToSwap));
+  }, [selectedCourseToSwap]);
+
+  const handleKofiClick = useCallback(() => {
     // Open Ko-fi page
     window.open("https://ko-fi.com/jacobfu", "_blank", "noopener,noreferrer");
-  };
+  }, []);
 
-  const handleRateClick = () => {
+  const handleRateClick = useCallback(() => {
     // Open Chrome Web Store page
     window.open(
       "https://chrome.google.com/webstore/detail/uwshuffle/jgcgjieedkddicejglgncnfepggcepma",
       "_blank",
       "noopener,noreferrer"
     );
-  };
+  }, []);
 
 
-  const handleToggleDarkMode = () => {
+  const handleToggleDarkMode = useCallback(() => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
 
@@ -130,18 +148,18 @@ const Sidebar: React.FC = () => {
     } else {
       document.documentElement.removeAttribute("data-theme");
     }
-  };
+  }, [isDarkMode]);
 
-  const handleExportCurrentSchedule = () => {
+  const handleExportCurrentSchedule = useCallback(() => {
     if (termDates) {
       const result = exportCurrentSchedule(courses, termDates.startDate, termDates.endDate);
       // Result handling is managed by the ScheduleControls component through button disabled states
       return result;
     }
     return { success: false, error: "Term dates not available" };
-  };
+  }, [termDates, courses]);
 
-  const handleExportWithSwap = () => {
+  const handleExportWithSwap = useCallback(() => {
     if (previewCourse && termDates) {
       const result = exportScheduleWithSwap(
         courses,
@@ -153,7 +171,7 @@ const Sidebar: React.FC = () => {
       return result;
     }
     return { success: false, error: "Preview course or term dates not available" };
-  };
+  }, [previewCourse, termDates, courses]);
 
   // Sidebar section configuration
   const defaultSections = [

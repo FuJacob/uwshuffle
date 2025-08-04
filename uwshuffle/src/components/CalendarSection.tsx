@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   FiChevronDown,
   FiChevronUp,
@@ -34,13 +34,13 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
   const [isCalendarCollapsed, setIsCalendarCollapsed] =
     useState<boolean>(false);
 
-  const handleToggleFriendSchedule = (name: string) => {
+  const handleToggleFriendSchedule = useCallback((name: string) => {
     setFriendSchedules((prev: FriendSchedule[]) =>
       prev.map((f: FriendSchedule) =>
         f.name === name ? { ...f, visible: !f.visible } : f
       )
     );
-  };
+  }, [setFriendSchedules]);
 
   return (
     <div className="uwshuffle-calendar-section">
@@ -74,7 +74,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                 <div className="uwshuffle-friends-container">
                   <FiUsers className="uwshuffle-friends-icon" />
                   <span className="uwshuffle-friends-label">
-                    Friends' Schedules
+                    Friends
                   </span>
                   {friendSchedules.length > 0 ? (
                     friendSchedules.map((friendSchedule) => (
@@ -102,7 +102,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                     ))
                   ) : (
                     <span className="uwshuffle-friends-placeholder">
-                      Enter your friends' quick links in Schedule Controls to see their schedules here
+                      Enter your friends' quick links to see their schedules here
                     </span>
                   )}
                 </div>

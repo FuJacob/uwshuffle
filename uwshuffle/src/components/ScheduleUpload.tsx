@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   FiCheck,
   FiHelpCircle,
@@ -71,10 +71,10 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
 
 
 
-  const handleCourseSelect = (course: Course | "None") => {
+  const handleCourseSelect = useCallback((course: Course | "None") => {
     onCourseSelectedToSwap(course);
     setShowCourseDropdown(false);
-  };
+  }, [onCourseSelectedToSwap]);
 
   return (
     <div className="schedule-upload-container">

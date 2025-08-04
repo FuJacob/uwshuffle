@@ -16,6 +16,9 @@ import { Tooltip } from "react-tooltip";
 // Types
 import type { Course, ProfInfo } from "../types";
 
+// Utils
+import { getRatingColorStyle } from "../utils";
+
 interface PreviewInsightsProps {
   previewCourse: Course | null;
   profInfo: ProfInfo | null;
@@ -251,7 +254,10 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                 <div className="uwshuffle-uwflow-content">
                   <div className="uwshuffle-professor-content">
                     <div className="uwshuffle-professor-circle">
-                      <div className="uwshuffle-professor-score">
+                      <div 
+                        className="uwshuffle-professor-score"
+                        style={{ color: getRatingColorStyle(profInfo?.rating.liked) }}
+                      >
                         {profInfo?.rating.liked
                           ? Math.round(profInfo?.rating.liked * 100) + "%"
                           : "~%"}
@@ -261,9 +267,11 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                       <div className="uwshuffle-professor-ratings">
                         <span>
                           Engaging:{" "}
-                          {profInfo?.rating.engaging
-                            ? Math.round(profInfo?.rating.engaging * 100) + "%"
-                            : "~%"}
+                          <span style={{ color: getRatingColorStyle(profInfo?.rating.engaging) }}>
+                            {profInfo?.rating.engaging
+                              ? Math.round(profInfo?.rating.engaging * 100) + "%"
+                              : "~%"}
+                          </span>
                         </span>
                         <span>
                           <FiMessageSquare className="uwshuffle-icon" />
@@ -275,9 +283,11 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                       <div className="uwshuffle-professor-reviews">
                         <span>
                           Clarity:{" "}
-                          {profInfo?.rating.clear
-                            ? Math.round(profInfo?.rating.clear * 100) + "%"
-                            : "~%"}
+                          <span style={{ color: getRatingColorStyle(profInfo?.rating.clear) }}>
+                            {profInfo?.rating.clear
+                              ? Math.round(profInfo?.rating.clear * 100) + "%"
+                              : "~%"}
+                          </span>
                         </span>
                         <span>
                           <FiBarChart2 className="uwshuffle-icon" />
