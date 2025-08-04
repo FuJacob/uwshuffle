@@ -22,7 +22,6 @@ import CourseDropdown from "./CourseDropdown";
 import { parseScheduleText } from "../utils/scheduleParser";
 
 interface ScheduleUploadProps {
-  setScheduleUploadError: (error: string | null) => void;
   onCoursesUploaded: (courses: Course[]) => void;
   onClearSchedule: () => void;
   courses: Course[];
@@ -31,7 +30,6 @@ interface ScheduleUploadProps {
 }
 
 const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
-  setScheduleUploadError,
   onCoursesUploaded,
   onClearSchedule,
   courses,

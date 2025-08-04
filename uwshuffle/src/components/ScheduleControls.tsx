@@ -44,6 +44,8 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
   const [showNameInput, setShowNameInput] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
   const [showAddFriendError, setShowAddFriendError] = useState<boolean>(false);
+  const [showShareError, setShowShareError] = useState<boolean>(false);
+  const [showNameError, setShowNameError] = useState<boolean>(false);
 
   const handleAddFriendSchedule = async (quickLink: string) => {
     if (!quickLink.trim()) {
@@ -81,7 +83,8 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
 
   const handleShareSchedule = async () => {
     if (courses.length === 0) {
-      alert("No courses to share. Please upload your schedule first.");
+      setShowShareError(true);
+      setTimeout(() => setShowShareError(false), 3000);
       return;
     }
     // Show inline input to get user's name first
@@ -90,7 +93,8 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
 
   const handleConfirmShare = async () => {
     if (!userName.trim()) {
-      alert("Please enter your first name to continue.");
+      setShowNameError(true);
+      setTimeout(() => setShowNameError(false), 3000);
       return;
     }
 
@@ -190,10 +194,14 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                 </div>
                 <button
                   className={`uwshuffle-share-button ${
-                    showShareSuccess ? "uwshuffle-share-button-success" : ""
+                    showShareSuccess 
+                      ? "uwshuffle-share-button-success" 
+                      : showShareError 
+                      ? "uwshuffle-share-button-error" 
+                      : ""
                   }`}
-                  disabled={courses.length === 0}
-                  aria-disabled={courses.length === 0}
+                  disabled={courses.length === 0 && !showShareError}
+                  aria-disabled={courses.length === 0 && !showShareError}
                   onClick={handleShareSchedule}
                   style={{
                     opacity: courses.length === 0 ? 0.5 : 1,
@@ -213,6 +221,11 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                       <FiCheck className="uwshuffle-share-icon" />
                       Copied to clipboard
                     </>
+                  ) : showShareError ? (
+                    <>
+                      <FiX className="uwshuffle-share-icon" />
+                      Upload schedule first
+                    </>
                   ) : (
                     <>
                       <FiLink className="uwshuffle-share-icon" />
@@ -227,7 +240,9 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                     <input
                       type="text"
                       placeholder="Enter your name..."
-                      className="uwshuffle-input-field"
+                      className={`uwshuffle-input-field ${
+                        showNameError ? "uwshuffle-input-field-error" : ""
+                      }`}
                       value={userName}
                       onChange={(e) => setUserName(e.target.value)}
                       onKeyDown={(e) => {
@@ -239,10 +254,16 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                     />
                     <button
                       onClick={handleConfirmShare}
-                      className="uwshuffle-send-button"
-                      disabled={!userName.trim()}
+                      className={`uwshuffle-send-button ${
+                        showNameError ? "uwshuffle-send-button-error" : ""
+                      }`}
+                      disabled={!userName.trim() && !showNameError}
                     >
-                      <FiSend className="uwshuffle-send-icon" />
+                      {showNameError ? (
+                        <FiX className="uwshuffle-send-icon" />
+                      ) : (
+                        <FiSend className="uwshuffle-send-icon" />
+                      )}
                     </button>
                   </div>
                 </div>

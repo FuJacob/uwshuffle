@@ -2408,6 +2408,20 @@ body {
   transform: translateY(-1px);
 }
 
+.uwshuffle-share-button-error {
+  background-color: var(--color-error) !important;
+  border-color: var(--color-error) !important;
+  color: var(--color-surface) !important;
+}
+
+.uwshuffle-share-button-error:hover,
+.uwshuffle-share-button-error:focus {
+  background-color: var(--color-error-hover) !important;
+  border-color: var(--color-error-hover) !important;
+  color: var(--color-surface) !important;
+  transform: translateY(-1px);
+}
+
 .uwshuffle-share-icon {
   width: 16px;
   height: 16px;
@@ -3150,6 +3164,16 @@ body {
   opacity: 0.3;
   cursor: not-allowed;
   color: var(--color-text-tertiary);
+}
+
+.uwshuffle-send-button-error {
+  color: var(--color-error) !important;
+}
+
+.uwshuffle-send-button-error:hover,
+.uwshuffle-send-button-error:focus {
+  color: var(--color-error-hover) !important;
+  transform: translateY(-50%) scale(1.1) !important;
 }
 
 .uwshuffle-send-icon {

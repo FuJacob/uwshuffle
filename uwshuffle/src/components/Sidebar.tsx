@@ -40,9 +40,6 @@ const Sidebar: React.FC = () => {
     startDate: string;
     endDate: string;
   } | null>(null);
-  const [scheduleUploadError, setScheduleUploadError] = useState<string | null>(
-    null
-  );
   const [selectedCourseToSwap, setSelectedCourseToSwap] = useState<
     Course | null | "None"
   >(null);
@@ -109,14 +106,6 @@ const Sidebar: React.FC = () => {
       });
   }, []);
 
-  useEffect(() => {
-    if (scheduleUploadError && isMountedRef.current) {
-      // Reset error after showing (no more alert needed - using visual error state)
-      if (isMountedRef.current) {
-        setScheduleUploadError(null);
-      }
-    }
-  }, [scheduleUploadError]);
 
   // No longer need to monitor localStorage - term dates come via postMessage
 
@@ -214,19 +203,25 @@ const Sidebar: React.FC = () => {
 
   const handleExportCurrentSchedule = () => {
     if (termDates) {
-      exportCurrentSchedule(courses, termDates.startDate, termDates.endDate);
+      const result = exportCurrentSchedule(courses, termDates.startDate, termDates.endDate);
+      // Result handling is managed by the ScheduleControls component through button disabled states
+      return result;
     }
+    return { success: false, error: "Term dates not available" };
   };
 
   const handleExportWithSwap = () => {
     if (previewCourse && termDates) {
-      exportScheduleWithSwap(
+      const result = exportScheduleWithSwap(
         courses,
         previewCourse,
         termDates.startDate,
         termDates.endDate
       );
+      // Result handling is managed by the ScheduleControls component through button disabled states
+      return result;
     }
+    return { success: false, error: "Preview course or term dates not available" };
   };
 
   // addPreviewCourse is handled via message listener
@@ -285,7 +280,6 @@ const Sidebar: React.FC = () => {
         return (
           <div className="uwshuffle-upload-section">
             <ScheduleUpload
-              setScheduleUploadError={setScheduleUploadError}
               onCoursesUploaded={handleCoursesUploaded}
               onClearSchedule={handleClearSchedule}
               courses={courses}

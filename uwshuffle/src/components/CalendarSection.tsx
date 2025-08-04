@@ -99,8 +99,7 @@ const CalendarSection: React.FC<CalendarSectionProps> = ({
                     ))
                   ) : (
                     <span className="uwshuffle-friends-placeholder">
-                      Enter your friends' quick links to see their schedules
-                      here
+                      You can see your friends' schedules here
                     </span>
                   )}
                 </div>

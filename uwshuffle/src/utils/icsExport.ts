@@ -154,10 +154,9 @@ function downloadICSFile(content: string, filename: string): void {
 /**
  * Exports current schedule as ICS file
  */
-export function exportCurrentSchedule(courses: Course[], termStartDate: string, termEndDate: string): void {
+export function exportCurrentSchedule(courses: Course[], termStartDate: string, termEndDate: string): { success: boolean; error?: string } {
   if (courses.length === 0) {
-    alert("No courses to export. Please upload your schedule first.");
-    return;
+    return { success: false, error: "No courses to export. Please upload your schedule first." };
   }
 
   const events = coursesToICSEvents(courses, termStartDate, termEndDate);
@@ -165,6 +164,7 @@ export function exportCurrentSchedule(courses: Course[], termStartDate: string, 
   const filename = `uw-schedule-current-${moment().format("YYYY-MM-DD")}.ics`;
   
   downloadICSFile(content, filename);
+  return { success: true };
 }
 
 /**
@@ -175,15 +175,13 @@ export function exportScheduleWithSwap(
   previewCourse: Course,
   termStartDate: string,
   termEndDate: string
-): void {
+): { success: boolean; error?: string } {
   if (courses.length === 0) {
-    alert("No courses to export. Please upload your schedule first.");
-    return;
+    return { success: false, error: "No courses to export. Please upload your schedule first." };
   }
 
   if (!previewCourse) {
-    alert("No preview course selected. Please select a course to swap first.");
-    return;
+    return { success: false, error: "No preview course selected. Please select a course to swap first." };
   }
 
   // Create a new schedule with the preview course added
@@ -197,5 +195,6 @@ export function exportScheduleWithSwap(
   const filename = `uw-schedule-with-${previewCourse.course.replace(/\\s+/g, "-")}-${moment().format("YYYY-MM-DD")}.ics`;
   
   downloadICSFile(content, filename);
+  return { success: true };
 }
 
