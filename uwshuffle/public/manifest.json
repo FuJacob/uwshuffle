@@ -16,6 +16,11 @@
 
   "permissions": ["scripting", "activeTab", "storage"],
 
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "UW Shuffle"
+  },
+
   "host_permissions": [
     "https://quest.pecs.uwaterloo.ca/*",
     "https://uwflow.com/graphql"
