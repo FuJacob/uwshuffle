@@ -10,8 +10,9 @@ export const useSidebarState = () => {
     if (saved !== null) {
       try {
         return JSON.parse(saved);
-      } catch (error) {
-        console.warn('Failed to parse saved sidebar minimized state:', error);
+      } catch {
+        // Invalid localStorage data, using default
+        localStorage.removeItem('uwshuffle-sidebar-minimized');
       }
     }
     return true; // Default to minimized

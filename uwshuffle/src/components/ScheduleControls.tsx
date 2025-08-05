@@ -107,14 +107,14 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
 
     try {
       const result = await readQuickLink(quickLink);
-      if (result && result.courses) {
+      if (result && result.courses && Array.isArray(result.courses)) {
         const friendName =
           result.userName || `Friend ${friendSchedules.length + 1}`;
         const newFriendSchedule = {
           name: friendName,
           visible: true,
           color: getColorFromName(friendName),
-          schedule: result.courses,
+          schedule: result.courses as Course[],
         };
         onFriendSchedulesChange([...friendSchedules, newFriendSchedule]);
         setAddFriendLink("");

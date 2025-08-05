@@ -58,8 +58,9 @@ const Sidebar: React.FC = () => {
       try {
         const parsed = JSON.parse(saved);
         return parsed;
-      } catch (error) {
-        console.warn('Failed to parse saved selected course:', error);
+      } catch {
+        // Invalid localStorage data, using default
+        localStorage.removeItem('uwshuffle-selected-course-to-swap');
       }
     }
     return null;
@@ -93,7 +94,6 @@ const Sidebar: React.FC = () => {
             setPreviewCourse(event.data.data);
             break;
           case "term_dates_extracted":
-            console.log("uwshuffle: Received term dates:", event.data.data);
             setTermDates(event.data.data);
             setTermDatesAvailable(true);
             break;
@@ -205,8 +205,9 @@ const Sidebar: React.FC = () => {
         if (Array.isArray(parsed) && parsed.length === defaultSections.length) {
           return parsed;
         }
-      } catch (error) {
-        console.warn("Failed to parse saved sidebar order:", error);
+      } catch {
+        // Invalid localStorage data, using default order
+        localStorage.removeItem("uwshuffle-sidebar-order");
       }
     }
     return defaultSections;

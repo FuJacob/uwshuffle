@@ -1,7 +1,12 @@
 import { decompressFromEncodedURIComponent } from "lz-string";
 import { supabase } from "../../clients/supabase";
 
-export const readQuickLink = async (url: string) => {
+interface QuickLinkResult {
+  courses: unknown;
+  userName: string | null;
+}
+
+export const readQuickLink = async (url: string): Promise<QuickLinkResult | null> => {
   let id: string | null = null;
   
   try {

@@ -30,7 +30,7 @@ export const useChromeStorage = () => {
     });
   };
 
-  const setStorageItem = async (key: string, value: any): Promise<void> => {
+  const setStorageItem = async (key: string, value: unknown): Promise<void> => {
     if (!isStorageAvailable()) {
       return;
     }

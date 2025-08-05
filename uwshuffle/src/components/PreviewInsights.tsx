@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import {
   FiHelpCircle,
   FiBook,
@@ -31,6 +31,41 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
   const [isPreviewInsightsCollapsed, setIsPreviewInsightsCollapsed] =
     useState<boolean>(false);
 
+  const toggleCollapse = useCallback(() => {
+    setIsPreviewInsightsCollapsed(!isPreviewInsightsCollapsed);
+  }, [isPreviewInsightsCollapsed]);
+
+  const mappedDays = useMemo(() => {
+    if (!previewCourse?.days) return "";
+    const dayMap: { [key: string]: string } = {
+      Monday: "Mo",
+      Tuesday: "Tu", 
+      Wednesday: "We",
+      Thursday: "Th",
+      Friday: "Fr",
+      Saturday: "Sa",
+      Sunday: "Su",
+    };
+    return previewCourse.days
+      .map((day) => dayMap[day] || day)
+      .join(", ");
+  }, [previewCourse?.days]);
+
+  const professorUrl = useMemo(() => {
+    if (!profInfo?.name) return "https://uwflow.com";
+    return `https://uwflow.com/professor/${profInfo.name
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_]/g, "")}`;
+  }, [profInfo?.name]);
+
+  const courseUrl = useMemo(() => {
+    if (!previewCourse?.course) return "";
+    return `https://uwflow.com/course/${previewCourse.course
+      .toLowerCase()
+      .replace(/\s+/g, "")}`;
+  }, [previewCourse?.course]);
+
   if (!previewCourse) {
     return (
       <div className="uwshuffle-preview-section">
@@ -45,9 +80,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
               />
             </div>
             <button
-              onClick={() =>
-                setIsPreviewInsightsCollapsed(!isPreviewInsightsCollapsed)
-              }
+              onClick={toggleCollapse}
               className="uwshuffle-collapse-button"
             >
               {isPreviewInsightsCollapsed ? <FiChevronUp /> : <FiChevronDown />}
@@ -85,9 +118,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
             />
           </div>
           <button
-            onClick={() =>
-              setIsPreviewInsightsCollapsed(!isPreviewInsightsCollapsed)
-            }
+            onClick={toggleCollapse}
             className="uwshuffle-collapse-button"
           >
             {isPreviewInsightsCollapsed ? <FiChevronUp /> : <FiChevronDown />}
@@ -114,9 +145,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                     </div>
                     <div className="uwshuffle-uwflow-right">
                       <a
-                        href={`https://uwflow.com/course/${previewCourse.course
-                          .toLowerCase()
-                          .replace(/\s+/g, "")}`}
+                        href={courseUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="uwshuffle-professor-link uwshuffle-uwflow-link"
@@ -140,20 +169,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                           <FiUsers />
                         </span>
                         <span className="uwshuffle-value">
-                          {previewCourse.days
-                            ?.map((day) => {
-                              const dayMap: { [key: string]: string } = {
-                                Monday: "Mo",
-                                Tuesday: "Tu",
-                                Wednesday: "We",
-                                Thursday: "Th",
-                                Friday: "Fr",
-                                Saturday: "Sa",
-                                Sunday: "Su",
-                              };
-                              return dayMap[day] || day;
-                            })
-                            .join(", ")}
+                          {mappedDays}
                         </span>
                       </div>
                       <div className="uwshuffle-course-item">
@@ -219,16 +235,7 @@ const PreviewInsights: React.FC<PreviewInsightsProps> = ({
                     </div>
                     <div className="uwshuffle-uwflow-right">
                       <a
-                        href={
-                          profInfo?.name
-                            ? `https://uwflow.com/professor/${
-                                profInfo.name
-                                  .toLowerCase()
-                                  .replace(/\s+/g, "_") // spaces to underscores
-                                  .replace(/[^a-z0-9_]/g, "") // remove everything except a-z, 0-9, _
-                              }`
-                            : "https://uwflow.com"
-                        }
+                        href={professorUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`uwshuffle-professor-link uwshuffle-uwflow-link ${
