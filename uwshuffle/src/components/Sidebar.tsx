@@ -65,6 +65,7 @@ const Sidebar: React.FC = () => {
     return null;
   });
   const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
+  const [isExpandLogoSpinning, setIsExpandLogoSpinning] = useState<boolean>(false);
 
   // Custom hooks
   const { isMinimized, handleCloseSidebar, handleExpandSidebar } = useSidebarState();
@@ -149,6 +150,20 @@ const Sidebar: React.FC = () => {
       document.documentElement.removeAttribute("data-theme");
     }
   }, [isDarkMode]);
+
+  const handleExpandSidebarWithSpin = useCallback(() => {
+    setIsExpandLogoSpinning(true);
+    setTimeout(() => setIsExpandLogoSpinning(false), 1800);
+    handleExpandSidebar();
+  }, [handleExpandSidebar]);
+
+  // Spin expand logo when minimized and on first load if minimized
+  useEffect(() => {
+    if (isMinimized) {
+      setIsExpandLogoSpinning(true);
+      setTimeout(() => setIsExpandLogoSpinning(false), 1800);
+    }
+  }, [isMinimized]);
 
   const handleExportCurrentSchedule = useCallback(() => {
     if (termDates) {
@@ -429,13 +444,13 @@ const Sidebar: React.FC = () => {
       {/* Expand button - outside sidebar so it's always visible when minimized */}
       {isMinimized && (
         <button
-          onClick={handleExpandSidebar}
+          onClick={handleExpandSidebarWithSpin}
           className="uwshuffle-expand-button"
         >
           <img
             src="/logo.svg"
             alt="UWShuffle"
-            className="uwshuffle-expand-logo"
+            className={`uwshuffle-expand-logo ${isExpandLogoSpinning ? 'spinning' : ''}`}
           />
         </button>
       )}

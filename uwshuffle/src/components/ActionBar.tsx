@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { FiStar, FiHelpCircle, FiMoon, FiSun, FiX } from "react-icons/fi";
 
 interface ActionBarProps {
@@ -18,12 +18,39 @@ const ActionBar: React.FC<ActionBarProps> = ({
   onHelpClick,
   onCloseSidebar,
 }) => {
+  const [isSpinning, setIsSpinning] = useState(false);
+  const logoRef = useRef<HTMLImageElement>(null);
+
+  const triggerSpin = () => {
+    setIsSpinning(true);
+    setTimeout(() => setIsSpinning(false), 1800);
+  };
+
+  // Spin on component mount (page load)
+  React.useEffect(() => {
+    triggerSpin();
+  }, []);
+
+  const handleKofiClick = () => {
+    triggerSpin();
+    onKofiClick();
+  };
+
+  const handleCloseSidebar = () => {
+    triggerSpin();
+    onCloseSidebar();
+  };
   return (
     <div className="uwshuffle-action-bar">
       <div className="uwshuffle-action-bar-logo-container">
         <div className="uwshuffle-logo-section">
-          <button onClick={onKofiClick} className="uwshuffle-coffee-button">
-            <img src="/logo.svg" alt="UWShuffle" className="uwshuffle-logo" />
+          <button onClick={handleKofiClick} className="uwshuffle-coffee-button">
+            <img 
+              ref={logoRef}
+              src="/logo.svg" 
+              alt="UWShuffle" 
+              className={`uwshuffle-logo ${isSpinning ? 'spinning' : ''}`} 
+            />
             <div className="uwshuffle-logo-content">
               <div>UW Shuffle</div>
             </div>
@@ -48,7 +75,7 @@ const ActionBar: React.FC<ActionBarProps> = ({
             <FiMoon className="uwshuffle-icon-button" />
           )}
         </button>
-        <button onClick={onCloseSidebar} className="uwshuffle-close-button">
+        <button onClick={handleCloseSidebar} className="uwshuffle-close-button">
           <FiX className="uwshuffle-icon-button" />
         </button>
       </div>
