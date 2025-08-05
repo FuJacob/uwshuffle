@@ -1,74 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UW Shuffle</title>
-  <link rel="stylesheet" href="popup.css">
-</head>
-<body>
-  <div class="popup-container">
-    <!-- Header with Logo -->
-    <div class="popup-header">
-      <img src="logo.svg" alt="UW Shuffle" class="popup-logo" id="popup-logo">
-      <div class="popup-title">
-        <h1>UW Shuffle</h1>
-        <p>Making Quest easier to use</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UW Shuffle</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="popup-container">
+      <!-- Header with Logo -->
+      <div class="popup-header">
+        <img
+          src="logo.svg"
+          alt="UW Shuffle"
+          class="popup-logo"
+          id="popup-logo"
+        />
+        <div class="popup-title">
+          <h1>UW Shuffle</h1>
+          <p>Making Quest easier to use</p>
+        </div>
       </div>
-    </div>
 
-    <!-- Website Link -->
-    <div class="popup-section">
-      <a href="https://uwshuffle.com" target="_blank" class="popup-link website-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M2 12h20"></path>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-        </svg>
-        Visit Website
-      </a>
-
-      <a href="https://uwflow.com" target="_blank" class="popup-link uwflow-link">
-        <img src="uwflow.png" alt="UW Flow" class="link-icon">
-        UW Flow - Course Reviews
-      </a>
-    </div>
-
-    <!-- Credits -->
-    <div class="popup-credits">
-      <div class="credits-header">
-        <h3>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
-            <circle cx="12" cy="7" r="4"></circle>
+      <!-- Website Link -->
+      <div class="popup-section">
+        <a
+          href="https://uwshuffle.com"
+          target="_blank"
+          class="popup-link website-link"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M2 12h20"></path>
+            <path
+              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            ></path>
           </svg>
-          Credits
-        </h3>
-      </div>
-      <div class="credits-content">
-        <p class="creator">Created by <strong>Jacob Fu</strong></p>
-        <a href="https://www.linkedin.com/in/fujacob/" target="_blank" class="popup-link linkedin-link">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-            <rect x="2" y="9" width="4" height="12"></rect>
-            <circle cx="4" cy="4" r="2"></circle>
-          </svg>
-          Connect on LinkedIn
+          Visit Website
+        </a>
+
+        <a
+          href="https://uwflow.com"
+          target="_blank"
+          class="popup-link uwflow-link"
+        >
+          <img src="uwflow.png" alt="UW Flow" class="link-icon" />
+          UW Flow - Course Reviews
         </a>
       </div>
-    </div>
-  </div>
 
-  <script>
-    // Logo spin on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      const logo = document.getElementById('popup-logo');
-      logo.classList.add('spinning');
-      setTimeout(() => {
-        logo.classList.remove('spinning');
-      }, 1800);
-    });
-  </script>
-</body>
+      <!-- Credits -->
+      <div class="popup-credits">
+        <div class="credits-header">
+          <h3>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Credits
+          </h3>
+        </div>
+        <div class="credits-content">
+          <p class="creator">Created by <strong>Jacob Fu</strong></p>
+          <a
+            href="https://www.linkedin.com/in/fujacob/"
+            target="_blank"
+            class="popup-link linkedin-link"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+              ></path>
+              <rect x="2" y="9" width="4" height="12"></rect>
+              <circle cx="4" cy="4" r="2"></circle>
+            </svg>
+            Connect on LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
