@@ -417,10 +417,13 @@ const Sidebar: React.FC = () => {
                 sensors={sensors}
                 collisionDetection={closestCenter}
                 onDragEnd={({ active, over }) => {
+                  if (!isMountedRef.current) return;
                   if (active.id !== over?.id) {
                     const oldIndex = sections.indexOf(active.id as string);
                     const newIndex = sections.indexOf(over?.id as string);
-                    setSections(arrayMove(sections, oldIndex, newIndex));
+                    if (oldIndex !== -1 && newIndex !== -1) {
+                      setSections(arrayMove(sections, oldIndex, newIndex));
+                    }
                   }
                 }}
               >

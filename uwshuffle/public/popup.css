@@ -186,18 +186,18 @@ body {
   color: var(--color-surface);
 }
 
-/* UW Flow Link - Success Style */
+/* UW Flow Link - White/Secondary Style */
 .uwflow-link {
-  background-color: var(--color-success);
-  color: var(--color-surface);
-  border-color: var(--color-success);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
 }
 
 .uwflow-link:hover,
 .uwflow-link:focus {
-  background-color: #047857;
-  border-color: #047857;
-  color: var(--color-surface);
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
 }
 
 /* LinkedIn Link - Secondary Style */

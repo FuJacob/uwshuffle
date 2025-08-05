@@ -39,7 +39,9 @@ const CourseDropdown: React.FC<CourseDropdownProps> = ({
     }
   }, [showDropdown]);
 
-  const handleCourseSelect = (course: Course | "None") => {
+  const handleCourseSelect = (e: React.MouseEvent, course: Course | "None") => {
+    e.preventDefault();
+    e.stopPropagation();
     setIsAnimating(false);
     setTimeout(() => {
       onCourseSelect(course);
@@ -49,7 +51,15 @@ const CourseDropdown: React.FC<CourseDropdownProps> = ({
   return (
     <div className="schedule-upload-course-dropdown-container">
       <button
-        onClick={onToggleDropdown}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onToggleDropdown();
+        }}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
         className={`schedule-upload-secondary-full ${isActive ? "active" : ""}`}
         disabled={disabled}
         aria-disabled={disabled}
@@ -76,7 +86,8 @@ const CourseDropdown: React.FC<CourseDropdownProps> = ({
         <div className={`course-selection-buttons ${isAnimating ? 'animating' : ''}`}>
           <button
             key="none-option"
-            onClick={() => handleCourseSelect("None")}
+            onClick={(e) => handleCourseSelect(e, "None")}
+            onMouseDown={(e) => e.stopPropagation()}
             className={`course-selection-button ${
               selectedCourse === "None" ? "selected" : ""
             }`}
@@ -87,7 +98,8 @@ const CourseDropdown: React.FC<CourseDropdownProps> = ({
           {uniqueCourses.map((course, index) => (
             <button
               key={course.course}
-              onClick={() => handleCourseSelect(course)}
+              onClick={(e) => handleCourseSelect(e, course)}
+              onMouseDown={(e) => e.stopPropagation()}
               className={`course-selection-button ${
                 selectedCourse !== "None" &&
                 selectedCourse?.course === course.course
