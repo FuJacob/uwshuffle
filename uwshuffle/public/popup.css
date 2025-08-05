@@ -1,5 +1,63 @@
-/* UW Shuffle Popup Styles */
+/**
+ * UWShuffle Popup Stylesheet - Using Main App Design System
+ */
 
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..900&display=swap");
+
+/* ===== DESIGN SYSTEM VARIABLES ===== */
+:root {
+  /* Colors - Professional UWShuffle brand palette */
+  --color-background: #f0f4ff;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f8faff;
+  --color-border: #e1e8ff;
+  --color-border-focus: #c7d2fe;
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-tertiary: #94a3b8;
+
+  /* Brand Colors - Professional Blue Theme (WCAG AA Compliant) */
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-primary-light: #dbeafe;
+
+  /* Status Colors */
+  --color-success: #059669;
+  --color-success-light: #d1fae5;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+
+  /* Typography */
+  --font-family: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-size-xs: 0.85rem;
+  --font-size-sm: 0.95rem;
+  --font-size-base: 1.08rem;
+  --font-size-lg: 1.18rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+}
+
+/* ===== BASE STYLES ===== */
 * {
   margin: 0;
   padding: 0;
@@ -7,119 +65,144 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #f0f4ff 0%, #e1e8ff 100%);
-  min-height: 100vh;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background: var(--color-background);
   margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* ===== POPUP CONTAINER ===== */
 .popup-container {
   width: 320px;
-  min-height: 400px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  border: 1px solid var(--color-border);
 }
 
-/* Header Section */
+/* ===== HEADER SECTION ===== */
 .popup-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 20px;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .popup-logo {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
-  filter: brightness(0) invert(1);
   transition: transform 0.3s ease;
 }
 
-.popup-logo:hover {
-  transform: rotate(360deg);
+.popup-logo.spinning {
+  animation: logo-spin 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.popup-title {
+  flex: 1;
 }
 
 .popup-title h1 {
-  font-size: 20px;
-  font-weight: 700;
   margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--color-text-primary);
   line-height: 1.2;
 }
 
 .popup-title p {
-  font-size: 12px;
-  opacity: 0.9;
-  margin: 2px 0 0 0;
-  font-weight: 400;
-}
-
-/* Main Content */
-.popup-section {
-  padding: 16px 20px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.popup-section:last-of-type {
-  border-bottom: none;
-}
-
-/* Links */
-.popup-link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background: #f8faff;
-  border: 1px solid #e1e8ff;
-  border-radius: 8px;
-  text-decoration: none;
-  color: #475569;
-  font-size: 14px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin: var(--space-1) 0 0 0;
   font-weight: 500;
-  transition: all 0.2s ease;
-  width: 100%;
 }
 
-.popup-link:hover {
-  background: #e1e8ff;
-  border-color: #c7d2fe;
+/* ===== CONTENT SECTIONS ===== */
+.popup-section {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.popup-section:not(:last-child) {
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ===== BUTTONS - MATCHING MAIN APP STYLE ===== */
+.popup-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+  font-family: var(--font-family);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.popup-link:hover,
+.popup-link:focus {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
 }
 
+/* Website Link - Primary Style */
 .website-link {
-  color: #3b82f6;
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border-color: var(--color-primary-dark);
 }
 
-.website-link:hover {
-  background: #dbeafe;
-  border-color: #3b82f6;
+.website-link:hover,
+.website-link:focus {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-dark);
+  color: var(--color-surface);
 }
 
+/* UW Flow Link - Success Style */
 .uwflow-link {
-  color: #059669;
+  background-color: var(--color-success);
+  color: var(--color-surface);
+  border-color: var(--color-success);
 }
 
-.uwflow-link:hover {
-  background: #d1fae5;
-  border-color: #059669;
+.uwflow-link:hover,
+.uwflow-link:focus {
+  background-color: #047857;
+  border-color: #047857;
+  color: var(--color-surface);
 }
 
+/* LinkedIn Link - Secondary Style */
 .linkedin-link {
-  color: #0f172a;
-  font-size: 13px;
-}
-
-.linkedin-link:hover {
-  background: #f1f5f9;
-  border-color: #475569;
+  font-size: var(--font-size-xs);
 }
 
 .link-icon {
@@ -128,72 +211,71 @@ body {
   flex-shrink: 0;
 }
 
-/* Credits Section */
+/* ===== CREDITS SECTION ===== */
 .popup-credits {
-  padding: 20px;
-  background: #f8faff;
-  margin-top: auto;
+  padding: var(--space-4);
+  background-color: var(--color-surface-hover);
 }
 
 .credits-header h3 {
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 12px;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .credits-content {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .creator {
-  font-size: 13px;
-  color: #6b7280;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
   margin: 0;
+  line-height: 1.4;
 }
 
 .creator strong {
-  color: #374151;
-  font-weight: 600;
+  color: var(--color-text-primary);
+  font-weight: 700;
 }
 
-/* Responsive adjustments */
-@media (max-width: 360px) {
+/* ===== ANIMATIONS ===== */
+@keyframes logo-spin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 340px) {
   .popup-container {
-    width: 280px;
-    min-height: 380px;
+    width: 300px;
   }
   
-  .popup-header {
-    padding: 16px;
+  .popup-section,
+  .popup-header,
+  .popup-credits {
+    padding: var(--space-3);
   }
   
   .popup-logo {
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
   }
   
   .popup-title h1 {
-    font-size: 18px;
-  }
-  
-  .popup-section {
-    padding: 14px 16px;
-  }
-  
-  .popup-credits {
-    padding: 16px;
-  }
-}
-
-/* Animation for logo spin on hover */
-@keyframes logo-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
+    font-size: var(--font-size-base);
   }
 }
