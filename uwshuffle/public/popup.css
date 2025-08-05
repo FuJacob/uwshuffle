@@ -36,7 +36,8 @@
   --space-6: 24px;
 
   /* Typography */
-  --font-family: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-family: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, sans-serif;
   --font-size-xs: 0.85rem;
   --font-size-sm: 0.95rem;
   --font-size-base: 1.08rem;
@@ -44,8 +45,10 @@
 
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
 
   /* Border radius */
   --radius-sm: 6px;
@@ -79,13 +82,22 @@ body {
 /* ===== POPUP CONTAINER ===== */
 .popup-container {
   width: 320px;
-  background: var(--color-surface);
+  background-color: #fefcff;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--color-border);
+  position: relative;
+}
+
+.background-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(200% 200% at 50% 50%, #fff 0%, #6366f1 100%);
 }
 
 /* ===== HEADER SECTION ===== */
@@ -96,6 +108,8 @@ body {
   padding: var(--space-4);
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
+  position: relative;
+  z-index: 1;
 }
 
 .popup-logo {
@@ -135,6 +149,16 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  position: relative;
+  z-index: 1;
+}
+
+.section-label {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  margin: 0;
+  margin-bottom: var(--space-2);
 }
 
 .popup-section:not(:last-child) {
@@ -175,15 +199,24 @@ body {
 /* Website Link - Primary Style */
 .website-link {
   background-color: var(--color-primary);
-  color: var(--color-surface);
-  border-color: var(--color-primary-dark);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  position: relative;
+}
+
+.website-link .link-icon {
+  filter: brightness(0) invert(1);
+}
+
+.website-link::before {
+  display: none;
 }
 
 .website-link:hover,
 .website-link:focus {
   background-color: var(--color-primary-hover);
-  border-color: var(--color-primary-dark);
-  color: var(--color-surface);
+  border-color: var(--color-primary-hover);
+  color: #ffffff;
 }
 
 /* UW Flow Link - White/Secondary Style */
@@ -205,6 +238,40 @@ body {
   font-size: var(--font-size-xs);
 }
 
+.linkedin-link svg {
+  color: #0077b5;
+}
+
+/* X Link - Black Style */
+.x-link {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #000000;
+  font-size: var(--font-size-xs);
+}
+
+.x-link:hover,
+.x-link:focus {
+  background-color: #1a1a1a;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+/* GitHub Link - Gray Style */
+.github-link {
+  background-color: #374151;
+  color: #ffffff;
+  border-color: #374151;
+  font-size: var(--font-size-xs);
+}
+
+.github-link:hover,
+.github-link:focus {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #ffffff;
+}
+
 .link-icon {
   width: 16px;
   height: 16px;
@@ -215,6 +282,8 @@ body {
 .popup-credits {
   padding: var(--space-4);
   background-color: var(--color-surface-hover);
+  position: relative;
+  z-index: 1;
 }
 
 .credits-header h3 {
@@ -228,9 +297,19 @@ body {
 }
 
 .credits-content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: var(--space-3);
+}
+
+.credits-content .popup-link {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: var(--font-size-xs);
+  padding: var(--space-2) var(--space-3);
 }
 
 .creator {
@@ -263,18 +342,18 @@ body {
   .popup-container {
     width: 300px;
   }
-  
+
   .popup-section,
   .popup-header,
   .popup-credits {
     padding: var(--space-3);
   }
-  
+
   .popup-logo {
     width: 28px;
     height: 28px;
   }
-  
+
   .popup-title h1 {
     font-size: var(--font-size-base);
   }
