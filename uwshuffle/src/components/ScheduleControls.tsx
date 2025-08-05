@@ -70,7 +70,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
         setExportCurrentError(true);
         setTimeout(() => setExportCurrentError(false), 3000);
       }
-    } catch (error) {
+    } catch {
       setExportCurrentError(true);
       setTimeout(() => setExportCurrentError(false), 3000);
     } finally {
@@ -92,7 +92,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
         setExportSwapError(true);
         setTimeout(() => setExportSwapError(false), 3000);
       }
-    } catch (error) {
+    } catch {
       setExportSwapError(true);
       setTimeout(() => setExportSwapError(false), 3000);
     } finally {
