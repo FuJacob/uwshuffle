@@ -29,7 +29,13 @@ function createSidebar() {
   // Create iframe for sidebar
   const sidebar = document.createElement("iframe");
   sidebar.id = SIDEBAR_ID;
-  sidebar.src = chrome.runtime.getURL("sidebar.html");
+  
+  try {
+    sidebar.src = chrome.runtime.getURL("sidebar.html");
+  } catch (error) {
+    console.warn("UWShuffle: Cannot get sidebar URL, extension context invalid:", error);
+    return;
+  }
 
   sidebar.style.cssText = `
   position: fixed;
