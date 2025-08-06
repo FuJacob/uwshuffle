@@ -69,12 +69,13 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
     resetScraperState,
   });
 
-
-
-  const handleCourseSelect = useCallback((course: Course | "None") => {
-    onCourseSelectedToSwap(course);
-    setShowCourseDropdown(false);
-  }, [onCourseSelectedToSwap]);
+  const handleCourseSelect = useCallback(
+    (course: Course | "None") => {
+      onCourseSelectedToSwap(course);
+      setShowCourseDropdown(false);
+    },
+    [onCourseSelectedToSwap]
+  );
 
   return (
     <div className="schedule-upload-container">
@@ -154,7 +155,11 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
           ) : isProcessing ? (
             <ProcessingCard />
           ) : (
-            <PasteZone onPaste={handlePaste} isActive={courses.length === 0} isError={showPasteError} />
+            <PasteZone
+              onPaste={handlePaste}
+              isActive={courses.length === 0}
+              isError={showPasteError}
+            />
           )}
 
           <label className="uwshuffle-input-label">
@@ -180,7 +185,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
                       : "var(--color-text-tertiary)",
                 }}
               >
-                2/3: Then select the existing course you're looking to swap
+                2/3: Then select the existing course you want to swap
               </span>
             </div>
           </label>
@@ -218,7 +223,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
                       : "var(--color-text-tertiary)",
                 }}
               >
-                3/3: Click Scrape Available Swaps to get your class options!
+                3/3: Click the button below to get your options!
               </span>
             </div>
           </label>
@@ -228,17 +233,23 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
               className={`schedule-upload-primary ${
                 courses.length !== 0 && selectedCourseToSwap ? "active" : ""
               } ${
-                showFindFailure 
-                  ? "schedule-upload-primary-failure" 
-                  : showFindSuccess 
-                  ? "schedule-upload-primary-success" 
+                showFindFailure
+                  ? "schedule-upload-primary-failure"
+                  : showFindSuccess
+                  ? "schedule-upload-primary-success"
                   : ""
               }`}
               disabled={
-                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure) || isScrapingLoading
+                courses.length === 0 ||
+                !selectedCourseToSwap ||
+                (hasScrapedSwaps && !showFindFailure) ||
+                isScrapingLoading
               }
               aria-disabled={
-                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure) || isScrapingLoading
+                courses.length === 0 ||
+                !selectedCourseToSwap ||
+                (hasScrapedSwaps && !showFindFailure) ||
+                isScrapingLoading
               }
               style={{
                 opacity:
@@ -257,7 +268,10 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
                     : "pointer",
               }}
               data-tooltip-id={
-                courses.length === 0 || !selectedCourseToSwap || (hasScrapedSwaps && !showFindFailure) || isScrapingLoading
+                courses.length === 0 ||
+                !selectedCourseToSwap ||
+                (hasScrapedSwaps && !showFindFailure) ||
+                isScrapingLoading
                   ? "find-swap-disabled-tooltip"
                   : undefined
               }
@@ -268,7 +282,7 @@ const ScheduleUpload: React.FC<ScheduleUploadProps> = ({
                   ? "Select a course to swap first"
                   : isScrapingLoading
                   ? "Scraping in progress..."
-                  : (hasScrapedSwaps && !showFindFailure)
+                  : hasScrapedSwaps && !showFindFailure
                   ? "Already found swap options - clear your schedule to search again"
                   : undefined
               }

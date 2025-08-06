@@ -20,7 +20,7 @@ const PasteZone: React.FC<PasteZoneProps> = ({ onPaste, isActive = false, isErro
         <FiClipboard className="schedule-upload-paste-icon" />
       )}
       <div className="schedule-upload-paste-text">
-        {isError ? "Invalid schedule format" : "Paste current schedule (Click + ⌃ Ctrl+V / ⌘ Cmd+V)"}
+        {isError ? "Invalid schedule format" : "Paste current schedule (Click + Ctrl+V / ⌘ + V)"}
       </div>
     </div>
   );

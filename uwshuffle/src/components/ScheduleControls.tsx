@@ -324,7 +324,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
             </div>
             <div className="uwshuffle-export-actions">
               <label className="uwshuffle-input-label">
-                Want to export your calendar to Google Calendar?
+                Want to export your calendar to Google Calendar? (.ics)
               </label>
               <div className="uwshuffle-export-buttons">
                 <button
@@ -392,7 +392,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                     ? "Exported!"
                     : exportCurrentLoading
                     ? "Exporting..."
-                    : "Export Schedule (.ics)"}
+                    : "Export Schedule"}
                 </button>
                 <button
                   className={`uwshuffle-export-button ${
@@ -465,7 +465,7 @@ const ScheduleControls: React.FC<ScheduleControlsProps> = ({
                     ? "Exported!"
                     : exportSwapLoading
                     ? "Exporting..."
-                    : "Export w/ Swap"}
+                    : "Export w/ Swapped"}
                 </button>
               </div>
             </div>

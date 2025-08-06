@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { FiStar, FiHelpCircle, FiMoon, FiSun, FiX } from "react-icons/fi";
+import { FiHelpCircle, FiMoon, FiSun, FiX } from "react-icons/fi";
 
 interface ActionBarProps {
   isDarkMode: boolean;
@@ -13,7 +13,7 @@ interface ActionBarProps {
 const ActionBar: React.FC<ActionBarProps> = ({
   isDarkMode,
   onToggleDarkMode,
-  onRateClick,
+  //  onRateClick,
   onKofiClick,
   onHelpClick,
   onCloseSidebar,
@@ -45,11 +45,11 @@ const ActionBar: React.FC<ActionBarProps> = ({
       <div className="uwshuffle-action-bar-logo-container">
         <div className="uwshuffle-logo-section">
           <button onClick={handleKofiClick} className="uwshuffle-coffee-button">
-            <img 
+            <img
               ref={logoRef}
-              src="/logo.svg" 
-              alt="UWShuffle" 
-              className={`uwshuffle-logo ${isSpinning ? 'spinning' : ''}`} 
+              src="/logo.svg"
+              alt="UWShuffle"
+              className={`uwshuffle-logo ${isSpinning ? "spinning" : ""}`}
             />
             <div className="uwshuffle-logo-content">
               <div>UW Shuffle</div>
@@ -58,10 +58,10 @@ const ActionBar: React.FC<ActionBarProps> = ({
         </div>
       </div>
       <div className="uwshuffle-action-bar-buttons">
-        <button onClick={onRateClick} className="uwshuffle-coffee-button">
+        {/* <button onClick={onRateClick} className="uwshuffle-coffee-button">
           <FiStar className="uwshuffle-icon-button" />
           Rate
-        </button>
+        </button> */}
         <button onClick={onHelpClick} className="uwshuffle-help-button">
           <FiHelpCircle className="uwshuffle-icon-button" />
         </button>
