@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "UW Shuffle — making Quest easier to use",
-  "short_name": "UWShuffle",
+  "short_name": "UW Shuffle",
   "version": "1.0.0",
-  "description": "Be able to preview your schedule while you swap and pick courses on Quest.",
+  "description": "Preview your schedule, plan with friends, and dodge bad professors on Quest.",
   "author": "Jacob Fu",
   "homepage_url": "https://uwshuffle.com",
 
@@ -42,7 +42,7 @@
   ],
 
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://uwflow.com https://quest.pecs.uwaterloo.ca https://*.supabase.co;"
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://uwflow.com https://*.supabase.co;"
   },
 
   "minimum_chrome_version": "88"
