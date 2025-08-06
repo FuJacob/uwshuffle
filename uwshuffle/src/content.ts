@@ -6,9 +6,23 @@ import { QuestScraper } from "./utils/scraping";
 const SIDEBAR_ID = "uwshuffle-sidebar";
 const SIDEBAR_WIDTH = "25vw";
 
+function isExtensionContextValid(): boolean {
+  try {
+    return !!(chrome && chrome.runtime && chrome.runtime.id);
+  } catch (e) {
+    console.warn("Extension context invalid:", e);
+    return false;
+  }
+}
+
 function createSidebar() {
   // Check if sidebar already exists
   if (document.getElementById(SIDEBAR_ID)) {
+    return;
+  }
+
+  if (!isExtensionContextValid()) {
+    console.warn("UWShuffle: Extension context invalid, cannot create sidebar");
     return;
   }
 
