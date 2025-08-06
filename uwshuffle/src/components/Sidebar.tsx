@@ -13,7 +13,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { arrayMove } from "@dnd-kit/sortable";
-import Joyride from "react-joyride";
+// import Joyride from "react-joyride";
 
 // Components
 import ActionBar from "./ActionBar";
@@ -25,7 +25,7 @@ import ScheduleUpload from "./ScheduleUpload";
 // Hooks
 import { useGetProfInfoFromUwFlow } from "../hooks/useGetProfInfoFromUwFlow";
 import { useSidebarState } from "../hooks/useSidebarState";
-import { useOnboardingTour } from "../hooks/useOnboardingTour";
+// import { useOnboardingTour } from "../hooks/useOnboardingTour";
 
 // Types
 import type { Course, FriendSchedule } from "../types";
@@ -37,7 +37,7 @@ import {
 } from "../utils/schedule";
 
 // Constants
-import { steps } from "../constants/steps";
+// import { steps } from "../constants/steps";
 
 const Sidebar: React.FC = () => {
   // Core state
@@ -70,8 +70,13 @@ const Sidebar: React.FC = () => {
 
   // Custom hooks
   const { isMinimized, handleCloseSidebar, handleExpandSidebar } = useSidebarState();
-  const { run, handleJoyrideCallback, startTour } = useOnboardingTour(isMinimized);
+  // const { run, handleJoyrideCallback, startTour } = useOnboardingTour(isMinimized);
   const profInfo = useGetProfInfoFromUwFlow(previewCourse);
+
+  // Handle help click - redirect to help.uwshuffle.com
+  const handleHelpClick = useCallback(() => {
+    window.open("https://help.uwshuffle.com", "_blank", "noopener,noreferrer");
+  }, []);
 
   // Ref to track if component is mounted
   const isMountedRef = useRef(true);
@@ -241,7 +246,7 @@ const Sidebar: React.FC = () => {
             onToggleDarkMode={handleToggleDarkMode}
             onRateClick={handleRateClick}
             onKofiClick={handleKofiClick}
-            onHelpClick={startTour}
+            onHelpClick={handleHelpClick}
             onCloseSidebar={handleCloseSidebar}
           />
         );
@@ -287,7 +292,8 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      {!isMinimized && (
+      {/* Tour functionality disabled - help now links to help.uwshuffle.com */}
+      {/* {!isMinimized && (
         <Joyride
           steps={steps}
           run={run}
@@ -402,7 +408,7 @@ const Sidebar: React.FC = () => {
           },
         }}
         />
-      )}
+      )} */}
       <div
         className={`uwshuffle-sidebar ${
           isMinimized ? "uwshuffle-sidebar-minimized" : ""
