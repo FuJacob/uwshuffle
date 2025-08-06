@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "UW Shuffle — making Quest easier to use",
   "short_name": "UW Shuffle",
-  "version": "1.0.0",
+  "version": "0.0.0.1",
   "description": "Preview your schedule, plan with friends, and dodge bad professors on Quest.",
   "author": "Jacob Fu",
   "homepage_url": "https://uwshuffle.com",

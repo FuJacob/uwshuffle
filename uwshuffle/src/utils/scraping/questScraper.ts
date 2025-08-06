@@ -377,6 +377,12 @@ export class QuestScraper {
         return;
       }
 
+      // Check if preview button already exists to prevent duplicates
+      const existingPreviewButton = selectButtonCell.querySelector(".uwshuffle-add-btn");
+      if (existingPreviewButton) {
+        return; // Skip if button already exists
+      }
+
       const addButton = document.createElement("button");
       addButton.className = "uwshuffle-add-btn";
       addButton.style.cssText = `
