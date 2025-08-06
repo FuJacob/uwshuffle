@@ -53,29 +53,31 @@ const Sidebar: React.FC = () => {
   const [selectedCourseToSwap, setSelectedCourseToSwap] = useState<
     Course | null | "None"
   >(() => {
-    const saved = localStorage.getItem('uwshuffle-selected-course-to-swap');
-    if (saved && saved !== 'null') {
+    const saved = localStorage.getItem("uwshuffle-selected-course-to-swap");
+    if (saved && saved !== "null") {
       try {
         const parsed = JSON.parse(saved);
         return parsed;
       } catch {
         // Invalid localStorage data, using default
-        localStorage.removeItem('uwshuffle-selected-course-to-swap');
+        localStorage.removeItem("uwshuffle-selected-course-to-swap");
       }
     }
     return null;
   });
   const [friendSchedules, setFriendSchedules] = useState<FriendSchedule[]>([]);
-  const [isExpandLogoSpinning, setIsExpandLogoSpinning] = useState<boolean>(false);
+  const [isExpandLogoSpinning, setIsExpandLogoSpinning] =
+    useState<boolean>(false);
 
   // Custom hooks
-  const { isMinimized, handleCloseSidebar, handleExpandSidebar } = useSidebarState();
+  const { isMinimized, handleCloseSidebar, handleExpandSidebar } =
+    useSidebarState();
   // const { run, handleJoyrideCallback, startTour } = useOnboardingTour(isMinimized);
   const profInfo = useGetProfInfoFromUwFlow(previewCourse);
 
   // Handle help click - redirect to help.uwshuffle.com
   const handleHelpClick = useCallback(() => {
-    window.open("https://help.uwshuffle.com", "_blank", "noopener,noreferrer");
+    window.open("https://uwshuffle.com/help", "_blank", "noopener,noreferrer");
   }, []);
 
   // Ref to track if component is mounted
@@ -87,8 +89,6 @@ const Sidebar: React.FC = () => {
       isMountedRef.current = false;
     };
   }, []);
-
-
 
   // Listen for messages from content script
   useEffect(() => {
@@ -120,13 +120,19 @@ const Sidebar: React.FC = () => {
     // Clear from localStorage as well (this will be saved by the useEffect)
   }, []);
 
-  const handleCourseSelectedToSwap = useCallback((course: Course | null | "None") => {
-    setSelectedCourseToSwap(course);
-  }, []);
+  const handleCourseSelectedToSwap = useCallback(
+    (course: Course | null | "None") => {
+      setSelectedCourseToSwap(course);
+    },
+    []
+  );
 
   // Save selected course to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('uwshuffle-selected-course-to-swap', JSON.stringify(selectedCourseToSwap));
+    localStorage.setItem(
+      "uwshuffle-selected-course-to-swap",
+      JSON.stringify(selectedCourseToSwap)
+    );
   }, [selectedCourseToSwap]);
 
   const handleKofiClick = useCallback(() => {
@@ -142,7 +148,6 @@ const Sidebar: React.FC = () => {
       "noopener,noreferrer"
     );
   }, []);
-
 
   const handleToggleDarkMode = useCallback(() => {
     const newDarkMode = !isDarkMode;
@@ -172,7 +177,11 @@ const Sidebar: React.FC = () => {
 
   const handleExportCurrentSchedule = useCallback(() => {
     if (termDates) {
-      const result = exportCurrentSchedule(courses, termDates.startDate, termDates.endDate);
+      const result = exportCurrentSchedule(
+        courses,
+        termDates.startDate,
+        termDates.endDate
+      );
       // Result handling is managed by the ScheduleControls component through button disabled states
       return result;
     }
@@ -190,17 +199,20 @@ const Sidebar: React.FC = () => {
       // Result handling is managed by the ScheduleControls component through button disabled states
       return result;
     }
-    return { success: false, error: "Preview course or term dates not available" };
+    return {
+      success: false,
+      error: "Preview course or term dates not available",
+    };
   }, [previewCourse, termDates, courses]);
 
   // Sidebar section configuration
   const defaultSections = [
     "controls",
-    "preview", 
+    "preview",
     "schedule-controls",
     "calendar",
   ];
-  
+
   // Drag-and-drop sidebar section order state
   const [sections, setSections] = useState(() => {
     const saved = localStorage.getItem("uwshuffle-sidebar-order");
@@ -288,7 +300,6 @@ const Sidebar: React.FC = () => {
         return null;
     }
   }
-
 
   return (
     <>
@@ -419,10 +430,13 @@ const Sidebar: React.FC = () => {
             {/* Main Content Area */}
             <div className="uwshuffle-main-content">
               {/* Action Bar - Always at top, not draggable */}
-              <div className="uwshuffle-section-container" data-animation-delay="0">
+              <div
+                className="uwshuffle-section-container"
+                data-animation-delay="0"
+              >
                 {renderSection("action-bar")}
               </div>
-              
+
               {/* Draggable Sections */}
               <DndContext
                 sensors={sensors}
@@ -443,7 +457,11 @@ const Sidebar: React.FC = () => {
                   strategy={verticalListSortingStrategy}
                 >
                   {sections.map((id: string, index: number) => (
-                    <SortableSection key={id} id={id} animationDelay={(index + 1) * 0.1}>
+                    <SortableSection
+                      key={id}
+                      id={id}
+                      animationDelay={(index + 1) * 0.1}
+                    >
                       {renderSection(id)}
                     </SortableSection>
                   ))}
@@ -464,7 +482,9 @@ const Sidebar: React.FC = () => {
           <img
             src="/logo.svg"
             alt="UWShuffle"
-            className={`uwshuffle-expand-logo ${isExpandLogoSpinning ? 'spinning' : ''}`}
+            className={`uwshuffle-expand-logo ${
+              isExpandLogoSpinning ? "spinning" : ""
+            }`}
           />
         </button>
       )}
@@ -491,20 +511,20 @@ function SortableSection({
     transition,
   };
   return (
-    <div 
-      ref={setNodeRef} 
+    <div
+      ref={setNodeRef}
       style={style}
       className="uwshuffle-section-container"
       data-animation-delay={animationDelay}
     >
-      <div 
-        {...attributes} 
-        {...listeners} 
-        style={{ 
-          cursor: "grab", 
+      <div
+        {...attributes}
+        {...listeners}
+        style={{
+          cursor: "grab",
           padding: "2px 0",
           borderTop: "1px solid transparent",
-          borderBottom: "1px solid transparent"
+          borderBottom: "1px solid transparent",
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.borderTop = "1px solid var(--color-border)";
