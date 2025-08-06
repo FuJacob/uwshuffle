@@ -287,14 +287,17 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      <Joyride
-        steps={steps}
-        run={run}
-        continuous={true}
-        showSkipButton={true}
-        showProgress={true}
-        callback={handleJoyrideCallback}
-        styles={{
+      {!isMinimized && (
+        <Joyride
+          steps={steps}
+          run={run}
+          continuous={true}
+          showSkipButton={true}
+          showProgress={true}
+          callback={handleJoyrideCallback}
+          disableOverlayClose={true}
+          disableScrolling={true}
+          styles={{
           options: {
             zIndex: 10000,
             primaryColor: "var(--color-primary)",
@@ -398,7 +401,8 @@ const Sidebar: React.FC = () => {
             border: "2px solid var(--color-primary)",
           },
         }}
-      />
+        />
+      )}
       <div
         className={`uwshuffle-sidebar ${
           isMinimized ? "uwshuffle-sidebar-minimized" : ""

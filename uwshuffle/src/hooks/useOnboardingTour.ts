@@ -21,7 +21,7 @@ export const useOnboardingTour = (isMinimized: boolean) => {
     checkOnboardingStatus();
   }, [getStorageItem, isMounted]);
 
-  // Start tour when sidebar is first expanded
+  // Start tour when sidebar is first expanded, stop when minimized
   useEffect(() => {
     if (!isMinimized) {
       const startTourIfNeeded = async () => {
@@ -34,6 +34,9 @@ export const useOnboardingTour = (isMinimized: boolean) => {
       // Start tour after a short delay to ensure components are rendered
       const timeoutId = setTimeout(startTourIfNeeded, 100);
       return () => clearTimeout(timeoutId);
+    } else {
+      // Stop tour when sidebar is minimized to prevent target mounting issues
+      setRun(false);
     }
   }, [isMinimized, getStorageItem, isMounted]);
 
