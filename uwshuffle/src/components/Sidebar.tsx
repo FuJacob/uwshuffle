@@ -126,7 +126,7 @@ const Sidebar: React.FC = () => {
 
   const handleKofiClick = useCallback(() => {
     // Open Ko-fi page
-    window.open("https://ko-fi.com/jacobfu", "_blank", "noopener,noreferrer");
+    window.open("https://uwshuffle.com/", "_blank", "noopener,noreferrer");
   }, []);
 
   const handleRateClick = useCallback(() => {
