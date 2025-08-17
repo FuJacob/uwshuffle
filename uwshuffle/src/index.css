@@ -571,6 +571,99 @@ body {
   max-height: 85vh;
   overflow-y: auto;
   position: relative;
+  /* Enhanced responsiveness */
+  margin: var(--space-4);
+  min-width: 300px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Enhanced modal responsiveness */
+@media (max-width: 768px) {
+  .uwshuffle-modal {
+    width: 95%;
+    max-width: 95vw;
+    margin: var(--space-2);
+    padding: var(--space-3);
+    max-height: 90vh;
+  }
+  
+  .uwshuffle-modal-footer {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  
+  .uwshuffle-modal-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .uwshuffle-modal {
+    width: 98%;
+    max-width: 98vw;
+    margin: var(--space-1);
+    padding: var(--space-2);
+    max-height: 95vh;
+    min-width: 280px;
+  }
+}
+
+/* ===== COMPREHENSIVE EDGE CASE RESPONSIVENESS ===== */
+/* Very small screens - ensure everything remains usable */
+@media (max-width: 320px) {
+  .uwshuffle-sidebar {
+    width: 100vw;
+    padding: 0;
+  }
+  
+  .uwshuffle-main-content {
+    padding: var(--space-2);
+    gap: var(--space-2);
+  }
+  
+  .uwshuffle-input-field {
+    font-size: var(--font-size-xs);
+    padding: var(--space-2);
+    min-height: 40px;
+  }
+  
+  .uwshuffle-plus-button {
+    width: 28px;
+    height: 28px;
+    right: var(--space-1);
+  }
+  
+  .uwshuffle-plus-icon {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .uwshuffle-action-bar-buttons {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  
+  .uwshuffle-action-bar-button {
+    width: 100%;
+    font-size: var(--font-size-xs);
+    padding: var(--space-2);
+  }
+}
+
+/* Large screens - ensure optimal use of space */
+@media (min-width: 1440px) {
+  .uwshuffle-main-content {
+    gap: var(--space-5);
+  }
+  
+  .uwshuffle-input-group {
+    max-width: 600px;
+  }
+  
+  .uwshuffle-export-buttons {
+    max-width: 500px;
+  }
 }
 
 .uwshuffle-modal-header {
@@ -705,10 +798,84 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-3); /* Increased for better section separation */
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 0;
+}
+
+/* Consistent spacing for all cards and sections */
+.uwshuffle-section-container {
+  margin-bottom: var(--space-2);
+}
+
+.uwshuffle-section-container:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== COMPREHENSIVE TEXT OVERFLOW FIXES ===== */
+/* Base text handling for better responsiveness */
+.uwshuffle-text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uwshuffle-text-wrap {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Button text responsiveness */
+@media (max-width: 640px) {
+  .uwshuffle-action-bar-button,
+  .uwshuffle-share-button,
+  .uwshuffle-export-button {
+    white-space: normal;
+    text-align: center;
+    min-height: 48px;
+    padding: var(--space-2) var(--space-3);
+  }
+  
+  .uwshuffle-course-code,
+  .uwshuffle-course-section {
+    font-size: var(--font-size-xs);
+    white-space: normal;
+    line-height: 1.2;
+  }
+  
+  .uwshuffle-professor-name {
+    white-space: normal;
+    line-height: 1.3;
+    max-width: 120px;
+  }
+  
+  /* Improved title and label handling */
+  .uwshuffle-action-bar-title,
+  .uwshuffle-schedule-controls-title,
+  .uwshuffle-calendar-title-text {
+    white-space: normal;
+    line-height: 1.4;
+    word-wrap: break-word;
+  }
+  
+  .uwshuffle-input-label {
+    white-space: normal;
+    line-height: 1.4;
+    word-wrap: break-word;
+  }
+  
+  /* Better handling for course names and sections */
+  .uwshuffle-course-name {
+    white-space: normal;
+    line-height: 1.3;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
 }
 
 /* ===== VIDEO SECTION ===== */
@@ -2335,11 +2502,21 @@ body {
   background-color: var(--color-surface);
   color: var(--color-text-secondary);
   transition: var(--transition-fast);
-  min-width: 200px;
+  /* Improved responsiveness */
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
   flex: 1;
   box-shadow: var(--shadow-sm);
   font-family: var(--font-family);
+  /* Better text handling */
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Better touch targets on mobile */
+  min-height: 44px;
+  /* Ensure proper padding for button */
+  padding-right: 48px;
 }
 
 .uwshuffle-input-field:focus {
@@ -2398,6 +2575,10 @@ body {
   display: flex;
   align-items: center;
   flex: 1;
+  /* Improved responsiveness */
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
 }
 
 /* Input group styles */
@@ -2407,6 +2588,29 @@ body {
   justify-content: space-between;
   gap: var(--space-2);
   width: 100%;
+  /* Improved responsiveness */
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+/* Responsive input group layout */
+@media (max-width: 480px) {
+  .uwshuffle-input-group {
+    gap: var(--space-3);
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .uwshuffle-input-wrapper {
+    width: 100%;
+    margin-bottom: var(--space-2);
+  }
+  
+  .uwshuffle-share-button {
+    width: 100%;
+    justify-content: center;
+    margin-top: var(--space-2);
+  }
 }
 
 /* Input label styles */
@@ -2436,6 +2640,11 @@ body {
   transition: var(--transition-fast);
   z-index: 1;
   border-radius: var(--radius-md);
+  /* Fix blue outline issue */
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-focus-ring-color: transparent;
+  box-shadow: none !important;
 }
 
 .uwshuffle-plus-button:hover,
@@ -2444,7 +2653,9 @@ body {
   border-color: var(--color-border-focus);
   color: var(--color-text-primary);
   transform: translateY(-50%) translateY(-1px);
-  outline: none;
+  outline: none !important;
+  box-shadow: var(--shadow-md) !important;
+  -webkit-focus-ring-color: transparent;
 }
 
 .uwshuffle-plus-button:focus:not(:focus-visible) {
@@ -2452,6 +2663,11 @@ body {
   border-color: var(--color-border);
   color: var(--color-text-secondary);
   transform: translateY(-50%);
+  outline: none !important;
+}
+.uwshuffle-plus-button:active {
+  outline: none !important;
+  transform: translateY(-50%) translateY(0px);
 }
 
 .uwshuffle-plus-icon {
@@ -2549,6 +2765,24 @@ body {
   display: flex;
   gap: var(--space-3);
   align-items: center;
+  /* Improved responsiveness */
+  flex-wrap: wrap;
+  justify-content: stretch;
+}
+
+/* Responsive export buttons */
+@media (max-width: 600px) {
+  .uwshuffle-export-buttons {
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: stretch;
+  }
+  
+  .uwshuffle-export-button {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+  }
 }
 
 .uwshuffle-export-button {
@@ -2718,6 +2952,25 @@ body {
   border: none !important;
   overflow-y: auto !important;
   max-width: 100% !important;
+  /* Enhanced responsiveness */
+  min-height: 300px !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Better calendar scrolling on mobile */
+@media (max-width: 768px) {
+  .rbc-calendar {
+    max-height: 35vh !important;
+    min-height: 250px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .rbc-calendar {
+    max-height: 30vh !important;
+    min-height: 200px !important;
+  }
 }
 
 /* Hide toolbar completely */
@@ -2904,7 +3157,7 @@ body {
 
   .uwshuffle-main-content {
     padding: var(--space-6);
-    gap: var(--space-1);
+    gap: var(--space-4); /* Increased spacing for larger screens */
   }
 
   .uwshuffle-calendar-card {
@@ -2947,7 +3200,7 @@ body {
 
   .uwshuffle-main-content {
     padding: var(--space-3);
-    gap: var(--space-1);
+    gap: var(--space-2); /* Reduced but consistent spacing for small screens */
   }
 
   .uwshuffle-preview-containers {
