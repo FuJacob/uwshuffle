@@ -3,6 +3,7 @@
 UW Shuffle is a Chrome extension built by UW students, for UW students.  
 Stop struggling with Quest — preview schedules, plan with friends, and check professor ratings directly in the interface.
 
+**[Install on Chrome Web Store](https://chromewebstore.google.com/detail/uw-shuffle-%E2%80%94-making-quest/ljigippjjlenfiofmbipieclkfcjfcop)**
 ---
 
 ## Features
